@@ -2,7 +2,6 @@
 
 공간에 도미노를 여러 개 세워 배치하고, 하나를 밀면 물리 시뮬레이션으로 옆 도미노가 연쇄적으로 쓰러지는 ARKit + RealityKit 기반 AR 도미노 체인리액션 앱을 만드는 튜토리얼 저장소입니다.
 
-## [`ARDominoChainReaction/`](ARDominoChainReaction/)
 
 **요구 사항**
 - Xcode 15 이상
