@@ -11,8 +11,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
     private var hasDetectedPlane = false
     // 배치된 도미노 목록. 지금은 개수 표시에만 쓰지만, 이후 마일스톤(여러 개 줄세우기)에서도 유용해서 미리 추적해둠
     private var placedDominoes: [ModelEntity] = []
-    // 도미노 크기(너비, 높이, 깊이). makeDominoEntity()와 place(_:at:in:) 둘 다에서 써서 한 곳에 모아둠
-    private let dominoSize = SIMD3<Float>(0.08, 0.2, 0.04)
     // 평면 앵커의 identifier → 그 평면에 붙인 물리 바닥 엔티티. 평면이 넓어질 때(didUpdate)
     // 어떤 물리 바닥을 갱신해야 할지 찾기 위해 필요함
     private var physicsFloors: [UUID: Entity] = [:]
@@ -175,20 +173,11 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         return results.first
     }
 
-    // 도미노 엔티티 조립 담당: mesh(모양) + 재질(겉모습) + 충돌 shape + 물리 바디를 순서대로 붙임
+    // 도미노 엔티티 조립 담당: USDZ 모델(모양+재질) + 충돌 shape + 물리 바디를 순서대로 붙임
     private func makeDominoEntity() -> ModelEntity {
-        // generateBox(width:height:depth:)는 너비=로컬 X축, 높이=로컬 Y축, 깊이=로컬 Z축인
-        // 직육면체를 원점 중심으로 만듦. 즉 이 mesh를 회전 없이 그대로 쓰면 "높이" 방향이
-        // 로컬 Y축을 향함 — place(_:at:in:)에서 이 점을 활용해 별도 회전 없이 세움
-        let mesh = MeshResource.generateBox(width: dominoSize.x, height: dominoSize.y, depth: dominoSize.z)
-
-        // PhysicallyBasedMaterial: metallic은 0으로 두어 환경 반사 없이도 자연스러운 광택이 나오게 함
-        var material = PhysicallyBasedMaterial()
-        material.baseColor = .init(tint: .red)
-        material.roughness = .init(floatLiteral: 0.4)
-        material.metallic = .init(floatLiteral: 0.0)
-
-        let domino = ModelEntity(mesh: mesh, materials: [material])
+        // domino.usdz 안에 mesh와 나무 재질이 이미 담겨 있어서, 절차적으로 만들 필요가 없음.
+        // 회전 없이 그대로 쓰면 세워진 상태가 되도록 Blender에서 로컬 Y축 = 높이로 모델링해둠
+        let domino = try! ModelEntity.loadModel(named: "domino")
 
         // 충돌 shape: 도미노끼리 부딪히려면 반드시 필요함 (엔티티 자체의 속성이라 여기서 붙임)
         domino.generateCollisionShapes(recursive: true)
@@ -205,8 +194,10 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         let anchorEntity = AnchorEntity(world: transform)
 
         // mesh가 원점을 중심으로 만들어져 있어서, 회전 없이 그대로 놓으면 도미노의 절반이
-        // 바닥 아래로 파묻힘. 높이의 절반만큼 로컬 Y축으로 띄워서 바닥 위에 정확히 서게 함
-        domino.position = SIMD3<Float>(0, dominoSize.y / 2, 0)
+        // 바닥 아래로 파묻힘. dominoSize 상수 대신 실제 로드된 모델의 바운딩 박스를 측정해서
+        // 그 높이의 절반만큼 로컬 Y축으로 띄워야 모델 크기가 달라져도 항상 정확히 맞음
+        let bounds = domino.visualBounds(relativeTo: nil)
+        domino.position = SIMD3<Float>(0, bounds.extents.y / 2, 0)
 
         anchorEntity.addChild(domino)
         arView.scene.addAnchor(anchorEntity)
