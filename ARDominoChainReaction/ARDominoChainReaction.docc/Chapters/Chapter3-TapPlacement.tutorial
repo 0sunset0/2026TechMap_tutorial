@@ -1,0 +1,109 @@
+@Tutorial(time: 25) {
+    @Intro(title: "탭으로 하나씩 배치하기") {
+        2장에서 만든 도미노를 이제 실제로 세워보겠습니다. 화면을 탭한 위치를 3D 공간 좌표로 바꾸는
+        방법, 그리고 도미노가 딛고 설 "보이지 않는 바닥"을 만드는 방법을 배웁니다. 이 장이 끝나면,
+        화면을 탭할 때마다 도미노가 한 줄로 세워지는 걸 직접 볼 수 있습니다.
+
+        @Image(source: chapter3-banner.png, alt: "탭으로 하나씩 배치하기 장 배너")
+    }
+
+    @Section(title: "평면 감지 시 보이지 않는 물리 바닥 만들기") {
+        @ContentAndMedia {
+            ARKit이 알려주는 평면(`ARPlaneAnchor`)은 "여기에 평면이 있다"는 정보일 뿐, 그 자체로는
+            물리 충돌에 참여하지 않습니다. 도미노가 그 위에 실제로 서 있으려면, 물리 성질을 가진
+            보이지 않는 바닥을 따로 만들어줘야 합니다.
+        }
+
+        @Steps {
+            @Step {
+                `ARSessionDelegate`의 `session(_:didAdd:)`에서 새 평면이 감지된 순간을 받습니다.
+                델리게이트 콜백은 메인 스레드가 아닐 수 있어서, UI(배너 텍스트) 갱신은 반드시
+                `DispatchQueue.main.async`로 감싸서 메인 스레드에서 실행합니다.
+
+                @Code(name: "ARCoordinator.swift", file: "3-1-ARCoordinator.swift")
+            }
+
+            @Step {
+                `AnchorEntity(anchor: planeAnchor)`로 그 평면에 그대로 붙는 앵커를 만듭니다.
+                `planeAnchor.center`도 반영해야 합니다. 앵커의 좌표 원점과 실제 평면의 중심이 다를 수
+                있기 때문이에요. 보이지 않는 `Entity`에 `CollisionComponent`와
+                `PhysicsBodyComponent(mode: .static)`를 붙입니다. `.static`은 절대 움직이지 않는
+                받침대라는 뜻이에요. 도미노(`.dynamic`)만 이 위에서 중력의 영향을 받습니다.
+
+                > Note: 평면은 스캔이 진행될수록 감지 범위가 점점 넓어집니다. 이 튜토리얼에서 만드는
+                > 물리 바닥은 처음 감지된 크기로 고정되지만, 실제 이 저장소의 최종 코드는
+                > `session(_:didUpdate:)`에서 평면 identifier별로 물리 바닥의 위치·크기를 최신 상태로
+                > 갱신합니다. 안 하면 평면이 넓어진 새 영역에서 도미노가 바닥을 뚫고 떨어지는 버그가
+                > 생겨요 — 실기 테스트 중 실제로 발견했던 문제입니다. 궁금하다면 완성된
+                > `ARCoordinator.swift`를 참고하세요.
+
+                @Code(name: "ARCoordinator.swift", file: "3-2-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "탭 위치를 3D 좌표로 바꾸기 (raycast)") {
+        @ContentAndMedia {
+            화면은 2D지만 도미노는 3D 공간에 놓여야 합니다. 이 둘을 이어주는 게 raycast예요. 탭한
+            화면 좌표에서 카메라를 통과하는 가상의 광선을 쏴서, 그 광선이 감지된 평면과 만나는 지점을
+            찾습니다.
+        }
+
+        @Steps {
+            @Step {
+                `UITapGestureRecognizer`를 `ARView`에 등록합니다. 제스처 등록 자체는
+                `ARViewContainer`가 책임지고, 실제 반응(`handleTap`)은 `ARCoordinator`가 맡는 역할
+                분리를 계속 따릅니다.
+
+                @Code(name: "ARViewContainer.swift", file: "3-3-ARViewContainer.swift")
+            }
+
+            @Step {
+                탭한 화면 좌표로 `arView.raycast(from:allowing:alignment:)`를 호출해 3D world
+                transform을 얻습니다. `allowing: .estimatedPlane` 옵션을 쓰면, ARKit이 아직
+                확정하지 못한 평면 추정치까지 포함해서 탐색 범위가 넓어집니다.
+
+                @Code(name: "ARCoordinator.swift", file: "3-4-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "raycast 결과에 도미노 세워 배치하기") {
+        @ContentAndMedia {
+            raycast가 찾은 지점에 도미노를 고정해보겠습니다.
+        }
+
+        @Steps {
+            @Step {
+                `AnchorEntity(world: result.worldTransform)`로 raycast 결과 위치에 앵커를 만듭니다.
+                도미노의 `position`을 로컬 Y축으로 높이의 절반만큼 올려줍니다. mesh가 원점 중심으로
+                만들어져 있어서, 이 보정이 없으면 도미노 절반이 바닥 아래로 파묻힙니다. 앵커에 도미노를
+                자식으로 추가하고 씬에 앵커를 등록하면, 탭한 자리에 도미노가 세워진 채로 나타납니다.
+
+                @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "연속 탭으로 줄 세우기") {
+        @ContentAndMedia {
+            탭할 때마다 같은 과정이 반복되니, 자연스럽게 여러 개를 이어붙일 수 있습니다.
+        }
+
+        @Steps {
+            @Step {
+                배치된 도미노를 배열에 담아 개수를 추적하고, 상단 상태 배너 텍스트를
+                "도미노 N개 배치됨"으로 갱신해서, 지금 몇 개가 세워졌는지 화면에서 바로 확인할 수 있게
+                합니다. 지금까지 만든 `raycastResult`, `makeDominoEntity`, `place`를 한데 모으면
+                탭 한 번이 도미노 하나로 이어지는 흐름이 완성됩니다.
+
+                @Code(name: "ARCoordinator.swift", file: "3-6-ARCoordinator.swift")
+            }
+
+            @Step {
+                실기기에서 평면을 연속으로 탭해보세요. 탭할 때마다 빨간 도미노가 하나씩 서면서 줄이
+                만들어집니다. 이제 이 프로젝트가 진짜 AR 공간을 채워가기 시작했어요.
+            }
+        }
+    }
+}

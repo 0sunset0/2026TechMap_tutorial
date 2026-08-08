@@ -1,0 +1,98 @@
+@Tutorial(time: 15) {
+    @Intro(title: "USDZ 모델로 다듬기") {
+        지금까지는 박스 모양 mesh로 도미노를 표현해왔습니다. 이번 장에서는 코드로 직접 그린 이 도형을
+        실제 3D 모델(USDZ)로 바꿔보겠습니다. 이 장이 끝나면, 화면 속 도미노가 밋밋한 상자 대신 나무
+        재질의 진짜 도미노처럼 보일 거예요.
+
+        @Image(source: chapter5-banner.png, alt: "USDZ 모델로 다듬기 장 배너")
+    }
+
+    @Section(title: "제공된 USDZ 애셋 다운로드하기") {
+        @ContentAndMedia {
+            USDZ는 Pixar의 USD(Universal Scene Description) 포맷을 애플이 단일 파일로 묶은 것으로,
+            ARKit과 RealityKit이 공식 지원하는 3D 포맷입니다. 이 튜토리얼에서는 직접 3D 모델링을 하지
+            않고, 미리 만들어둔 `domino.usdz` 파일을 씁니다.
+        }
+
+        @Steps {
+            @Step {
+                `domino.usdz` 파일을 macOS **Quick Look**(파일 선택 후 스페이스바)으로 먼저
+                열어보세요. 나무 재질의 도미노 모델이 잘 보이면 준비 완료입니다.
+            }
+
+            @Step {
+                Xcode 프로젝트의 `Sources/ARDominoChainReaction` 그룹으로 파일을 드래그해 추가합니다.
+                이때 **타겟 멤버십**(대상 앱 타겟 체크박스)이 체크됐는지 꼭 확인하세요. 빠지면 실행
+                시 모델을 못 찾아 런타임 에러가 납니다.
+
+                > Note: 이 저장소에는 이미 `Sources/ARDominoChainReaction/domino.usdz`가 포함돼
+                > 있고, `project.yml`의 `sources` 경로가 그 폴더 전체를 가리키므로 XcodeGen이 자동으로
+                > 리소스로 인식합니다. 직접 새 프로젝트에서 따라 하는 경우에만 드래그해서 추가하는
+                > 과정이 필요합니다.
+            }
+        }
+    }
+
+    @Section(title: "코드로 그린 mesh를 USDZ 모델로 교체하기") {
+        @ContentAndMedia {
+            지금까지 `makeDominoEntity()`는 `MeshResource.generateBox`로 모양을 만들고
+            `PhysicallyBasedMaterial`로 색을 입혔습니다. 이 부분을 방금 추가한 USDZ 파일을 불러오는
+            코드로 바꿔보겠습니다.
+        }
+
+        @Steps {
+            @Step {
+                `try! ModelEntity.loadModel(named: "domino")`로 USDZ 파일을 동기적으로 불러옵니다.
+                파일 이름은 확장자 없이 씁니다. 기존의 mesh 생성 + 재질 설정 코드를 이 한 줄로
+                대체합니다. USDZ 파일 안에 이미 나무 재질과 색상 정보가 담겨 있어서,
+                `PhysicallyBasedMaterial`을 직접 만들 필요가 없어집니다. 충돌 shape과 물리 바디는
+                이전과 똑같이 붙입니다.
+
+                @Code(name: "ARCoordinator.swift", file: "5-1-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "크기와 피벗 다시 맞추기") {
+        @ContentAndMedia {
+            지금까지의 `dominoSize`(0.08, 0.2, 0.04) 상수는 박스 mesh를 기준으로 정한 값입니다. 새로
+            불러온 USDZ 모델은 실제 크기나 원점(피벗) 위치가 이 값과 다를 수 있어서, 그대로 두면
+            도미노가 바닥에 파묻히거나 떠서 보일 수 있습니다.
+        }
+
+        @Steps {
+            @Step {
+                `domino.visualBounds(relativeTo: nil)`로 불러온 모델의 실제 크기(바운딩 박스)를
+                확인합니다. 코드의 가정만으로는 정확한 값을 알 수 없어서, 실제로 로그를 찍어 확인하는
+                게 안전합니다. `place(_:at:in:)`에서 쓰던 "높이의 절반만큼 올리는" 오프셋을, 방금
+                확인한 실제 모델 크기 기준으로 다시 계산합니다.
+
+                `generateCollisionShapes(recursive: true)`는 그대로 다시 호출해도 됩니다. 새 모델의
+                실제 형상을 기준으로 충돌 범위가 자동으로 다시 계산되니, 박스 모양일 때와 동일한
+                코드로 물리 성질을 그대로 이어갈 수 있습니다. 더 이상 어디서도 쓰이지 않는
+                `dominoSize` 상수는 이 시점에 함께 삭제합니다.
+
+                @Code(name: "ARCoordinator.swift", file: "5-2-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "실기기에서 비교 확인하기") {
+        @ContentAndMedia {
+            마지막으로 실기기에서 결과를 직접 확인해봅니다.
+        }
+
+        @Steps {
+            @Step {
+                실기기에서 앱을 다시 빌드해보세요. 탭해서 세운 도미노가 빨간 박스 대신 나무 재질의
+                3D 모델로 보일 거예요. 물리 동작(서고, 넘어지고, 체인리액션이 일어나는 것)은 이전과
+                동일하게 유지되는지 확인해보세요.
+            }
+
+            @Step {
+                축하합니다, 카메라가 켜지는 순간부터 진짜 도미노 모델이 쓰러지는 순간까지, AR 도미노
+                체인리액션을 처음부터 끝까지 직접 만들어보셨습니다!
+            }
+        }
+    }
+}

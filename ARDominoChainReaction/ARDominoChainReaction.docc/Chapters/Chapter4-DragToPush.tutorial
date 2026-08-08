@@ -1,0 +1,113 @@
+@Tutorial(time: 25) {
+    @Intro(title: "드래그로 밀어 넘어뜨리기") {
+        이제 도미노 하나를 손가락으로 밀어 넘어뜨리고, 그 힘이 옆 도미노로 이어지는 체인리액션을
+        만들어보겠습니다. 화면 위의 2D 드래그 동작을 3D 공간의 실제 힘으로 바꾸는 게 이 장의
+        핵심입니다. 이 장이 끝나면, 도미노를 슥 밀었을 때 쓰러지고 옆으로 전파되는 걸 직접 볼 수
+        있습니다.
+
+        @Image(source: chapter4-banner.png, alt: "드래그로 밀어 넘어뜨리기 장 배너")
+    }
+
+    @Section(title: "팬 제스처 등록하기") {
+        @ContentAndMedia {
+            RealityKit은 `installGestures(.translation)`처럼 손가락으로 엔티티를 직접 옮기는 기본
+            제스처를 제공합니다. 하지만 이건 "엔티티를 손가락 위치로 이동시키는 것"이지, 우리가 원하는
+            "물리적인 힘을 가해서 자연스럽게 넘어뜨리는 것"과는 다릅니다. 도미노를 손으로 집어 옮기는
+            게 아니라 밀친 방향으로 임펄스를 가해서 넘어뜨려야 하기 때문에, 이 장은 UIKit의
+            `UIPanGestureRecognizer`를 직접 다룹니다.
+        }
+
+        @Steps {
+            @Step {
+                `UIPanGestureRecognizer`를 만들어 `ARView`에 등록합니다. 탭 제스처와 동시에 등록해도
+                서로 충돌하지 않아요. 둘은 서로 다른 제스처 종류라 독립적으로 인식됩니다.
+
+                @Code(name: "ARViewContainer.swift", file: "4-1-ARViewContainer.swift")
+            }
+
+            @Step {
+                제스처의 `action`을 `Coordinator`의 `handlePan(_:)` 메서드로 연결합니다. 이 메서드는
+                드래그의 시작(`.began`)과 끝(`.ended`)을 각각 다른 분기로 처리합니다. 지금은 두 분기
+                모두 빈 채로 뼈대만 잡아둡니다.
+
+                @Code(name: "ARCoordinator.swift", file: "4-1-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "드래그 시작 지점의 도미노 찾기") {
+        @ContentAndMedia {
+            드래그가 끝나는 순간에 힘을 가하려면, 그 드래그가 어느 도미노 위에서 시작됐는지 먼저
+            기억해둬야 합니다.
+        }
+
+        @Steps {
+            @Step {
+                `recognizer.state`가 `.began`일 때, `recognizer.location(in: arView)`로 터치 지점의
+                화면 좌표를 얻습니다. `arView.entity(at: location) as? ModelEntity`로 그 지점 아래의
+                엔티티를 히트 테스트합니다. 물리 바닥은 보이지 않는 `Entity`라 `ModelEntity`로의
+                캐스팅이 실패해서 자동으로 걸러지고, 도미노를 집었을 때만 값이 들어옵니다.
+
+                찾은 도미노를 `draggedDomino` 프로퍼티에 저장해둡니다. 이 값은 드래그가 끝나는
+                순간(`.ended`)까지 유지되며, 그때 실제로 힘을 받을 도미노입니다.
+
+                @Code(name: "ARCoordinator.swift", file: "4-2-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "화면 2D 벡터를 카메라 기준 3D 방향으로 바꾸기") {
+        @ContentAndMedia {
+            드래그가 끝나면 시작점에서 끝점까지의 화면 벡터를 얻을 수 있습니다. 하지만 카메라는
+            사용자가 움직일 때마다 계속 회전하니, "화면에서 오른쪽"이 항상 "월드에서 오른쪽"은
+            아닙니다. 카메라가 보는 방향을 기준으로 변환해야 해요.
+        }
+
+        @Steps {
+            @Step {
+                `arView.cameraTransform.matrix`에서 카메라의 "오른쪽" 축과 "정면" 축을 월드 좌표로
+                뽑아냅니다. 카메라는 자신의 -Z 방향을 바라보니, "정면"은 Z축에 부호를 뒤집어서
+                구합니다. 도미노는 바닥 위에서 수평으로만 밀리니, 이 두 축의 Y 성분을 버리고 XZ
+                평면에만 투영합니다.
+
+                그다음 `screenDelta.x`는 카메라의 오른쪽 축에, `-screenDelta.y`는 정면 축에 곱해
+                더한 뒤 정규화하면, 실제로 밀어야 할 3D 방향이 나옵니다. (`-y`인 이유는 UIKit
+                좌표계가 아래로 갈수록 y값이 커지기 때문이에요.)
+
+                @Code(name: "ARCoordinator.swift", file: "4-3-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "임펄스를 가해 넘어뜨리고 세기 튜닝하기") {
+        @ContentAndMedia {
+            Impulse(임펄스)는 순간적으로 가해지는 운동량 변화입니다. 매 프레임마다 계속 밀어야 하는
+            Force와 달리, "한 번 턱 치는" 느낌을 낼 때 적합해요. 드래그 중에 계속 힘을 주는 대신,
+            드래그가 끝나는 순간(`.ended`)에 딱 한 번만 주면 동작이 더 단순하고 예측 가능해집니다.
+        }
+
+        @Steps {
+            @Step {
+                `recognizer.translation(in: arView)`로 시작점→끝점의 화면 벡터(`screenDelta`)를
+                얻고, 이동 거리가 20보다 작으면 무시합니다. 실수로 살짝 스친 드래그까지 도미노를
+                넘어뜨리지 않기 위해서예요. 계산한 방향으로
+                `domino.applyLinearImpulse(direction * dominoPushStrength, relativeTo: nil)`를
+                호출해 힘을 가합니다.
+
+                `dominoPushStrength` 값은 계산으로 한 번에 정할 수 있는 숫자가 아니었습니다. 도미노
+                크기를 키우면 질량도 같이 커져서, 같은 임펄스값으로도 "너무 약하다/세다"가 달라져요.
+                실기기에서 직접 밀어보면서 1.5 → 4.0 → 5.0 → 3.0으로 값을 바꿔간 과정이 있었습니다.
+                시뮬레이터나 계산만으로는 "적당한 느낌"을 미리 알 수 없어서, 이런 값은 실기기 반복
+                테스트로 찾아가는 게 자연스러운 접근입니다.
+
+                @Code(name: "ARCoordinator.swift", file: "4-4-ARCoordinator.swift")
+            }
+
+            @Step {
+                실기기에서 도미노 하나를 손가락으로 슥 밀어보세요. 그 도미노가 넘어지면서 옆 도미노와
+                부딪히고, 차례로 쓰러지는 연쇄 반응이 이어질 거예요. 축하합니다, 카메라 세션부터
+                체인리액션까지 다 완성하셨습니다!
+            }
+        }
+    }
+}

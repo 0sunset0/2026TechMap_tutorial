@@ -1,0 +1,97 @@
+@Tutorial(time: 20) {
+    @Intro(title: "도미노 한 개 만들기") {
+        이제 세워질 도미노 자체를 만들어보겠습니다. RealityKit에서 3D 오브젝트는 Entity(빈 그릇)에
+        필요한 Component(속성)들을 하나씩 붙여 완성합니다. 모양, 재질, 충돌 범위, 물리 성질까지 모두
+        별도의 부품이에요. RealityKit은 이 구조를 **Entity-Component-System(ECS)**이라고 부릅니다.
+        System은 이 컴포넌트들을 매 프레임 훑어보며 실제 동작을 수행하는 쪽인데, 우리가 직접 만들지
+        않아도 RealityKit이 내장 System(물리 시뮬레이션 등)을 이미 갖고 있어서 Component만 붙이면
+        자동으로 처리됩니다.
+
+        RealityKit이 클래스 상속 대신 이 조합 방식을 쓰는 이유는, 물체마다 필요한 조합이 다 다르기
+        때문입니다. 예를 들어 3장에서 만들 물리 바닥은 눈에 안 보여도 되니 Mesh/Material 없이
+        CollisionComponent와 PhysicsBodyComponent만 붙이면 되고, 지금 만드는 도미노는 그 위에
+        Mesh/Material까지 다 필요합니다. 상속 구조였다면 "보이면서 물리도 있는 것", "안 보이지만
+        물리는 있는 것" 같은 조합마다 별도 클래스 계층이 필요했겠지만, ECS에서는 필요한 Component만
+        골라 붙이면 되니 훨씬 유연합니다.
+
+        @Image(source: chapter2-banner.png, alt: "도미노 한 개 만들기 장 배너")
+    }
+
+    @Section(title: "도미노 모양과 재질 만들기") {
+        @ContentAndMedia {
+            도미노는 직육면체 하나면 충분합니다. RealityKit은 이런 기본 도형을 코드 한 줄로 만들어주는
+            `MeshResource`를 제공해요. 그 위에 재질을 입혀야 빛을 받았을 때 자연스럽게 보입니다.
+        }
+
+        @Steps {
+            @Step {
+                `MeshResource.generateBox(width:height:depth:)`로 얇고 세워진 직육면체 mesh를
+                만듭니다. 높이(height) 축이 로컬 Y축을 향하는 게 핵심이에요. 나중에 배치할 때 별도
+                회전 없이 바로 세울 수 있게 해줍니다.
+
+                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator.swift")
+            }
+
+            @Step {
+                `PhysicallyBasedMaterial`을 만들고 `baseColor`를 빨간색으로, `roughness`를 0.4로,
+                `metallic`을 0으로 지정합니다. PBR(Physically Based Rendering) 재질은 실제 빛의
+                물리 법칙을 흉내 내서, `baseColor`(고유색)·`roughness`(표면이 얼마나 거친지 —
+                낮을수록 매끄럽고 반사가 또렷함)·`metallic`(금속성 여부 — 0이면 비금속) 세 값의
+                조합만으로 다양한 재질감을 만들어냅니다.
+
+                mesh와 재질을 합쳐 `ModelEntity`를 만듭니다. 이제 도미노의 겉모습은 완성됐어요. 다만
+                아직은 중력을 받지도 않고, 다른 도미노와 부딪혀도 그냥 통과해버려요.
+
+                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "충돌과 물리 바디 붙이기") {
+        @ContentAndMedia {
+            지금 이 도미노끼리 부딪히면 어떻게 될까요? 그냥 서로 통과해버려요. 아직 겉모습만 있으니까요.
+            서로 부딪치고, 중력을 받고, 밀면 넘어지는 건 두 개의 컴포넌트로 가능해집니다.
+        }
+
+        @Steps {
+            @Step {
+                `generateCollisionShapes(recursive: true)`를 호출해 충돌 범위를 만듭니다. 이게 없으면
+                도미노끼리 서로 몸을 통과해서 지나가버려요.
+            }
+
+            @Step {
+                `PhysicsBodyComponent`를 `.dynamic` 모드로 붙입니다. 이제 도미노는 중력을 받아 바닥으로
+                떨어지고, 힘을 받으면 실제로 넘어지며 연쇄 반응을 일으키는 물리 객체가 됩니다.
+
+                질량은 `.default`로 두면 RealityKit이 도미노 부피를 기준으로 자동 계산해줄 수도
+                있지만, 이 프로젝트는 실기 테스트를 반복하며 "너무 가볍다/무겁다" 느낌을 확인해
+                `0.7kg`이라는 값으로 직접 확정했습니다. 이후의 낙하, 충돌, 밀리면 넘어지는 계산은 우리가
+                직접 짜는 코드가 아니라, RealityKit 내장 물리 System이 매 프레임 자동으로 수행합니다.
+                Component를 붙이는 순간부터 System이 이 Entity를 처리 대상에 자동으로 포함시킵니다.
+
+                @Code(name: "ARCoordinator.swift", file: "2-3-ARCoordinator.swift")
+            }
+        }
+    }
+
+    @Section(title: "사람 뒤로 자연스럽게 가려지게 하기") {
+        @ContentAndMedia {
+            도미노 앞에 손이 있으면, 도미노가 손 뒤로 가려져야겠죠? 근데 아무 처리도 안 해주면 손을
+            뚫고 도미노가 그대로 보여요. People Occlusion은 ARKit이 카메라 영상에서 사람 영역을
+            실시간으로 분리해서, 가상 콘텐츠가 그 뒤로 자연스럽게 가려지도록 만들어줍니다.
+        }
+
+        @Steps {
+            @Step {
+                `ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth)`로
+                기기가 이 기능을 지원하는지 먼저 확인합니다. People Occlusion은 0장에서 다룬 A9 칩
+                기준보다 더 높은 **A12 칩 이상**을 요구해서, 모든 기기가 지원하는 건 아니에요.
+
+                지원된다면 `configuration.frameSemantics`에 `.personSegmentationWithDepth`를
+                추가합니다. 이제 사람이 카메라 앞을 지나갈 때마다 도미노가 자연스럽게 가려집니다.
+
+                @Code(name: "ARViewContainer.swift", file: "2-4-ARViewContainer.swift")
+            }
+        }
+    }
+}

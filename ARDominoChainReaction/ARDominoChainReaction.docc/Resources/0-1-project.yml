@@ -9,14 +9,10 @@ targets:
     platform: iOS
     sources:
       - path: Sources/ARDominoChainReaction
-      - path: ARDominoChainReaction.docc
     info:
       path: Sources/ARDominoChainReaction/Info.plist
       properties:
         UILaunchScreen: {}
-        NSCameraUsageDescription: "AR 도미노 체인리액션에서 ARKit 카메라 트래킹을 사용하기 위해 카메라 접근 권한이 필요합니다."
-        UIRequiredDeviceCapabilities: [arkit]
-        UIRequiresFullScreen: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.techmap.ardominochainreaction.ARDominoChainReaction

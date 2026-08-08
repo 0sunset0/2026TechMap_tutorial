@@ -11,7 +11,7 @@
 | 2 | 도미노 한 개 만들기 | RealityKit의 Entity-Component-System |
 | 3 | 탭으로 하나씩 배치하기 | Raycasting과 보이지 않는 물리 바닥 |
 | 4 | 드래그로 밀어 넘어뜨리기 | 좌표계 변환과 Impulse |
-| 5 | 다듬기 | 절차적 mesh에서 USDZ 애셋으로 |
+| 5 | USDZ 모델로 다듬기 | 절차적 mesh에서 USDZ 애셋으로 |
 
 **요구 사항**
 - Xcode 15 이상
@@ -29,3 +29,7 @@ cd ARDominoChainReaction
 xcodegen generate
 open ARDominoChainReaction.xcodeproj
 ```
+
+**튜토리얼 보기**
+
+이 저장소에는 위 목차를 실제로 따라 만들 수 있는 DocC 튜토리얼(`ARDominoChainReaction/ARDominoChainReaction.docc`)이 포함되어 있습니다. Xcode에서 프로젝트를 연 뒤 **Product ▸ Build Documentation**(⌃⇧⌘D)을 실행하면 Xcode 문서 창에서 0장부터 5장까지 단계별 코드와 함께 읽을 수 있습니다.

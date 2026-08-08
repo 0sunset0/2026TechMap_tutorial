@@ -9,7 +9,6 @@ targets:
     platform: iOS
     sources:
       - path: Sources/ARDominoChainReaction
-      - path: ARDominoChainReaction.docc
     info:
       path: Sources/ARDominoChainReaction/Info.plist
       properties:

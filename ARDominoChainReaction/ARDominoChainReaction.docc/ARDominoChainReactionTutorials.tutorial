@@ -1,0 +1,59 @@
+@Tutorials(name: "AR 도미노 체인리액션") {
+    @Intro(title: "AR 도미노 체인리액션 만들기") {
+        ARDominoChainReaction은 카메라로 비추는 실제 공간에 가상의 도미노를 여러 개 세우고, 손끝으로
+        밀어 연쇄 반응을 일으키는 AR 앱입니다.
+
+        0장부터 5장까지, ARKit으로 공간을 인식하고, RealityKit으로 도미노를 세우고, 드래그로 밀어
+        넘어뜨리는 체인리액션을 완성한 뒤, 마지막엔 실사 3D 모델로 다듬어 마무리합니다.
+
+        @Image(source: intro-banner.png, alt: "AR 도미노 체인리액션 표지")
+    }
+
+    @Chapter(name: "0. 프로젝트 준비") {
+        AR 앱은 왜 카메라 권한과 실기기가 필요한가.
+
+        @Image(source: chapter0-banner.png, alt: "프로젝트 준비")
+
+        @TutorialReference(tutorial: "doc:Chapter0-ProjectSetup")
+    }
+
+    @Chapter(name: "1. 기본 AR 씬 띄우기") {
+        ARSession과 평면 감지, UIKit↔SwiftUI 통합.
+
+        @Image(source: chapter1-banner.png, alt: "기본 AR 씬 띄우기")
+
+        @TutorialReference(tutorial: "doc:Chapter1-BasicARScene")
+    }
+
+    @Chapter(name: "2. 도미노 한 개 만들기") {
+        RealityKit의 Entity-Component-System.
+
+        @Image(source: chapter2-banner.png, alt: "도미노 한 개 만들기")
+
+        @TutorialReference(tutorial: "doc:Chapter2-DominoEntity")
+    }
+
+    @Chapter(name: "3. 탭으로 하나씩 배치하기") {
+        Raycasting과 보이지 않는 물리 바닥.
+
+        @Image(source: chapter3-banner.png, alt: "탭으로 하나씩 배치하기")
+
+        @TutorialReference(tutorial: "doc:Chapter3-TapPlacement")
+    }
+
+    @Chapter(name: "4. 드래그로 밀어 넘어뜨리기") {
+        좌표계 변환과 Impulse.
+
+        @Image(source: chapter4-banner.png, alt: "드래그로 밀어 넘어뜨리기")
+
+        @TutorialReference(tutorial: "doc:Chapter4-DragToPush")
+    }
+
+    @Chapter(name: "5. USDZ 모델로 다듬기") {
+        절차적 mesh에서 USDZ 애셋으로.
+
+        @Image(source: chapter5-banner.png, alt: "USDZ 모델로 다듬기")
+
+        @TutorialReference(tutorial: "doc:Chapter5-USDZPolish")
+    }
+}
