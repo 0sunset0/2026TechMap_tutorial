@@ -48,10 +48,12 @@
                 엔티티를 히트 테스트합니다. 물리 바닥은 보이지 않는 `Entity`라 `ModelEntity`로의
                 캐스팅이 실패해서 자동으로 걸러지고, 도미노를 집었을 때만 값이 들어옵니다.
 
+                @Code(name: "ARCoordinator.swift", file: "4-2-ARCoordinator.swift")
+            }
+
+            @Step {
                 찾은 도미노를 `draggedDomino` 프로퍼티에 저장해둡니다. 이 값은 드래그가 끝나는
                 순간(`.ended`)까지 유지되며, 그때 실제로 힘을 받을 도미노입니다.
-
-                @Code(name: "ARCoordinator.swift", file: "4-2-ARCoordinator.swift")
             }
         }
     }
@@ -67,14 +69,20 @@
             @Step {
                 `arView.cameraTransform.matrix`에서 카메라의 "오른쪽" 축과 "정면" 축을 월드 좌표로
                 뽑아냅니다. 카메라는 자신의 -Z 방향을 바라보니, "정면"은 Z축에 부호를 뒤집어서
-                구합니다. 도미노는 바닥 위에서 수평으로만 밀리니, 이 두 축의 Y 성분을 버리고 XZ
-                평면에만 투영합니다.
-
-                그다음 `screenDelta.x`는 카메라의 오른쪽 축에, `-screenDelta.y`는 정면 축에 곱해
-                더한 뒤 정규화하면, 실제로 밀어야 할 3D 방향이 나옵니다. (`-y`인 이유는 UIKit
-                좌표계가 아래로 갈수록 y값이 커지기 때문이에요.)
+                구합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-3-ARCoordinator.swift")
+            }
+
+            @Step {
+                도미노는 바닥 위에서 수평으로만 밀리니, 이 두 축의 Y 성분을 버리고 XZ 평면에만
+                투영합니다.
+            }
+
+            @Step {
+                `screenDelta.x`는 카메라의 오른쪽 축에, `-screenDelta.y`는 정면 축에 곱해 더한 뒤
+                정규화하면, 실제로 밀어야 할 3D 방향이 나옵니다. (`-y`인 이유는 UIKit 좌표계가
+                아래로 갈수록 y값이 커지기 때문이에요.)
             }
         }
     }
@@ -90,17 +98,25 @@
             @Step {
                 `recognizer.translation(in: arView)`로 시작점→끝점의 화면 벡터(`screenDelta`)를
                 얻고, 이동 거리가 20보다 작으면 무시합니다. 실수로 살짝 스친 드래그까지 도미노를
-                넘어뜨리지 않기 위해서예요. 계산한 방향으로
+                넘어뜨리지 않기 위해서예요.
+
+                @Code(name: "ARCoordinator.swift", file: "4-4a-ARCoordinator.swift")
+            }
+
+            @Step {
+                계산한 방향으로
                 `domino.applyLinearImpulse(direction * dominoPushStrength, relativeTo: nil)`를
                 호출해 힘을 가합니다.
 
+                @Code(name: "ARCoordinator.swift", file: "4-4-ARCoordinator.swift")
+            }
+
+            @Step {
                 `dominoPushStrength` 값은 계산으로 한 번에 정할 수 있는 숫자가 아니었습니다. 도미노
                 크기를 키우면 질량도 같이 커져서, 같은 임펄스값으로도 "너무 약하다/세다"가 달라져요.
                 실기기에서 직접 밀어보면서 1.5 → 4.0 → 5.0 → 3.0으로 값을 바꿔간 과정이 있었습니다.
                 시뮬레이터나 계산만으로는 "적당한 느낌"을 미리 알 수 없어서, 이런 값은 실기기 반복
                 테스트로 찾아가는 게 자연스러운 접근입니다.
-
-                @Code(name: "ARCoordinator.swift", file: "4-4-ARCoordinator.swift")
             }
 
             @Step {

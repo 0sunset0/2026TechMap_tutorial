@@ -9,6 +9,11 @@ struct ARViewContainer: UIViewRepresentable {
         let arView = ARView(frame: .zero)
 
         let configuration = makeSessionConfiguration()
+        arView.session.run(configuration)
+        arView.session.delegate = context.coordinator
+
+        configureDebugOptions(for: arView)
+        context.coordinator.arView = arView
 
         return arView
     }
@@ -19,6 +24,12 @@ struct ARViewContainer: UIViewRepresentable {
         configuration.planeDetection = [.horizontal]
         configuration.environmentTexturing = .automatic
         return configuration
+    }
+
+    // 디버그 시각화 담당: 카메라가 인식한 특징점을 화면에 노란 점으로 표시해서,
+    // 트래킹이 실제로 동작 중인지 눈으로 바로 확인할 수 있게 함
+    private func configureDebugOptions(for arView: ARView) {
+        arView.debugOptions = [.showFeaturePoints]
     }
 
     func updateUIView(_ uiView: ARView, context: Context) {}

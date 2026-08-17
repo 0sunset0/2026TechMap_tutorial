@@ -27,15 +27,13 @@ class ARCoordinator: NSObject, ARSessionDelegate {
                 }
             }
 
-            // 물리 바닥은 씬에 엔티티를 추가하는 작업이라 arView.scene에 접근해야 하고,
-            // UIKit/RealityKit 관련 작업이므로 메인 스레드에서 실행함
             DispatchQueue.main.async { [weak self] in
                 self?.addPhysicsFloor(for: planeAnchor)
             }
         }
     }
 
-    // 물리 바닥 담당: 우선 감지된 평면 위치에 보이지 않는 엔티티만 올려봄 (아직 물리는 없음)
+    // 물리 바닥 담당: 우선 감지된 평면에 그대로 붙는 빈 엔티티만 하나 올려봄
     private func addPhysicsFloor(for planeAnchor: ARPlaneAnchor) {
         guard let arView = arView else { return }
 
@@ -46,9 +44,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         // Entity(): 화면에 안 보이는 빈 엔티티. 물리 바닥은 실제로 눈에 보일 필요가 없고
         // 충돌만 감지하면 되므로 ModelEntity(mesh 있음) 대신 이걸 씀
         let floor = Entity()
-        // planeAnchor.center: 앵커의 좌표 원점과 실제 감지된 평면의 중심은 다를 수 있어서,
-        // 이 오프셋을 반영하지 않으면 물리 바닥이 실제 평면과 어긋난 위치에 생김
-        floor.position = planeAnchor.center
 
         floorAnchor.addChild(floor)
         arView.scene.addAnchor(floorAnchor)

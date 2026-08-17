@@ -9,6 +9,10 @@ struct ARViewContainer: UIViewRepresentable {
         let arView = ARView(frame: .zero)
 
         let configuration = makeSessionConfiguration()
+        arView.session.run(configuration)
+        arView.session.delegate = context.coordinator
+
+        context.coordinator.arView = arView
 
         return arView
     }

@@ -16,13 +16,16 @@
 
         @Steps {
             @Step {
-                `ARViewContainer.swift` 파일을 만들고 `UIViewRepresentable`을 채택하는 구조체를
-                정의합니다. `ARView`는 RealityKit이 제공하는 카메라+3D 렌더링 뷰인데, UIKit 시절부터
-                있던 클래스라서 SwiftUI 뷰 트리에 그대로 들어갈 수 없습니다. `UIViewRepresentable`은
-                이 UIKit 뷰를 SwiftUI 세계의 일원으로 만들어주는 프로토콜이에요.
+                `ARView`는 RealityKit이 제공하는 카메라+3D 렌더링 뷰인데, UIKit 시절부터 있던
+                클래스라서 SwiftUI 뷰 트리에 그대로 들어갈 수 없습니다. `UIViewRepresentable`은 이
+                UIKit 뷰를 SwiftUI 세계의 일원으로 만들어주는 프로토콜이에요. `ARViewContainer.swift`
+                파일을 만들고 이 프로토콜을 채택하는 구조체를 정의하겠습니다.
+            }
 
+            @Step {
                 제스처·델리게이트 콜백처럼 UIKit 이벤트를 받아줄 `ARCoordinator`도 최소한의 뼈대로
-                함께 준비해둡니다 (`makeCoordinator()`가 이 타입을 반환해야 하기 때문).
+                함께 준비해둡니다. `UIViewRepresentable`의 `makeCoordinator()`가 이 타입을 반환해야
+                하기 때문이에요.
 
                 @Code(name: "ARCoordinator.swift", file: "1-1-ARCoordinator.swift")
             }
@@ -31,11 +34,14 @@
                 `makeUIView(context:)`에서 `ARView`를 생성합니다. 이 메서드는 SwiftUI가 이 뷰를
                 화면에 처음 그릴 때 딱 한 번만 호출돼요. 뷰를 만드는 방법과 만든 뷰를 갱신하는 방법이
                 서로 다른 메서드로 나뉘어 있는 게 `UIViewRepresentable`의 특징입니다.
+            }
 
+            @Step {
                 `updateUIView(_:context:)`는 비워둡니다. SwiftUI 쪽 `@State`나 `@Published` 값이
                 바뀌면 이 메서드가 호출되는데, 지금은 UIKit 뷰로 전달할 상태가 없어서 아무 것도 안 해도
                 됩니다. (나중에 상태 배너처럼 SwiftUI가 관리하는 값이 `ARView`에 영향을 줘야 한다면
-                여기서 처리합니다.)
+                여기서 처리합니다.) `makeCoordinator()`는 앞서 만든 `ARCoordinator`를 반환하도록
+                연결해둡니다.
 
                 @Code(name: "ARViewContainer.swift", file: "1-1-ARViewContainer.swift")
             }
@@ -71,31 +77,44 @@
 
         @Steps {
             @Step {
-                `ARWorldTrackingConfiguration`을 만들고 수평면 감지를 켭니다. `ARView`를 만드는
-                것만으로는 아무 일도 안 일어나요. `ARView`는 그릇일 뿐이고, 실제로 카메라를 켜고 공간을
-                추적하는 건 `ARSession`의 역할입니다.
-
-                **World Tracking**은 기기가 카메라 영상과 모션 센서(가속도계, 자이로스코프) 데이터를
-                결합해서, 실제 공간 안에서 기기 자신의 위치와 방향(6자유도)을 실시간으로 계속 추정하는
-                기능이에요. 이게 있어야 가상의 도미노가 사용자가 움직여도 그 자리에 실제로 서 있는
-                것처럼 고정되어 보입니다. `planeDetection = [.horizontal]`을 안 켜면 트래킹은 되지만
-                평면이라는 개념 자체가 없습니다. 도미노를 세울 곳이 없는 셈이에요.
+                `ARView`를 만드는 것만으로는 아무 일도 안 일어나요. `ARView`는 그릇일 뿐이고, 실제로
+                카메라를 켜고 공간을 추적하는 건 `ARSession`의 역할입니다. 세션에게 무엇을 추적할지
+                알려주는 `ARWorldTrackingConfiguration`을 만들고, 수평면 감지를 켭니다.
 
                 @Code(name: "ARViewContainer.swift", file: "1-2-ARViewContainer.swift")
             }
 
             @Step {
+                **World Tracking**은 기기가 카메라 영상과 모션 센서(가속도계, 자이로스코프) 데이터를
+                결합해서, 실제 공간 안에서 기기 자신의 위치와 방향(6자유도)을 실시간으로 계속 추정하는
+                기능이에요. 이게 있어야 가상의 도미노가 사용자가 움직여도 그 자리에 실제로 서 있는
+                것처럼 고정되어 보입니다.
+            }
+
+            @Step {
+                `planeDetection = [.horizontal]`을 안 켜면 트래킹은 되지만 평면이라는 개념 자체가
+                없습니다. 도미노를 세울 곳이 없는 셈이에요.
+            }
+
+            @Step {
                 이 설정으로 `arView.session.run(configuration)`을 호출합니다. 설정을 만드는 것과, 그
                 설정으로 세션을 실제로 돌리는 건 별개의 API예요. 이 한 줄이 실행되기 전까지는 카메라도
-                안 켜지고 트래킹도 시작 안 됩니다. 이렇게 나뉘어 있는 이유는, 나중에 설정만 바꿔서 같은
-                세션을 다시 실행할 수 있게 하기 위해서예요. 예를 들어 2장에서 People Occlusion을 켤
-                때도 `ARView`를 새로 만들 필요 없이, configuration 객체에 옵션 하나를 추가해서 다시
-                `run()`하면 됩니다.
+                안 켜지고 트래킹도 시작 안 됩니다.
 
+                @Code(name: "ARViewContainer.swift", file: "1-3-ARViewContainer.swift")
+            }
+
+            @Step {
+                설정과 실행이 나뉘어 있는 이유는, 나중에 설정만 바꿔서 같은 세션을 다시 실행할 수
+                있게 하기 위해서예요. 예를 들어 2장에서 People Occlusion을 켤 때도 `ARView`를 새로
+                만들 필요 없이, configuration 객체에 옵션 하나를 추가해서 다시 `run()`하면 됩니다.
+            }
+
+            @Step {
                 디버그 시각화(`showFeaturePoints`)도 함께 켜서, 트래킹이 실제로 동작 중인지 눈으로
                 바로 확인할 수 있게 합니다.
 
-                @Code(name: "ARViewContainer.swift", file: "1-2-ARViewContainer.swift")
+                @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer.swift")
             }
 
             @Step {
