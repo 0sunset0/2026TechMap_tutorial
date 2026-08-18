@@ -16,21 +16,28 @@
 
         @Steps {
             @Step {
-                `domino.usdz`는 직접 만든 3D 모델이라 다른 챕터의 Swift 코드처럼 타이핑해서 만들 수
-                없는 바이너리 에셋입니다. 아래 링크에서 파일을 받으세요.
+                아래 링크에서 `domino.usdz` 파일을 받으세요.
+
+                > Note: 직접 만든 3D 모델이라 다른 챕터의 Swift 코드처럼 타이핑해서 만들 수 없는
+                > 바이너리 에셋입니다.
 
                 [domino.usdz 다운로드](https://raw.githubusercontent.com/0sunset0/2026TechMap_tutorial/main/ARDominoChainReaction/Sources/ARDominoChainReaction/domino.usdz)
             }
 
             @Step {
                 다운로드한 파일을 macOS **Quick Look**(파일 선택 후 스페이스바)으로 먼저 열어보세요.
-                나무 재질의 도미노 모델이 잘 보이면 준비 완료입니다.
+
+                > Note: 나무 재질의 도미노 모델이 잘 보이면 준비 완료입니다.
             }
 
             @Step {
                 Xcode 프로젝트의 `Sources/ARDominoChainReaction` 그룹으로 파일을 드래그해 추가합니다.
-                이때 **타겟 멤버십**(대상 앱 타겟 체크박스)이 체크됐는지 꼭 확인하세요. 빠지면 실행
-                시 모델을 못 찾아 런타임 에러가 납니다.
+            }
+
+            @Step {
+                **타겟 멤버십**(대상 앱 타겟 체크박스)이 체크됐는지 꼭 확인하세요.
+
+                > Note: 빠지면 실행 시 모델을 못 찾아 런타임 에러가 납니다.
             }
         }
     }
@@ -45,15 +52,19 @@
         @Steps {
             @Step {
                 `try! ModelEntity.loadModel(named: "domino")`로 USDZ 파일을 동기적으로 불러옵니다.
-                파일 이름은 확장자 없이 씁니다.
+
+                > Note: 파일 이름은 확장자 없이 씁니다.
 
                 @Code(name: "ARCoordinator.swift", file: "5-1a-ARCoordinator.swift")
             }
 
             @Step {
-                기존의 mesh 생성 + 재질 설정 코드를 이 한 줄로 대체합니다. USDZ 파일 안에 이미 나무
-                재질과 색상 정보가 담겨 있어서, `PhysicallyBasedMaterial`을 직접 만들 필요가
-                없어집니다.
+                기존의 mesh 생성 + 재질 설정 코드를 이 한 줄로 대체합니다.
+
+                > Note: USDZ 파일 안에 이미 나무 재질과 색상 정보가 담겨 있어서,
+                > `PhysicallyBasedMaterial`을 직접 만들 필요가 없어집니다.
+
+                @Code(name: "ARCoordinator.swift", file: "5-1a-ARCoordinator.swift")
             }
 
             @Step {
@@ -74,8 +85,10 @@
         @Steps {
             @Step {
                 `domino.visualBounds(relativeTo: nil)`로 불러온 모델의 실제 크기(바운딩 박스)를
-                확인합니다. 코드의 가정만으로는 정확한 값을 알 수 없어서, 실제로 로그를 찍어 확인하는
-                게 안전합니다.
+                확인합니다.
+
+                > Note: 코드의 가정만으로는 정확한 값을 알 수 없어서, 실제로 로그를 찍어 확인하는 게
+                > 안전합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "5-2a-ARCoordinator.swift")
             }
@@ -88,9 +101,12 @@
             }
 
             @Step {
-                `generateCollisionShapes(recursive: true)`는 그대로 다시 호출해도 됩니다. 새 모델의
-                실제 형상을 기준으로 충돌 범위가 자동으로 다시 계산되니, 박스 모양일 때와 동일한
-                코드로 물리 성질을 그대로 이어갈 수 있습니다.
+                `generateCollisionShapes(recursive: true)`는 그대로 다시 호출해도 됩니다.
+
+                > Note: 새 모델의 실제 형상을 기준으로 충돌 범위가 자동으로 다시 계산되니, 박스
+                > 모양일 때와 동일한 코드로 물리 성질을 그대로 이어갈 수 있습니다.
+
+                @Code(name: "ARCoordinator.swift", file: "5-2b-ARCoordinator.swift")
             }
 
             @Step {
@@ -108,9 +124,16 @@
 
         @Steps {
             @Step {
-                실기기에서 앱을 다시 빌드해보세요. 탭해서 세운 도미노가 빨간 박스 대신 나무 재질의
-                3D 모델로 보일 거예요. 물리 동작(서고, 넘어지고, 체인리액션이 일어나는 것)은 이전과
-                동일하게 유지되는지 확인해보세요.
+                실기기에서 앱을 다시 빌드해보세요.
+
+                > Note: 탭해서 세운 도미노가 빨간 박스 대신 나무 재질의 3D 모델로 보일 거예요.
+
+                @Code(name: "ARCoordinator.swift", file: "5-2-ARCoordinator.swift")
+            }
+
+            @Step {
+                물리 동작(서고, 넘어지고, 체인리액션이 일어나는 것)은 이전과 동일하게 유지되는지
+                확인해보세요.
             }
 
             @Step {

@@ -17,38 +17,45 @@
         @Steps {
             @Step {
                 `ARSessionDelegate`의 `session(_:didAdd:)`에서 새 평면이 감지된 순간을 받습니다.
-                델리게이트 콜백은 메인 스레드가 아닐 수 있어서, UI(배너 텍스트) 갱신은 반드시
-                `DispatchQueue.main.async`로 감싸서 메인 스레드에서 실행합니다.
+
+                > Note: 델리게이트 콜백은 메인 스레드가 아닐 수 있어서, UI(배너 텍스트) 갱신은 반드시
+                > `DispatchQueue.main.async`로 감싸서 메인 스레드에서 실행합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-1-ARCoordinator.swift")
             }
 
             @Step {
-                `AnchorEntity(anchor: planeAnchor)`로 그 평면에 그대로 붙는 앵커를 만듭니다. 그 밑에
-                보이지 않는 `Entity`를 자식으로 넣습니다. 물리 바닥은 실제로 눈에 보일 필요가 없어서,
-                mesh를 가진 `ModelEntity` 대신 빈 `Entity`를 씁니다.
+                `AnchorEntity(anchor: planeAnchor)`로 그 평면에 그대로 붙는 앵커를 만들고, 그 밑에
+                보이지 않는 `Entity`를 자식으로 넣습니다.
+
+                > Note: 물리 바닥은 실제로 눈에 보일 필요가 없어서, mesh를 가진 `ModelEntity` 대신
+                > 빈 `Entity`를 씁니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-2a-ARCoordinator.swift")
             }
 
             @Step {
-                `planeAnchor.center`도 반영해야 합니다. 앵커의 좌표 원점과 실제 평면의 중심이 다를
-                수 있기 때문이에요. 이 오프셋을 반영하지 않으면 물리 바닥이 실제 평면과 어긋난 위치에
-                생깁니다.
+                `planeAnchor.center`도 반영합니다.
+
+                > Note: 앵커의 좌표 원점과 실제 평면의 중심이 다를 수 있기 때문이에요. 이 오프셋을
+                > 반영하지 않으면 물리 바닥이 실제 평면과 어긋난 위치에 생깁니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-2-ARCoordinator.swift")
             }
 
             @Step {
-                `CollisionComponent`를 붙입니다. 이게 있어야 이 바닥이 다른 물리 객체와 충돌 판정을
-                할 수 있습니다.
+                `CollisionComponent`를 붙입니다.
+
+                > Note: 이게 있어야 이 바닥이 다른 물리 객체와 충돌 판정을 할 수 있습니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-3a-ARCoordinator.swift")
             }
 
             @Step {
-                `PhysicsBodyComponent(mode: .static)`를 붙입니다. `.static`은 절대 움직이지 않는
-                받침대라는 뜻이에요. 도미노(`.dynamic`)만 이 위에서 중력의 영향을 받습니다.
+                `PhysicsBodyComponent(mode: .static)`를 붙입니다.
+
+                > Note: `.static`은 절대 움직이지 않는 받침대라는 뜻이에요. 도미노(`.dynamic`)만 이
+                > 위에서 중력의 영향을 받습니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-3-ARCoordinator.swift")
             }
@@ -62,6 +69,8 @@
                 > 갱신합니다. 안 하면 평면이 넓어진 새 영역에서 도미노가 바닥을 뚫고 떨어지는 버그가
                 > 생겨요 — 실기 테스트 중 실제로 발견했던 문제입니다. 궁금하다면 완성된
                 > `ARCoordinator.swift`를 참고하세요.
+
+                @Code(name: "ARCoordinator.swift", file: "3-3-ARCoordinator.swift")
             }
         }
     }
@@ -75,17 +84,20 @@
 
         @Steps {
             @Step {
-                `UITapGestureRecognizer`를 `ARView`에 등록합니다. 제스처 등록 자체는
-                `ARViewContainer`가 책임지고, 실제 반응(`handleTap`)은 `ARCoordinator`가 맡는 역할
-                분리를 계속 따릅니다.
+                `UITapGestureRecognizer`를 `ARView`에 등록합니다.
+
+                > Note: 제스처 등록 자체는 `ARViewContainer`가 책임지고, 실제 반응(`handleTap`)은
+                > `ARCoordinator`가 맡는 역할 분리를 계속 따릅니다.
 
                 @Code(name: "ARViewContainer.swift", file: "3-4-ARViewContainer.swift")
             }
 
             @Step {
                 탭한 화면 좌표로 `arView.raycast(from:allowing:alignment:)`를 호출해 3D world
-                transform을 얻습니다. `allowing: .estimatedPlane` 옵션을 쓰면, ARKit이 아직
-                확정하지 못한 평면 추정치까지 포함해서 탐색 범위가 넓어집니다.
+                transform을 얻습니다.
+
+                > Note: `allowing: .estimatedPlane` 옵션을 쓰면, ARKit이 아직 확정하지 못한 평면
+                > 추정치까지 포함해서 탐색 범위가 넓어집니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator.swift")
             }
@@ -105,15 +117,18 @@
             }
 
             @Step {
-                도미노의 `position`을 로컬 Y축으로 높이의 절반만큼 올려줍니다. mesh가 원점 중심으로
-                만들어져 있어서, 이 보정이 없으면 도미노 절반이 바닥 아래로 파묻힙니다.
+                도미노의 `position`을 로컬 Y축으로 높이의 절반만큼 올립니다.
+
+                > Note: mesh가 원점 중심으로 만들어져 있어서, 이 보정이 없으면 도미노 절반이 바닥
+                > 아래로 파묻힙니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-6b-ARCoordinator.swift")
             }
 
             @Step {
-                앵커에 도미노를 자식으로 추가하고 씬에 앵커를 등록하면, 탭한 자리에 도미노가 세워진
-                채로 나타납니다.
+                앵커에 도미노를 자식으로 추가하고 씬에 앵커를 등록합니다.
+
+                > Note: 이제 탭한 자리에 도미노가 세워진 채로 나타납니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-6-ARCoordinator.swift")
             }
@@ -127,23 +142,29 @@
 
         @Steps {
             @Step {
-                지금까지 만든 `raycastResult`, `makeDominoEntity`, `place`를 한데 모으면 탭 한 번이
-                도미노 하나로 이어지는 흐름이 완성됩니다.
+                지금까지 만든 `raycastResult`, `makeDominoEntity`, `place`를 한데 모읍니다.
+
+                > Note: 탭 한 번이 도미노 하나로 이어지는 흐름이 완성됩니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-7a-ARCoordinator.swift")
             }
 
             @Step {
                 배치된 도미노를 배열에 담아 개수를 추적하고, 상단 상태 배너 텍스트를
-                "도미노 N개 배치됨"으로 갱신해서, 지금 몇 개가 세워졌는지 화면에서 바로 확인할 수 있게
-                합니다.
+                "도미노 N개 배치됨"으로 갱신합니다.
+
+                > Note: 지금 몇 개가 세워졌는지 화면에서 바로 확인할 수 있게 해줍니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-7-ARCoordinator.swift")
             }
 
             @Step {
-                실기기에서 평면을 연속으로 탭해보세요. 탭할 때마다 빨간 도미노가 하나씩 서면서 줄이
-                만들어집니다. 이제 이 프로젝트가 진짜 AR 공간을 채워가기 시작했어요.
+                실기기에서 평면을 연속으로 탭해보세요.
+
+                > Note: 탭할 때마다 빨간 도미노가 하나씩 서면서 줄이 만들어집니다. 이제 이 프로젝트가
+                > 진짜 AR 공간을 채워가기 시작했어요.
+
+                @Code(name: "ARCoordinator.swift", file: "3-7-ARCoordinator.swift")
             }
         }
     }
