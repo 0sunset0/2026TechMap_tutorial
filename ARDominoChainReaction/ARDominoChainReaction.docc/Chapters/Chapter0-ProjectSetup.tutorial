@@ -44,11 +44,33 @@
 
         @Steps {
             @Step {
-                타겟 설정의 **Info** 탭을 열고, `Privacy - Camera Usage Description`
-                (`NSCameraUsageDescription`) 키를 추가한 뒤 사용자에게 보여줄 권한 요청 문구를
-                입력합니다.
+                왼쪽 프로젝트 내비게이터에서 맨 위 프로젝트 파일(파란 아이콘)을 클릭합니다.
+            }
 
-                > Note: 이 탭에서 추가한 키는 실제로 프로젝트의 `Info.plist`에 이렇게 저장됩니다.
+            @Step {
+                가운데 편집 화면 왼쪽 사이드바의 **TARGETS** 아래에서 앱 타겟을 선택합니다.
+
+                > Note: 바로 위에 있는 **PROJECT**가 아니라 **TARGETS** 쪽을 선택해야 합니다.
+            }
+
+            @Step {
+                상단 탭에서 **Info**를 클릭합니다.
+            }
+
+            @Step {
+                **Custom iOS Target Properties** 표에 마우스를 올리면 나타나는 `+` 버튼을 눌러
+                새 키를 추가하고, `Privacy - Camera Usage Description`을 선택합니다.
+
+                > Note: Xcode 화면에는 사람이 읽기 쉬운 이름으로 보이지만, 실제로는
+                > `NSCameraUsageDescription`이라는 이름으로 저장되는 같은 값이에요.
+            }
+
+            @Step {
+                Value 칸에 사용자에게 보여줄 권한 요청 문구를 입력합니다. 예:
+                "AR 도미노 체인리액션에서 ARKit 카메라 트래킹을 사용하기 위해 카메라 접근 권한이
+                필요합니다."
+
+                > Note: 여기서 추가한 키는 실제로 프로젝트의 `Info.plist`에 이렇게 저장됩니다.
 
                 @Code(name: "Info.plist", file: "0-2a-Info.plist")
             }

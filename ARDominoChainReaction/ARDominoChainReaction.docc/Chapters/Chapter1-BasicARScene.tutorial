@@ -27,8 +27,8 @@
             }
 
             @Step {
-                제스처·델리게이트 콜백처럼 UIKit 이벤트를 받아줄 `ARCoordinator`도 최소한의 뼈대로
-                함께 준비해둡니다.
+                `ARCoordinator.swift` 파일을 만들고, 제스처·델리게이트 콜백처럼 UIKit 이벤트를
+                받아줄 `ARCoordinator` 클래스를 최소한의 뼈대로 정의합니다.
 
                 > Note: `UIViewRepresentable`의 `makeCoordinator()`가 이 타입을 반환해야 하기
                 > 때문이에요.
@@ -37,7 +37,8 @@
             }
 
             @Step {
-                `makeUIView(context:)`에서 `ARView`를 생성합니다.
+                앞서 만든 `ARViewContainer` 구조체로 돌아와서, `makeUIView(context:)`에서
+                `ARView`를 생성합니다.
 
                 > Note: 이 메서드는 SwiftUI가 이 뷰를 화면에 처음 그릴 때 딱 한 번만 호출돼요. 뷰를
                 > 만드는 방법과 만든 뷰를 갱신하는 방법이 서로 다른 메서드로 나뉘어 있는 게
@@ -68,18 +69,33 @@
                 > Note: `@Published` 프로퍼티가 바뀔 때마다 이를 구독하는 SwiftUI 뷰가 자동으로 다시
                 > 그려집니다.
 
+                > Note: `ObservableObject`와 `@Published`는 `Combine` 프레임워크 소속이라
+                > `import Foundation`이 아니라 `import Combine`을 써야 합니다. `Foundation`으로도
+                > 컴파일되는 것처럼 보일 때가 있지만, 최신 Xcode가 새 프로젝트에 기본으로 켜는 Swift
+                > 설정(`MemberImportVisibility`)에서는 `Type 'ARStatusModel' does not conform to
+                > protocol 'ObservableObject'` 에러가 납니다.
+
                 @Code(name: "ARStatusModel.swift", file: "1-1-ARStatusModel.swift")
             }
 
             @Step {
-                `ARViewContainer`와 상태 배너를 겹쳐서 보여줄 `ContentView`를 만듭니다.
+                `ContentView.swift`는 프로젝트를 생성할 때 Xcode가 이미 만들어뒀습니다. 파일 아래쪽의
+                `#Preview` 블록은 지웁니다.
+
+                > Note: `ARView`는 카메라를 직접 켜야 해서, Xcode 캔버스의 SwiftUI 프리뷰로는 미리 볼
+                > 수 없습니다. 남겨둬도 에러는 안 나지만 어차피 아무것도 안 보여서 지우는 게 낫습니다.
+            }
+
+            @Step {
+                `body`를 `ARViewContainer`와 상태 배너를 겹쳐서 보여주는 내용으로 바꿉니다.
 
                 @Code(name: "ContentView.swift", file: "1-1-ContentView.swift")
             }
 
             @Step {
-                `@main` 구조체에서 `WindowGroup`으로 앱 창을 만들고, 그 안에 첫 화면으로 `ContentView`를
-                띄웁니다.
+                앱 진입점(`ARDominoChainReactionApp.swift`)도 이미 만들어져 있고, 이 프로젝트에서는
+                따로 손댈 필요가 없습니다. `WindowGroup`이 첫 화면으로 `ContentView`를 띄우는 걸
+                확인만 하고 넘어갑니다.
 
                 > Note: `@main` 구조체는 프로젝트 전체에 딱 하나만 있어야 합니다.
 
