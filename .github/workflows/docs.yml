@@ -1,0 +1,71 @@
+name: Deploy DocC tutorial to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "ARDominoChainReaction/**"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        working-directory: ARDominoChainReaction
+        run: xcodegen generate
+
+      - name: Build DocC archive
+        working-directory: ARDominoChainReaction
+        run: |
+          xcodebuild docbuild \
+            -project ARDominoChainReaction.xcodeproj \
+            -scheme ARDominoChainReaction \
+            -destination "generic/platform=iOS" \
+            -derivedDataPath /tmp/docbuild \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Transform archive for static hosting
+        run: |
+          set -eo pipefail
+          archive=$(find /tmp/docbuild -name "*.doccarchive" -path "*iphoneos*")
+          echo "Using archive: $archive"
+          "$(xcrun --find docc)" process-archive transform-for-static-hosting \
+            "$archive" \
+            --hosting-base-path 2026TechMap_tutorial \
+            --output-path docs-output
+
+      - name: Add root redirect to the tutorial
+        run: |
+          echo '<script>window.location.href += "tutorials/ardominochainreactiontutorials"</script>' > docs-output/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs-output
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
