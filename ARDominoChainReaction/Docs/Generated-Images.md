@@ -253,3 +253,9 @@ Instructional Xcode Info tab close-up landscape 1536x1024 light macOS style whit
 ```text
 Create a clean instructional macOS Finder illustration, landscape 1536x1024, light theme, crisp readable text, matching minimal Xcode tutorial illustrations. One centered Finder window in LIST VIEW. Title "Downloads". Sidebar Favorites with Desktop, Documents, Downloads; Downloads selected. Main file list columns "Name" and "Kind". Exactly ONE file row selected blue, with generic document icon containing a small gray cube, filename exactly "domino.usdz" fully visible, Kind "USDZ". Emphasize the selected filename with a thin blue rounded outline and one small blue arrow from open space below pointing to the filename. Make filename and extension large enough to read. No 3D model preview, no Quick Look window, no Xcode, no other downloaded files, no personal names, no dates, no fake download progress. Generous whitespace. Optional simple header outside window in Korean exactly "다운로드한 파일을 확인하세요". Focus is recognizing downloaded domino.usdz file before opening Quick Look. Simplified instructional Finder UI, not a screenshot.
 ```
+
+## domino-celebration.gif (사용 중단)
+
+완료 단계 전용 Blender 애니메이션. 실제 USDZ 모델의 연쇄 반응 연출 후 색종이 파티클 110개가 퍼지고 떨어집니다. 800×450, 80프레임, 약 7.5초 반복. ImageIO로 인코딩했습니다. 표지는 기존 domino-chain-reaction.gif를 유지합니다.
+
+앱에 파티클 기능이 포함된 것으로 오해할 수 있어 완료 단계도 파티클 없는 `domino-chain-reaction.gif`로 되돌렸습니다.
