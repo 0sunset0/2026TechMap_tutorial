@@ -1,10 +1,14 @@
 @Tutorial(time: 25) {
     @Intro(title: "탭으로 하나씩 배치하기") {
-        2장에서 만든 도미노를 이제 실제로 세워보겠습니다. 화면을 탭한 위치를 3D 공간 좌표로 바꾸는
+        3장에서 만든 도미노를 이제 실제로 세워보겠습니다. 화면을 탭한 위치를 3D 공간 좌표로 바꾸는
         방법, 그리고 도미노가 딛고 설 "보이지 않는 바닥"을 만드는 방법을 배웁니다. 이 장이 끝나면,
         화면을 탭할 때마다 도미노가 한 줄로 세워지는 걸 직접 볼 수 있습니다.
 
-        @Image(source: chapter3-banner.png, alt: "탭으로 하나씩 배치하기 장 배너")
+        이 장의 새 코드는 대부분 `ARCoordinator.swift`에 추가합니다. 이름이 비슷한
+        `ARViewContainer.swift`와 헷갈리지 않도록, 각 Step에서 어느 파일을 수정하는지 코드 블록
+        상단의 파일 이름을 확인하세요.
+
+        @Image(source: tap-placement-illustration.png, alt: "탭으로 하나씩 배치하기 장 배너")
     }
 
     @Section(title: "평면 감지 시 보이지 않는 물리 바닥 만들기") {
@@ -16,7 +20,9 @@
 
         @Steps {
             @Step {
-                `ARSessionDelegate`의 `session(_:didAdd:)`에서 새 평면이 감지된 순간을 받습니다.
+                `ARCoordinator`에 평면을 한 번만 감지하도록 표시해줄 `hasDetectedPlane` 플래그
+                프로퍼티를 추가하고, `ARSessionDelegate`의 `session(_:didAdd:)`에서 새 평면이 감지된
+                순간을 받습니다.
 
                 > Note: 델리게이트 콜백은 메인 스레드가 아닐 수 있어서, UI(배너 텍스트) 갱신은 반드시
                 > `DispatchQueue.main.async`로 감싸서 메인 스레드에서 실행합니다.
@@ -93,8 +99,9 @@
             }
 
             @Step {
-                탭한 화면 좌표로 `arView.raycast(from:allowing:alignment:)`를 호출해 3D world
-                transform을 얻습니다.
+                `ARCoordinator` 클래스 안에 새 private 메서드 `raycastResult(for:in:)`를 추가합니다.
+                이 메서드 안에서 탭한 화면 좌표로 `arView.raycast(from:allowing:alignment:)`를 호출해
+                3D world transform을 얻습니다.
 
                 > Note: `allowing: .estimatedPlane` 옵션을 쓰면, ARKit이 아직 확정하지 못한 평면
                 > 추정치까지 포함해서 탐색 범위가 넓어집니다.
@@ -111,7 +118,8 @@
 
         @Steps {
             @Step {
-                `AnchorEntity(world: result.worldTransform)`로 raycast 결과 위치에 앵커를 만듭니다.
+                `ARCoordinator` 클래스 안에 새 private 메서드 `place(_:at:in:)`를 추가합니다. 우선
+                `AnchorEntity(world: transform)`으로 raycast 결과 위치에 앵커부터 만듭니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-6a-ARCoordinator.swift")
             }
@@ -165,6 +173,12 @@
                 > 진짜 AR 공간을 채워가기 시작했어요.
 
                 @Code(name: "ARCoordinator.swift", file: "3-7-ARCoordinator.swift")
+            }
+
+            @Step {
+                탭할 때마다 도미노를 하나씩 추가해 줄을 만들어보세요. 흰 원은 다음 탭 위치를 나타냅니다. 자동 정렬 없이 사용자가 간격을 맞춥니다.
+
+                @Image(source: tap-placement-illustration.png, alt: "책상 위에 빨간 도미노 여섯 개가 줄지어 서 있고 다음 탭 위치가 원으로 표시된 배치 개념도")
             }
         }
     }

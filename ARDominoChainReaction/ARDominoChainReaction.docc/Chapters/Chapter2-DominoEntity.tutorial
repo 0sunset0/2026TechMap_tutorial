@@ -8,13 +8,13 @@
         자동으로 처리됩니다.
 
         RealityKit이 클래스 상속 대신 이 조합 방식을 쓰는 이유는, 물체마다 필요한 조합이 다 다르기
-        때문입니다. 예를 들어 3장에서 만들 물리 바닥은 눈에 안 보여도 되니 Mesh/Material 없이
+        때문입니다. 예를 들어 4장에서 만들 물리 바닥은 눈에 안 보여도 되니 Mesh/Material 없이
         CollisionComponent와 PhysicsBodyComponent만 붙이면 되고, 지금 만드는 도미노는 그 위에
         Mesh/Material까지 다 필요합니다. 상속 구조였다면 "보이면서 물리도 있는 것", "안 보이지만
         물리는 있는 것" 같은 조합마다 별도 클래스 계층이 필요했겠지만, ECS에서는 필요한 Component만
         골라 붙이면 되니 훨씬 유연합니다.
 
-        @Image(source: chapter2-banner.png, alt: "도미노 한 개 만들기 장 배너")
+        @Image(source: people-occlusion-illustration.png, alt: "도미노 한 개 만들기 장 배너")
     }
 
     @Section(title: "도미노 모양과 재질 만들기") {
@@ -84,9 +84,10 @@
             @Step {
                 질량은 `0.7kg`으로 직접 지정합니다.
 
-                > Note: `.default`로 두면 RealityKit이 도미노 부피를 기준으로 자동 계산해줄 수도
-                > 있지만, 이 프로젝트는 실기 테스트를 반복하며 "너무 가볍다/무겁다" 느낌을 확인해 이
-                > 값으로 직접 확정했습니다.
+                > Note: `.default`로 두면 RealityKit이 도미노 부피를 기준으로 질량을 자동 계산해줍니다.
+                > 다만 이 프로젝트에서는 실기기 테스트를 여러 번 반복하면서 "너무 가볍다", "너무
+                > 무겁다"고 느껴지는 값들을 하나씩 걸러냈고, 실제로 자연스럽게 넘어지는 무게감을 주는
+                > `0.7kg`을 최종 값으로 직접 확정했습니다.
 
                 @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator.swift")
             }
@@ -115,7 +116,7 @@
                 `ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth)`로
                 기기가 이 기능을 지원하는지 먼저 확인합니다.
 
-                > Note: People Occlusion은 0장에서 다룬 A9 칩 기준보다 더 높은 **A12 칩 이상**을
+                > Note: People Occlusion은 1장에서 다룬 A9 칩 기준보다 더 높은 **A12 칩 이상**을
                 > 요구해서, 모든 기기가 지원하는 건 아니에요.
 
                 @Code(name: "ARViewContainer.swift", file: "2-5a-ARViewContainer.swift")
@@ -128,6 +129,12 @@
                 > Note: 이제 사람이 카메라 앞을 지나갈 때마다 도미노가 자연스럽게 가려집니다.
 
                 @Code(name: "ARViewContainer.swift", file: "2-5-ARViewContainer.swift")
+            }
+
+            @Step {
+                왼쪽은 가림 처리가 없어 도미노가 손 위로 그려지는 모습, 오른쪽은 손 뒤로 가려지는 모습입니다.
+
+                @Image(source: people-occlusion-illustration.png, alt: "왼쪽은 도미노가 손 위로 그려지고 오른쪽은 손 뒤로 가려지는 People Occlusion 비교 개념도")
             }
         }
     }

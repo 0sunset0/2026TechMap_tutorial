@@ -4,7 +4,7 @@
         세션을 실행하고, 카메라 화면을 SwiftUI 위에 띄워봅니다. 카메라가 뜨고 노란 점들이 반짝이기
         시작하면 성공이에요. 그 점들은 ARKit이 공간을 파악해가고 있다는 신호입니다.
 
-        @Image(source: chapter1-banner.png, alt: "기본 AR 씬 띄우기 장 배너")
+        @Image(source: feature-points-illustration.png, alt: "기본 AR 씬 띄우기 장 배너")
     }
 
     @Section(title: "ARView를 SwiftUI에 연결하기") {
@@ -23,15 +23,30 @@
                 > 없습니다. `UIViewRepresentable`은 이 UIKit 뷰를 SwiftUI 세계의 일원으로 만들어주는
                 > 프로토콜이에요.
 
+                > Note: 지금 이 코드만 있으면 Xcode가 에러를 여러 개 띄웁니다 — `UIViewRepresentable`이
+                > 요구하는 `makeUIView`/`updateUIView`가 아직 없다는 에러, 그리고 아직 정의하지 않은
+                > `ARStatusModel` 타입을 못 찾겠다는 에러예요. 둘 다 정상입니다. `makeUIView`와
+                > `updateUIView`는 이번 Section의 Step 3~4에서, `ARStatusModel`은 Step 6에서 채워
+                > 넣으면 그때 사라집니다.
+
                 @Code(name: "ARViewContainer.swift", file: "1-1a-ARViewContainer.swift")
             }
 
             @Step {
-                `ARCoordinator.swift` 파일을 만들고, 제스처·델리게이트 콜백처럼 UIKit 이벤트를
-                받아줄 `ARCoordinator` 클래스를 최소한의 뼈대로 정의합니다.
+                `ARCoordinator.swift` 파일을 만들고, **제스처**(탭·드래그 같은 화면 터치 입력)와
+                **델리게이트 콜백**(`ARSession`이 평면 감지 같은 상태 변화를 알려줄 때 호출하는
+                메서드)처럼 UIKit 스타일 이벤트를 받아줄 `ARCoordinator` 클래스를 최소한의 뼈대로
+                정의합니다.
 
                 > Note: `UIViewRepresentable`의 `makeCoordinator()`가 이 타입을 반환해야 하기
                 > 때문이에요.
+
+                > Note: `import simd`는 지금 당장 쓰이진 않지만, 다음 장부터 도미노의 위치·회전 같은
+                > 3D 벡터·행렬 연산(`SIMD3<Float>`, `simd_float4x4` 등)을 다룰 때 필요해서 미리
+                > 추가해둡니다.
+
+                > Note: `let status: ARStatusModel` 때문에 에러가 계속 남아 있어도 괜찮아요. Step 6에서
+                > `ARStatusModel`을 정의하면 사라집니다.
 
                 @Code(name: "ARCoordinator.swift", file: "1-1-ARCoordinator.swift")
             }
@@ -153,7 +168,7 @@
                 설정과 실행이 나뉘어 있는 이유는, 나중에 설정만 바꿔서 같은 세션을 다시 실행할 수 있게
                 하기 위해서예요.
 
-                > Note: 예를 들어 2장에서 People Occlusion을 켤 때도 `ARView`를 새로 만들 필요 없이,
+                > Note: 예를 들어 3장에서 People Occlusion을 켤 때도 `ARView`를 새로 만들 필요 없이,
                 > configuration 객체에 옵션 하나를 추가해서 다시 `run()`하면 됩니다.
 
                 @Code(name: "ARViewContainer.swift", file: "1-3-ARViewContainer.swift")
@@ -176,6 +191,12 @@
                 > 살아있어요!
 
                 @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer.swift")
+            }
+
+            @Step {
+                노란 점은 공간을 추적할 때 활용하는 특징점을 나타냅니다.
+
+                @Image(source: feature-points-illustration.png, alt: "노란 특징점이 책상 모서리와 주변 물체에 표시된 AR 트래킹 개념도")
             }
         }
     }

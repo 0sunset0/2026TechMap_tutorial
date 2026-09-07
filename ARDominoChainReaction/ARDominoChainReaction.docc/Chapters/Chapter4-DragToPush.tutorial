@@ -5,7 +5,7 @@
         핵심입니다. 이 장이 끝나면, 도미노를 슥 밀었을 때 쓰러지고 옆으로 전파되는 걸 직접 볼 수
         있습니다.
 
-        @Image(source: chapter4-banner.png, alt: "드래그로 밀어 넘어뜨리기 장 배너")
+        @Image(source: chain-reaction-illustration.png, alt: "드래그로 밀어 넘어뜨리기 장 배너")
     }
 
     @Section(title: "팬 제스처 등록하기") {
@@ -159,6 +159,12 @@
                 > 이어질 거예요. 축하합니다, 카메라 세션부터 체인리액션까지 다 완성하셨습니다!
 
                 @Code(name: "ARCoordinator.swift", file: "4-4-ARCoordinator.swift")
+            }
+
+            @Step {
+                가까이 배치한 도미노가 서로 부딪히면 다음 도미노로 움직임이 이어집니다.
+
+                @Image(source: chain-reaction-illustration.png, alt: "일렬로 선 빨간 도미노 일부가 이웃 도미노에 기대며 연속으로 넘어지는 개념도")
             }
         }
     }

@@ -48,3 +48,15 @@
 - [ ] `ARDominoChainReactionTutorials.tutorial` 인트로 — 완성된 앱이 실제로 동작하는 모습(도미노가
       쓰러지는 최종 결과). 지금 있는 챕터 배너(`chapter0-banner.png` 등)와는 별개로, 튜토리얼 전체를
       시작하기 전에 "뭘 만들게 되는지" 보여주는 용도.
+
+## AI 생성 설명 그림 추가
+
+다음 항목에는 설명용 그림을 삽입했습니다. 위 실제 캡처 체크리스트는 실기 검증 자료용으로 유지합니다.
+
+- [x] Chapter1: `feature-points-illustration.png` — 설명 및 대체 텍스트 포함
+- [x] Chapter2: `people-occlusion-illustration.png` — 설명 및 대체 텍스트 포함
+- [x] Chapter3: `tap-placement-illustration.png` — 설명 및 대체 텍스트 포함
+- [x] Chapter4: `chain-reaction-illustration.png` — 설명 및 대체 텍스트 포함
+- [x] Chapter5: `mesh-usdz-actual-comparison.png` — 실제 USDZ 직접 렌더링으로 교체, 설명 및 대체 텍스트 포함
+
+생성 프롬프트와 사용 도구는 [Generated-Images.md](Generated-Images.md)에 기록했습니다.

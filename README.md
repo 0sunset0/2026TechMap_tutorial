@@ -6,12 +6,12 @@
 
 | **장** | **제목** | **핵심 개념 한 줄** |
 | --- | --- | --- |
-| 0 | 프로젝트 준비 | AR 앱은 왜 카메라 권한과 실기기가 필요한가 |
-| 1 | 기본 AR 씬 띄우기 | ARSession과 평면 감지, UIKit↔SwiftUI 통합 |
-| 2 | 도미노 한 개 만들기 | RealityKit의 Entity-Component-System |
-| 3 | 탭으로 하나씩 배치하기 | Raycasting과 보이지 않는 물리 바닥 |
-| 4 | 드래그로 밀어 넘어뜨리기 | 좌표계 변환과 Impulse |
-| 5 | USDZ 모델로 다듬기 | 절차적 mesh에서 USDZ 애셋으로 |
+| 1 | 프로젝트 준비 | AR 앱은 왜 카메라 권한과 실기기가 필요한가 |
+| 2 | 기본 AR 씬 띄우기 | ARSession과 평면 감지, UIKit↔SwiftUI 통합 |
+| 3 | 도미노 한 개 만들기 | RealityKit의 Entity-Component-System |
+| 4 | 탭으로 하나씩 배치하기 | Raycasting과 보이지 않는 물리 바닥 |
+| 5 | 드래그로 밀어 넘어뜨리기 | 좌표계 변환과 Impulse |
+| 6 | USDZ 모델로 다듬기 | 절차적 mesh에서 USDZ 에셋으로 |
 
 **요구 사항**
 - Xcode 15 이상
@@ -32,4 +32,4 @@ open ARDominoChainReaction.xcodeproj
 
 **튜토리얼 보기**
 
-이 저장소에는 위 목차를 실제로 따라 만들 수 있는 DocC 튜토리얼(`ARDominoChainReaction/ARDominoChainReaction.docc`)이 포함되어 있습니다. Xcode에서 프로젝트를 연 뒤 **Product ▸ Build Documentation**(⌃⇧⌘D)을 실행하면 Xcode 문서 창에서 0장부터 5장까지 단계별 코드와 함께 읽을 수 있습니다.
+이 저장소에는 위 목차를 실제로 따라 만들 수 있는 DocC 튜토리얼(`ARDominoChainReaction/ARDominoChainReaction.docc`)이 포함되어 있습니다. Xcode에서 프로젝트를 연 뒤 **Product ▸ Build Documentation**(⌃⇧⌘D)을 실행하면 Xcode 문서 창에서 1장부터 6장까지 단계별 코드와 함께 읽을 수 있습니다.
