@@ -32,7 +32,7 @@
     @Chapter(name: "3. 도미노 한 개 만들기") {
         RealityKit의 Entity-Component-System.
 
-        @Image(source: people-occlusion-illustration.png, alt: "도미노 한 개 만들기")
+        @Image(source: people-occlusion-proportions.png, alt: "도미노 한 개 만들기")
 
         @TutorialReference(tutorial: "doc:Chapter2-DominoEntity")
     }

@@ -259,3 +259,16 @@ Create a clean instructional macOS Finder illustration, landscape 1536x1024, lig
 완료 단계 전용 Blender 애니메이션. 실제 USDZ 모델의 연쇄 반응 연출 후 색종이 파티클 110개가 퍼지고 떨어집니다. 800×450, 80프레임, 약 7.5초 반복. ImageIO로 인코딩했습니다. 표지는 기존 domino-chain-reaction.gif를 유지합니다.
 
 앱에 파티클 기능이 포함된 것으로 오해할 수 있어 완료 단계도 파티클 없는 `domino-chain-reaction.gif`로 되돌렸습니다.
+
+
+## people-occlusion-proportions.png
+
+내장 image_gen으로 기존 가림 비교 그림의 길고 좁은 비율을 수정했습니다. 코드의 8×20×4cm 치수를 기준으로 요청했으며, 정확한 3D 렌더링이 아닌 설명용 그림입니다. 목차, Chapter2 도입부와 본문은 이 파일을 사용합니다.
+
+저장 위치: `ARDominoChainReaction.docc/Resources/people-occlusion-proportions.png`.
+
+편집 프롬프트:
+
+```text
+Correct the proportions of BOTH red blocks in this two-panel AR occlusion illustration. They are currently far too long and narrow. Each block must be an identical SHARP-EDGED plain red cuboid with actual dimensions WIDTH 8 cm, HEIGHT 20 cm, DEPTH 4 cm. Front face height must be EXACTLY 2.5 times front face width, not 5 times. In each panel make block approximately 230 pixels front-face width and 575 pixels tall, centered, resting on desk, same camera scale. Clearly show a little side depth. No bevels, rounded corners, pips, wood texture or decorative markings. Adjust hand placement to overlap middle of shorter wider block, natural anatomy, hand size realistic relative to 20 cm height. Preserve crucial comparison: LEFT block is rendered continuously IN FRONT OF the foreground hand (incorrect occlusion: full red silhouette painted over fingers); RIGHT foreground hand HIDES middle of block with top visible above fingers and bottom visible below. Same scene and scale both panels, pale wood desk, simple light background, thin white center gutter, landscape 1536x1024. No labels or text. This edit is specifically to match the project's 8x20x4cm cuboid, so squat wider proportion and sharp edges are essential.
+```
