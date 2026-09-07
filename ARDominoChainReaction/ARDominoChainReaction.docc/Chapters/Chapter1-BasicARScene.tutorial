@@ -23,11 +23,12 @@
                 > 없습니다. `UIViewRepresentable`은 이 UIKit 뷰를 SwiftUI 세계의 일원으로 만들어주는
                 > 프로토콜이에요.
 
-                > Note: 지금 이 코드만 있으면 Xcode가 에러를 여러 개 띄웁니다 — `UIViewRepresentable`이
-                > 요구하는 `makeUIView`/`updateUIView`가 아직 없다는 에러, 그리고 아직 정의하지 않은
-                > `ARStatusModel` 타입을 못 찾겠다는 에러예요. 둘 다 정상입니다. `makeUIView`와
-                > `updateUIView`는 이번 Section의 Step 3~4에서, `ARStatusModel`은 Step 6에서 채워
-                > 넣으면 그때 사라집니다.
+                > Note: **Step 6까지는 코드가 미완성이므로 오류가 남아 있어도 괜찮습니다.** 지금
+                > `UIViewRepresentable`을 준수하지 않는다는 오류나 `ARStatusModel`을 찾을 수 없다는
+                > 오류가 보이는 것은 아직 필요한 코드를 추가하지 않았기 때문입니다. Step 3에서
+                > `makeUIView`가 `ARView`를 만들어 반환하도록 하고, Step 4에서 `updateUIView`를
+                > 추가합니다. Step 5에서 Coordinator를 연결하고 Step 6에서 `ARStatusModel`을
+                > 정의하면 필요한 구성이 갖춰집니다. 우선 Step 6까지 순서대로 진행하세요.
 
                 @Code(name: "ARViewContainer.swift", file: "1-1a-ARViewContainer.swift")
             }
@@ -53,7 +54,7 @@
 
             @Step {
                 앞서 만든 `ARViewContainer` 구조체로 돌아와서, `makeUIView(context:)`에서
-                `ARView`를 생성합니다.
+                `ARView`를 생성하고 반환합니다.
 
                 > Note: 이 메서드는 SwiftUI가 이 뷰를 화면에 처음 그릴 때 딱 한 번만 호출돼요. 뷰를
                 > 만드는 방법과 만든 뷰를 갱신하는 방법이 서로 다른 메서드로 나뉘어 있는 게
@@ -64,6 +65,9 @@
 
             @Step {
                 `updateUIView(_:context:)`는 일단 비워둡니다.
+
+                > Note: 이제 뷰 생성·갱신 메서드는 갖췄지만, `ARStatusModel`은 아직 없으므로 관련
+                > 오류가 남을 수 있습니다. Step 6에서 정의합니다.
 
                 > Note: SwiftUI 쪽 `@State`나 `@Published` 값이 바뀌면 이 메서드가 호출되는데, 지금은
                 > UIKit 뷰로 전달할 상태가 없어서 아무 것도 안 해도 됩니다. (나중에 상태 배너처럼
@@ -80,6 +84,10 @@
 
             @Step {
                 화면 상단 배너에 쓸 상태 텍스트를 관리하는 `ARStatusModel`을 만듭니다.
+
+                > Note: 여기까지 작성했다면 Step 1에서 안내한 미구현 메서드·타입 관련 오류를
+                > 다시 확인하세요. 오류가 계속 보이면 Step 3~5의 메서드가 `ARViewContainer`의
+                > 중괄호 안에 있는지, 파일과 타입 이름의 철자가 예제와 같은지 확인합니다.
 
                 > Note: `@Published` 프로퍼티가 바뀔 때마다 이를 구독하는 SwiftUI 뷰가 자동으로 다시
                 > 그려집니다.
