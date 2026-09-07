@@ -242,3 +242,14 @@ Instructional Xcode Info tab close-up landscape 1536x1024 light macOS style whit
 ```text
 Instructional Xcode Info tab close-up landscape 1536x1024 light macOS style white background crisp readable labels. Selected tab Info, heading Custom iOS Target Properties. Table columns Key, Type, Value. Single row Key Requires full screen, Type Boolean, Value YES. Value YES is clearly selected in editable dropdown, blue outlined focus and blue arrow to it. Below concise Korean caption "Requires full screen 값을 YES로 설정하세요". No code snippets, no simulator, no other properties, no checkbox that could conflict with YES. Exact labels and clean readable instructional UI.
 ```
+
+
+## finder-domino-download.png
+
+내장 image_gen으로 생성. 저장 위치: `ARDominoChainReaction.docc/Resources/finder-domino-download.png`.
+
+프롬프트:
+
+```text
+Create a clean instructional macOS Finder illustration, landscape 1536x1024, light theme, crisp readable text, matching minimal Xcode tutorial illustrations. One centered Finder window in LIST VIEW. Title "Downloads". Sidebar Favorites with Desktop, Documents, Downloads; Downloads selected. Main file list columns "Name" and "Kind". Exactly ONE file row selected blue, with generic document icon containing a small gray cube, filename exactly "domino.usdz" fully visible, Kind "USDZ". Emphasize the selected filename with a thin blue rounded outline and one small blue arrow from open space below pointing to the filename. Make filename and extension large enough to read. No 3D model preview, no Quick Look window, no Xcode, no other downloaded files, no personal names, no dates, no fake download progress. Generous whitespace. Optional simple header outside window in Korean exactly "다운로드한 파일을 확인하세요". Focus is recognizing downloaded domino.usdz file before opening Quick Look. Simplified instructional Finder UI, not a screenshot.
+```
