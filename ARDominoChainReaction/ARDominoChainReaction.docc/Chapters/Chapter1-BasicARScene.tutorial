@@ -110,12 +110,14 @@
 
                 > Note: `ARView`는 카메라를 직접 켜야 해서, Xcode 캔버스의 SwiftUI 프리뷰로는 미리 볼
                 > 수 없습니다. 남겨둬도 에러는 안 나지만 어차피 아무것도 안 보여서 지우는 게 낫습니다.
+
+                @Code(name: "ContentView.swift", file: "1-1a-ContentView.swift")
             }
 
             @Step {
                 `body`를 `ARViewContainer`와 상태 배너를 겹쳐서 보여주는 내용으로 바꿉니다.
 
-                @Code(name: "ContentView.swift", file: "1-1-ContentView.swift")
+                @Code(name: "ContentView.swift", file: "1-1-ContentView.swift", previousFile: "1-1a-ContentView.swift")
             }
 
             @Step {
@@ -197,7 +199,7 @@
 
                 > Note: 트래킹이 실제로 동작 중인지 눈으로 바로 확인할 수 있게 해줍니다.
 
-                @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer.swift")
+                @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer-excerpt.swift", previousFile: "1-4-ARViewContainer-before.swift")
             }
 
             @Step {
@@ -208,7 +210,7 @@
                 > 여러 각도에서 관찰하며 3D 위치를 추정해나가는 과정입니다. 축하합니다, AR 씬이
                 > 살아있어요!
 
-                @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer.swift")
+                @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer-excerpt.swift", previousFile: "1-4-ARViewContainer-before.swift")
             }
 
             @Step {

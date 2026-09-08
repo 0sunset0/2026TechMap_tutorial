@@ -10,17 +10,9 @@ struct ARViewContainer: UIViewRepresentable {
 
         configureDebugOptions(for: arView)
         setupTapGesture(on: arView, coordinator: context.coordinator)
-        setupPanGesture(on: arView, coordinator: context.coordinator)
         context.coordinator.arView = arView
 
         return arView
     }
 
-    private func setupPanGesture(on arView: ARView, coordinator: ARCoordinator) {
-        let panGesture = UIPanGestureRecognizer(
-            target: coordinator,
-            action: #selector(ARCoordinator.handlePan(_:))
-        )
-        arView.addGestureRecognizer(panGesture)
-    }
 }

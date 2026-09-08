@@ -60,7 +60,7 @@
                 > Note: `height`는 위아래 방향(Y축)의 길이입니다. 너비 8cm, 깊이 4cm보다
                 > 높이를 20cm로 크게 잡으면 세로로 긴 도미노가 됩니다. 따로 회전해서 세울 필요가 없습니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator.swift", previousFile: "1-1-ARCoordinator.swift") {
+                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator-excerpt.swift", previousFile: "2-1-ARCoordinator-before.swift") {
                     @Image(source: domino-mesh-dimensions.svg, alt: "너비 8cm, 높이 20cm, 깊이 4cm인 도미노 mesh와 X·Y·Z축 대응")
                 }
             }
@@ -72,7 +72,7 @@
                 > Note: PBR 재질은 빛에 대한 표면의 반응을 흉내 냅니다. 고유색·거칠기·금속성을
                 > 조절해 다양한 재질을 표현할 수 있습니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-2a-ARCoordinator.swift") {
+                @Code(name: "ARCoordinator.swift", file: "2-2a-ARCoordinator-excerpt.swift", previousFile: "2-2a-ARCoordinator-before.swift") {
                     @Image(source: domino-material.svg, alt: "빨간 도미노와 baseColor 빨간색, roughness 0.4, metallic 0 설정의 의미")
                 }
             }
@@ -83,7 +83,7 @@
 
                 > Note: 아직 중력과 충돌은 적용되지 않았습니다. 다음 절에서 추가합니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator.swift") {
+                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator-excerpt.swift", previousFile: "2-2-ARCoordinator-before.swift") {
                     @Image(source: domino-model-entity.svg, alt: "직육면체 mesh와 빨간 재질을 결합하여 ModelEntity를 완성하는 과정")
                 }
             }
@@ -105,7 +105,7 @@
 
                 > Note: 이게 없으면 도미노끼리 서로 몸을 통과해서 지나가버려요.
 
-                @Code(name: "ARCoordinator.swift", file: "2-3-ARCoordinator.swift", previousFile: "2-2-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "2-3-ARCoordinator-excerpt.swift", previousFile: "2-3-ARCoordinator-before.swift")
             }
 
             @Step {
@@ -116,7 +116,7 @@
                 > Note: `.dynamic`은 중력과 힘의 영향을 받는 모드입니다.
                 > 질량은 우선 `.default`로 두고, 다음 단계에서 직접 지정합니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-4a-ARCoordinator.swift", previousFile: "2-3-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "2-4a-ARCoordinator-excerpt.swift", previousFile: "2-4a-ARCoordinator-before.swift")
             }
 
             @Step {
@@ -128,7 +128,7 @@
                 > Note: `dominoMass`는 도미노 한 개의 질량이며 단위는 kg입니다.
                 > 우선 0.7로 설정하고, 나중에 앱을 실행해 도미노가 넘어지는 모습을 확인해보세요.
 
-                @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator.swift", previousFile: "2-4a-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator-excerpt.swift", previousFile: "2-4-ARCoordinator-before.swift")
             }
 
             @Step {
@@ -156,7 +156,7 @@
                 > Note: People Occlusion은 1장에서 다룬 A9 칩 기준보다 더 높은 **A12 칩 이상**을
                 > 요구해서, 모든 기기가 지원하는 건 아니에요.
 
-                @Code(name: "ARViewContainer.swift", file: "2-5a-ARViewContainer.swift")
+                @Code(name: "ARViewContainer.swift", file: "2-5a-ARViewContainer-excerpt.swift", previousFile: "2-5a-ARViewContainer-before.swift")
             }
 
             @Step {
@@ -165,7 +165,7 @@
 
                 > Note: 이제 사람이 카메라 앞을 지나갈 때마다 도미노가 자연스럽게 가려집니다.
 
-                @Code(name: "ARViewContainer.swift", file: "2-5-ARViewContainer.swift")
+                @Code(name: "ARViewContainer.swift", file: "2-5-ARViewContainer-excerpt.swift", previousFile: "2-5-ARViewContainer-before.swift")
             }
 
             @Step {

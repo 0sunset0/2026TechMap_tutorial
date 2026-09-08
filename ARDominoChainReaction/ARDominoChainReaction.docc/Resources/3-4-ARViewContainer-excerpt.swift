@@ -1,5 +1,5 @@
 struct ARViewContainer: UIViewRepresentable {
-    // 기존 프로퍼티와 다른 메서드는 생략했습니다. 작성한 코드는 유지하세요.
+    // 관련 없는 기존 코드는 생략했습니다. 작성한 코드는 그대로 유지하세요.
 
     func makeUIView(context: Context) -> ARView {
         let arView = ARView(frame: .zero)
@@ -10,17 +10,16 @@ struct ARViewContainer: UIViewRepresentable {
 
         configureDebugOptions(for: arView)
         setupTapGesture(on: arView, coordinator: context.coordinator)
-        setupPanGesture(on: arView, coordinator: context.coordinator)
         context.coordinator.arView = arView
 
         return arView
     }
 
-    private func setupPanGesture(on arView: ARView, coordinator: ARCoordinator) {
-        let panGesture = UIPanGestureRecognizer(
+    private func setupTapGesture(on arView: ARView, coordinator: ARCoordinator) {
+        let tapGesture = UITapGestureRecognizer(
             target: coordinator,
-            action: #selector(ARCoordinator.handlePan(_:))
+            action: #selector(ARCoordinator.handleTap(_:))
         )
-        arView.addGestureRecognizer(panGesture)
+        arView.addGestureRecognizer(tapGesture)
     }
 }

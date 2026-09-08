@@ -3,7 +3,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
 
     // 드래그가 시작된(.began) 순간 손가락 아래에 있던 도미노. 드래그가 끝날 때(.ended) 이 도미노에 힘을 줌
     private var draggedDomino: ModelEntity?
-    private let dominoPushStrength: Float = 3.0
 
     // 화면을 드래그했을 때 호출됨: 드래그가 시작된 지점의 도미노를 기억해뒀다가,
     // 드래그가 끝나면 그 도미노에 드래그 방향으로 임펄스(힘)를 가해 넘어뜨림
@@ -24,10 +23,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
             let dragDistance = sqrt(screenDelta.x * screenDelta.x + screenDelta.y * screenDelta.y)
             // 20포인트 이하의 짧은 드래그는 무시합니다.
             guard dragDistance > 20 else { return }
-
-            let direction = pushDirection(forScreenDelta: screenDelta, in: arView)
-            domino.applyLinearImpulse(direction * dominoPushStrength, relativeTo: nil)
-            status.statusText = "도미노가 넘어졌어요! 옆 도미노로 이어지는지 확인해보세요"
 
         default:
             break

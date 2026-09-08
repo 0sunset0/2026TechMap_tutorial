@@ -25,10 +25,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
             // 20포인트 이하의 짧은 드래그는 무시합니다.
             guard dragDistance > 20 else { return }
 
-            let direction = pushDirection(forScreenDelta: screenDelta, in: arView)
-            domino.applyLinearImpulse(direction * dominoPushStrength, relativeTo: nil)
-            status.statusText = "도미노가 넘어졌어요! 옆 도미노로 이어지는지 확인해보세요"
-
         default:
             break
         }

@@ -11,15 +11,7 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         let cameraRight = SIMD3<Float>(cameraTransform.columns.0.x, cameraTransform.columns.0.y, cameraTransform.columns.0.z)
         let cameraForward = -SIMD3<Float>(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
 
-        // 도미노는 바닥 위에서 수평으로만 밀리므로, Y(위아래) 성분은 버리고 XZ 평면에만 투영함
-        let rightXZ = normalize(SIMD3<Float>(cameraRight.x, 0, cameraRight.z))
-        let forwardXZ = normalize(SIMD3<Float>(cameraForward.x, 0, cameraForward.z))
-
-        // 화면 좌표는 아래로 갈수록 y가 커지므로(UIKit 좌표계), 위로 드래그(y가 음수)할 때
-        // 카메라 정면 방향으로 힘이 가도록 부호를 뒤집음
-        let rightAmount = Float(screenDelta.x)
-        let forwardAmount = Float(-screenDelta.y)
-
-        return normalize(rightXZ * rightAmount + forwardXZ * forwardAmount)
+        // 방향 계산은 다음 단계에서 완성합니다.
+        return .zero
     }
 }

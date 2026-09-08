@@ -15,11 +15,7 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         let rightXZ = normalize(SIMD3<Float>(cameraRight.x, 0, cameraRight.z))
         let forwardXZ = normalize(SIMD3<Float>(cameraForward.x, 0, cameraForward.z))
 
-        // 화면 좌표는 아래로 갈수록 y가 커지므로(UIKit 좌표계), 위로 드래그(y가 음수)할 때
-        // 카메라 정면 방향으로 힘이 가도록 부호를 뒤집음
-        let rightAmount = Float(screenDelta.x)
-        let forwardAmount = Float(-screenDelta.y)
-
-        return normalize(rightXZ * rightAmount + forwardXZ * forwardAmount)
+        // 방향 계산은 다음 단계에서 완성합니다.
+        return .zero
     }
 }

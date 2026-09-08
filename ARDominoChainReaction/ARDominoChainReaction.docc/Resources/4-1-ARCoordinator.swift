@@ -1,3 +1,6 @@
+class ARCoordinator: NSObject, ARSessionDelegate {
+    // 기존 코드 생략 — 아래에 표시하지 않은 프로퍼티와 메서드는 그대로 유지하세요.
+
     // 드래그가 시작된(.began) 순간 손가락 아래에 있던 도미노. 드래그가 끝날 때(.ended) 이 도미노에 힘을 줌
     private var draggedDomino: ModelEntity?
 
@@ -17,3 +20,4 @@
             break
         }
     }
+}
