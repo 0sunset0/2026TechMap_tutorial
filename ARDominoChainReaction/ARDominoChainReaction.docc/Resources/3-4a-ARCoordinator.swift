@@ -35,7 +35,8 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         }
     }
 
-    // 물리 바닥 담당: 우선 감지된 평면에 그대로 붙는 빈 엔티티만 하나 올려봄
+    // 물리 바닥 담당: ARKit이 실제로 감지한 평면에 보이지 않는 정적(static) 물리 바디를 붙여서,
+    // 도미노가 그 위에 서고, 넘어지고, 서로 부딪힐 수 있게 함
     private func addPhysicsFloor(for planeAnchor: ARPlaneAnchor) {
         guard let arView = arView else { return }
 
@@ -46,8 +47,36 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         // Entity(): 화면에 안 보이는 빈 엔티티. 물리 바닥은 실제로 눈에 보일 필요가 없고
         // 충돌만 감지하면 되므로 ModelEntity(mesh 있음) 대신 이걸 씀
         let floor = Entity()
+        // planeAnchor.center: 앵커의 좌표 원점과 실제 감지된 평면의 중심은 다를 수 있어서,
+        // 이 오프셋을 반영하지 않으면 물리 바닥이 실제 평면과 어긋난 위치에 생김
+        floor.position = planeAnchor.center
+        floor.components.set(CollisionComponent(shapes: [
+            .generateBox(width: planeAnchor.planeExtent.width, height: 0.01, depth: planeAnchor.planeExtent.height)
+        ]))
+        // mode: .static — 절대 움직이지 않는 받침대. 도미노(.dynamic)가 이 위에서만 중력의 영향을 받음
+        floor.components.set(PhysicsBodyComponent(massProperties: .default, material: .default, mode: .static))
 
         floorAnchor.addChild(floor)
         arView.scene.addAnchor(floorAnchor)
+    }
+
+    @objc func handleTap(_ recognizer: UITapGestureRecognizer) {
+        status.statusText = "탭을 감지했어요"
+    }
+
+    private func makeDominoEntity() -> ModelEntity {
+        let mesh = MeshResource.generateBox(width: dominoSize.x, height: dominoSize.y, depth: dominoSize.z)
+
+        var material = PhysicallyBasedMaterial()
+        material.baseColor = .init(tint: .red)
+        material.roughness = .init(floatLiteral: 0.4)
+        material.metallic = .init(floatLiteral: 0.0)
+
+        let domino = ModelEntity(mesh: mesh, materials: [material])
+
+        domino.generateCollisionShapes(recursive: true)
+        domino.components.set(PhysicsBodyComponent(massProperties: .init(mass: dominoMass), material: .default, mode: .dynamic))
+
+        return domino
     }
 }

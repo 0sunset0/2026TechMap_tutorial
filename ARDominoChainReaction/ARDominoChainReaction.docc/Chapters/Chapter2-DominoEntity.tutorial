@@ -1,58 +1,91 @@
 @Tutorial(time: 20) {
     @Intro(title: "도미노 한 개 만들기") {
-        이제 세워질 도미노 자체를 만들어보겠습니다. RealityKit에서 3D 오브젝트는 Entity(빈 그릇)에
-        필요한 Component(속성)들을 하나씩 붙여 완성합니다. 모양, 재질, 충돌 범위, 물리 성질까지 모두
-        별도의 부품이에요. RealityKit은 이 구조를 **Entity-Component-System(ECS)**이라고 부릅니다.
-        System은 이 컴포넌트들을 매 프레임 훑어보며 실제 동작을 수행하는 쪽인데, 우리가 직접 만들지
-        않아도 RealityKit이 내장 System(물리 시뮬레이션 등)을 이미 갖고 있어서 Component만 붙이면
-        자동으로 처리됩니다.
-
-        RealityKit이 클래스 상속 대신 이 조합 방식을 쓰는 이유는, 물체마다 필요한 조합이 다 다르기
-        때문입니다. 예를 들어 4장에서 만들 물리 바닥은 눈에 안 보여도 되니 Mesh/Material 없이
-        CollisionComponent와 PhysicsBodyComponent만 붙이면 되고, 지금 만드는 도미노는 그 위에
-        Mesh/Material까지 다 필요합니다. 상속 구조였다면 "보이면서 물리도 있는 것", "안 보이지만
-        물리는 있는 것" 같은 조합마다 별도 클래스 계층이 필요했겠지만, ECS에서는 필요한 Component만
-        골라 붙이면 되니 훨씬 유연합니다.
+        도미노 한 개에 모양과 재질, 충돌 범위와 물리 성질을 차례로 추가해보겠습니다.
 
         @Image(source: people-occlusion-proportions.png, alt: "도미노 한 개 만들기 장 배너")
     }
 
-    @Section(title: "도미노 모양과 재질 만들기") {
+    @Section(title: "Entity·Component·System 이해하기") {
         @ContentAndMedia {
-            도미노는 직육면체 하나면 충분합니다. RealityKit은 이런 기본 도형을 코드 한 줄로 만들어주는
-            `MeshResource`를 제공해요. 그 위에 재질을 입혀야 빛을 받았을 때 자연스럽게 보입니다.
+            코드를 작성하기 전에, 도미노를 구성하는 세 가지 역할을 그림으로 살펴보겠습니다.
+            이 구조를 **Entity-Component-System(ECS)**이라고 부릅니다.
         }
 
         @Steps {
             @Step {
-                `MeshResource.generateBox(width:height:depth:)`로 얇고 세워진 직육면체 mesh를
-                만듭니다.
+                **Entity는 객체의 기본 틀입니다.** 도미노 하나를 나타내며, 위치·방향·크기와
+                부모·자식 관계를 가집니다. 여기에 필요한 부품을 붙여 기능을 구성합니다.
 
-                > Note: 높이(height) 축이 로컬 Y축을 향하는 게 핵심이에요. 나중에 배치할 때 별도
-                > 회전 없이 바로 세울 수 있게 해줍니다.
-
-                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator.swift")
+                @Image(source: ecs-entity.svg, alt: "Entity는 위치, 방향, 크기와 부모·자식 관계를 갖는 객체의 기본 틀")
             }
 
             @Step {
-                `PhysicallyBasedMaterial`을 만들고 `baseColor`를 빨간색으로, `roughness`를 0.4로,
-                `metallic`을 0으로 지정합니다.
+                **Component는 객체의 모습을 정하거나 동작에 필요한 데이터를 담습니다.**
+                도미노에는 모양과 재질을 담는 `ModelComponent`, 충돌 범위를 담는
+                `CollisionComponent`, 질량과 물리 모드를 담는 `PhysicsBodyComponent`가 필요합니다.
 
-                > Note: PBR(Physically Based Rendering) 재질은 실제 빛의 물리 법칙을 흉내 내서,
-                > `baseColor`(고유색)·`roughness`(표면이 얼마나 거친지 — 낮을수록 매끄럽고 반사가
-                > 또렷함)·`metallic`(금속성 여부 — 0이면 비금속) 세 값의 조합만으로 다양한 재질감을
-                > 만들어냅니다.
-
-                @Code(name: "ARCoordinator.swift", file: "2-2a-ARCoordinator.swift")
+                @Image(source: ecs-components.svg, alt: "도미노 Entity에 ModelComponent, CollisionComponent, PhysicsBodyComponent를 조합하는 구조")
             }
 
             @Step {
-                mesh와 재질을 합쳐 `ModelEntity`를 만듭니다.
+                **System은 컴포넌트의 데이터를 바탕으로 동작을 처리합니다.**
+                필요한 물리 컴포넌트를 갖추면 RealityKit의 내장 물리 System이 낙하와 충돌을
+                계산합니다. 이번 튜토리얼에서는 System을 직접 만들지 않습니다.
 
-                > Note: 이제 도미노의 겉모습은 완성됐어요. 다만 아직은 중력을 받지도 않고, 다른
-                > 도미노와 부딪혀도 그냥 통과해버려요.
+                @Image(source: ecs-system.svg, alt: "물리 컴포넌트의 데이터를 내장 물리 System이 처리하여 낙하와 충돌에 따른 위치와 회전을 계산하는 흐름")
+            }
 
-                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator.swift")
+            @Step {
+                **객체마다 필요한 컴포넌트만 골라 붙입니다.** 도미노에는 모양·재질과 물리가
+                모두 필요하지만, 4장에서 만들 보이지 않는 물리 바닥에는 충돌과 물리 정보만
+                있으면 됩니다. 조합마다 별도의 클래스 계층을 만들 필요가 없어 유연합니다.
+
+                @Image(source: ecs-composition.svg, alt: "도미노는 모델·충돌·동적 물리 컴포넌트를, 보이지 않는 바닥은 충돌·정적 물리 컴포넌트만 사용하는 비교")
+            }
+        }
+    }
+
+    @Section(title: "도미노 모양과 재질 만들기") {
+        @ContentAndMedia {
+            이제 모양 만들기 → 재질 설정 → 둘을 결합하기 순서로 도미노의 겉모습을 완성합니다.
+        }
+
+        @Steps {
+            @Step {
+                **`ARCoordinator.swift`에 도미노를 만드는 함수를 추가합니다.**
+                `ARCoordinator` 클래스 안에서 `init(status:)` 바로 아래에, 파란색으로 표시된
+                `makeDominoEntity()` 함수 전체를 추가하세요. 너비 8cm, 높이 20cm, 깊이 4cm인
+                mesh를 만들고 `ModelEntity`로 반환하는 함수입니다.
+
+                > Note: `height`는 위아래 방향(Y축)의 길이입니다. 너비 8cm, 깊이 4cm보다
+                > 높이를 20cm로 크게 잡으면 세로로 긴 도미노가 됩니다. 따로 회전해서 세울 필요가 없습니다.
+
+                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator.swift", previousFile: "1-1-ARCoordinator.swift") {
+                    @Image(source: domino-mesh-dimensions.svg, alt: "너비 8cm, 높이 20cm, 깊이 4cm인 도미노 mesh와 X·Y·Z축 대응")
+                }
+            }
+
+            @Step {
+                **표면의 재질을 설정합니다.** `PhysicallyBasedMaterial`을 만들고
+                `baseColor`를 빨간색, `roughness`를 0.4, `metallic`을 0으로 지정합니다.
+
+                > Note: PBR 재질은 빛에 대한 표면의 반응을 흉내 냅니다. 고유색·거칠기·금속성을
+                > 조절해 다양한 재질을 표현할 수 있습니다.
+
+                @Code(name: "ARCoordinator.swift", file: "2-2a-ARCoordinator.swift") {
+                    @Image(source: domino-material.svg, alt: "빨간 도미노와 baseColor 빨간색, roughness 0.4, metallic 0 설정의 의미")
+                }
+            }
+
+            @Step {
+                **모양과 재질을 결합합니다.** mesh로 만든 `ModelEntity`에
+                `materials: [material]`을 전달하면 빨간 도미노의 겉모습이 완성됩니다.
+
+                > Note: 아직 중력과 충돌은 적용되지 않았습니다. 다음 절에서 추가합니다.
+
+                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator.swift") {
+                    @Image(source: domino-model-entity.svg, alt: "직육면체 mesh와 빨간 재질을 결합하여 ModelEntity를 완성하는 과정")
+                }
             }
         }
     }
@@ -65,41 +98,45 @@
 
         @Steps {
             @Step {
-                `generateCollisionShapes(recursive: true)`를 호출해 충돌 범위를 만듭니다.
+                **충돌 범위를 추가합니다.** `ARCoordinator.swift`의 `makeDominoEntity()` 안에서,
+                `let domino = ModelEntity(...)` 아래에 파란색으로 표시된
+                `domino.generateCollisionShapes(recursive: true)`를 추가하세요.
+                `return domino`는 함수 맨 아래에 둡니다.
 
                 > Note: 이게 없으면 도미노끼리 서로 몸을 통과해서 지나가버려요.
 
-                @Code(name: "ARCoordinator.swift", file: "2-3-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "2-3-ARCoordinator.swift", previousFile: "2-2-ARCoordinator.swift")
             }
 
             @Step {
-                `PhysicsBodyComponent`를 `.dynamic` 모드로 붙입니다.
+                **물리 바디를 추가합니다.** 방금 추가한 `generateCollisionShapes` 바로 아래에
+                파란색의 `domino.components.set(...)` 코드를 추가하세요.
+                `PhysicsBodyComponent`의 `mode`를 `.dynamic`으로 설정합니다.
 
-                > Note: 이제 도미노는 중력을 받아 바닥으로 떨어지고, 힘을 받으면 실제로 넘어지며
-                > 연쇄 반응을 일으키는 물리 객체가 됩니다.
+                > Note: `.dynamic`은 중력과 힘의 영향을 받는 모드입니다.
+                > 질량은 우선 `.default`로 두고, 다음 단계에서 직접 지정합니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "2-4a-ARCoordinator.swift", previousFile: "2-3-ARCoordinator.swift")
             }
 
             @Step {
-                질량은 `0.7kg`으로 직접 지정합니다.
+                **도미노 한 개의 질량을 0.7kg으로 설정해봅시다.** 클래스 위쪽의 `dominoSize` 바로 아래에
+                `private let dominoMass: Float = 0.7`을 추가하세요. 이어서 `PhysicsBodyComponent`의
+                `massProperties: .default`를 `massProperties: .init(mass: dominoMass)`로 바꿉니다.
+                두 위치 모두 파란색으로 표시됩니다.
 
-                > Note: `.default`로 두면 RealityKit이 도미노 부피를 기준으로 질량을 자동 계산해줍니다.
-                > 다만 이 프로젝트에서는 실기기 테스트를 여러 번 반복하면서 "너무 가볍다", "너무
-                > 무겁다"고 느껴지는 값들을 하나씩 걸러냈고, 실제로 자연스럽게 넘어지는 무게감을 주는
-                > `0.7kg`을 최종 값으로 직접 확정했습니다.
+                > Note: `dominoMass`는 도미노 한 개의 질량이며 단위는 kg입니다.
+                > 우선 0.7로 설정하고, 나중에 앱을 실행해 도미노가 넘어지는 모습을 확인해보세요.
 
-                @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator.swift", previousFile: "2-4a-ARCoordinator.swift")
             }
 
             @Step {
-                이후의 낙하, 충돌, 밀리면 넘어지는 계산은 우리가 직접 짜는 코드가 아니라, RealityKit
-                내장 물리 System이 매 프레임 자동으로 수행합니다.
+                **여기서는 코드를 추가하지 않습니다.** 그림으로 처리 흐름을 확인하세요.
+                구성한 도미노를 AR 장면에 배치하면, RealityKit의 내장 물리 System이
+                컴포넌트의 데이터를 바탕으로 낙하와 충돌을 계산합니다.
 
-                > Note: Component를 붙이는 순간부터 System이 이 Entity를 처리 대상에 자동으로
-                > 포함시킵니다.
-
-                @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator.swift")
+                @Image(source: ecs-system.svg, alt: "충돌과 물리 컴포넌트의 데이터를 내장 물리 System이 처리하여 낙하와 충돌을 계산하는 흐름")
             }
         }
     }

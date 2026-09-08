@@ -20,14 +20,18 @@
 
         @Steps {
             @Step {
-                `ARCoordinator`에 평면을 한 번만 감지하도록 표시해줄 `hasDetectedPlane` 플래그
-                프로퍼티를 추가하고, `ARSessionDelegate`의 `session(_:didAdd:)`에서 새 평면이 감지된
-                순간을 받습니다.
+                **`ARCoordinator.swift`의 두 위치에 코드를 추가합니다.** 먼저 `ARCoordinator`
+                클래스 안의 `let status: ARStatusModel` 바로 아래에
+                `private var hasDetectedPlane = false`를 추가하세요. 이어서 `init(status:)` 아래에
+                파란색으로 표시된 `session(_:didAdd:)` 메서드 전체를 추가합니다.
+
+                > Note: `hasDetectedPlane`은 평면 감지 안내를 이미 표시했는지 기억하는 값입니다.
+                > 처음에는 `false`이고, 첫 수평면을 감지하면 `true`로 바꿔 안내가 반복되지 않게 합니다.
 
                 > Note: 델리게이트 콜백은 메인 스레드가 아닐 수 있어서, UI(배너 텍스트) 갱신은 반드시
                 > `DispatchQueue.main.async`로 감싸서 메인 스레드에서 실행합니다.
 
-                @Code(name: "ARCoordinator.swift", file: "3-1-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "3-1-ARCoordinator.swift", previousFile: "2-4-ARCoordinator.swift")
             }
 
             @Step {
@@ -58,25 +62,26 @@
             }
 
             @Step {
-                `PhysicsBodyComponent(mode: .static)`를 붙입니다.
+                **바닥이 움직이지 않도록 물리 바디를 추가합니다.** `ARCoordinator.swift`의
+                `addPhysicsFloor(for:)` 안에서 `floor.components.set(CollisionComponent(...))`
+                바로 아래에, 파란색으로 표시된 `floor.components.set(PhysicsBodyComponent(...))`를
+                추가하세요. `mode`는 `.static`으로 설정합니다.
 
                 > Note: `.static`은 절대 움직이지 않는 받침대라는 뜻이에요. 도미노(`.dynamic`)만 이
                 > 위에서 중력의 영향을 받습니다.
 
-                @Code(name: "ARCoordinator.swift", file: "3-3-ARCoordinator.swift")
+                @Code(name: "ARCoordinator.swift", file: "3-3-ARCoordinator.swift", previousFile: "3-3a-ARCoordinator.swift")
             }
 
             @Step {
-                이걸로 감지된 평면 위에 도미노가 실제로 서 있을 수 있는 물리 바닥이 완성됐습니다.
+                **물리 바닥이 완성됐습니다.** 그림의 파란 영역은 도미노를 받쳐줄 보이지 않는
+                물리 바닥입니다. 다음 절에서 이 위에 도미노를 배치해보겠습니다.
 
-                > Note: 평면은 스캔이 진행될수록 감지 범위가 점점 넓어집니다. 이 튜토리얼에서 만드는
-                > 물리 바닥은 처음 감지된 크기로 고정되지만, 실제 이 저장소의 최종 코드는
-                > `session(_:didUpdate:)`에서 평면 identifier별로 물리 바닥의 위치·크기를 최신 상태로
-                > 갱신합니다. 안 하면 평면이 넓어진 새 영역에서 도미노가 바닥을 뚫고 떨어지는 버그가
-                > 생겨요 — 실기 테스트 중 실제로 발견했던 문제입니다. 궁금하다면 완성된
-                > `ARCoordinator.swift`를 참고하세요.
+                > Note: 파란 영역은 이해를 돕기 위한 표시이며, 실제 앱 화면에는 보이지 않습니다.
 
-                @Code(name: "ARCoordinator.swift", file: "3-3-ARCoordinator.swift")
+                평면을 더 넓게 스캔할 때 필요한 처리는 <doc:UpdatingPhysicsFloor>에서 살펴볼 수 있습니다.
+
+                @Image(source: physics-floor.svg, alt: "실제 바닥 위에 반투명 파란색으로 표시한 물리 바닥과 그 위에 선 빨간 도미노. 도미노는 dynamic, 물리 바닥은 static이며 파란 영역은 실제 앱에서 보이지 않음")
             }
         }
     }
@@ -90,23 +95,43 @@
 
         @Steps {
             @Step {
-                `UITapGestureRecognizer`를 `ARView`에 등록합니다.
+                **탭을 받을 메서드를 먼저 만듭니다.** `ARCoordinator.swift`의 `ARCoordinator`
+                클래스 안에서 `makeDominoEntity()` 바로 위에, 파란색으로 표시된
+                `@objc func handleTap(_:)` 메서드 전체를 추가하세요.
 
-                > Note: 제스처 등록 자체는 `ARViewContainer`가 책임지고, 실제 반응(`handleTap`)은
-                > `ARCoordinator`가 맡는 역할 분리를 계속 따릅니다.
+                > Note: 다음 단계에서 탭 제스처를 이 메서드에 연결합니다.
+                > 먼저 메서드를 만들어두면 연결할 때 “handleTap을 찾을 수 없다”는 오류가 나지 않습니다.
 
-                @Code(name: "ARViewContainer.swift", file: "3-4-ARViewContainer.swift")
+                @Code(name: "ARCoordinator.swift", file: "3-4a-ARCoordinator.swift", previousFile: "3-3-ARCoordinator.swift")
             }
 
             @Step {
-                `ARCoordinator` 클래스 안에 새 private 메서드 `raycastResult(for:in:)`를 추가합니다.
-                이 메서드 안에서 탭한 화면 좌표로 `arView.raycast(from:allowing:alignment:)`를 호출해
-                3D world transform을 얻습니다.
+                **탭 제스처를 연결합니다.** `ARViewContainer.swift`의 구조체 안에서,
+                `configureDebugOptions(for:)` 메서드가 끝나는 중괄호(`}`) 다음에
+                `setupTapGesture(on:coordinator:)` 메서드를 추가하세요.
+                이어서 `makeUIView(context:)` 안의 `configureDebugOptions(for:)` 호출 아래에
+                `setupTapGesture(on: arView, coordinator: context.coordinator)`를 추가하세요.
+                두 위치 모두 파란색으로 표시됩니다.
 
-                > Note: `allowing: .estimatedPlane` 옵션을 쓰면, ARKit이 아직 확정하지 못한 평면
-                > 추정치까지 포함해서 탐색 범위가 넓어집니다.
+                > Note: 이제 실기기에서 화면을 탭하면 상태 문구가 “탭을 감지했어요”로 바뀝니다.
 
-                @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator.swift")
+                @Code(name: "ARViewContainer.swift", file: "3-4-ARViewContainer.swift", previousFile: "2-5-ARViewContainer.swift")
+            }
+
+            @Step {
+                **탭한 위치에서 평면을 찾습니다.** `ARCoordinator.swift`에서 `handleTap(_:)`
+                메서드가 끝나는 중괄호(`}`) 다음, `makeDominoEntity()` 바로 위에
+                `raycastResult(for:in:)` 메서드 전체를 추가하세요. 이어서 기존 `handleTap(_:)`의
+                본문을 파란색 코드처럼 수정합니다.
+
+                > Note: 새 메서드는 `ARCoordinator` 클래스 안에, `handleTap(_:)`과 같은 들여쓰기로
+                > 작성합니다. `handleTap(_:)` 내부에 넣지 마세요. 앞에서 만든 다른 메서드는 그대로 둡니다.
+
+                > Note: `.estimatedPlane`은 아직 확정되지 않은 평면 추정치도 탐색에 포함합니다.
+                > 실기기로 바닥을 스캔한 뒤 탭하면 “평면을 찾았어요!”라는 문구와 콘솔의 좌표를 확인할 수 있습니다.
+                > 도미노를 만드는 코드는 다음 절에서 연결합니다.
+
+                @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator.swift", previousFile: "3-4a-ARCoordinator.swift")
             }
         }
     }
@@ -118,10 +143,14 @@
 
         @Steps {
             @Step {
-                `ARCoordinator` 클래스 안에 새 private 메서드 `place(_:at:in:)`를 추가합니다. 우선
-                `AnchorEntity(world: transform)`으로 raycast 결과 위치에 앵커부터 만듭니다.
+                `ARCoordinator.swift`에서 클래스의 마지막 닫는 중괄호(`}`) 바로 앞에
+                `place(_:at:in:)` 메서드를 추가하세요. 우선 `AnchorEntity(world: transform)`으로
+                raycast 결과 위치에 앵커부터 만듭니다.
 
-                @Code(name: "ARCoordinator.swift", file: "3-6a-ARCoordinator.swift")
+                > Note: 코드 화면에서는 기존 프로퍼티와 메서드를 생략했습니다.
+                > 기존 코드는 유지하고, 파란색으로 표시된 메서드만 클래스 안에 추가하세요.
+
+                @Code(name: "ARCoordinator.swift", file: "3-6a-ARCoordinator.swift", previousFile: "3-6-context-ARCoordinator.swift")
             }
 
             @Step {
@@ -150,7 +179,8 @@
 
         @Steps {
             @Step {
-                지금까지 만든 `raycastResult`, `makeDominoEntity`, `place`를 한데 모읍니다.
+                기존 `handleTap(_:)` 메서드를 아래 코드로 교체합니다. 좌표를 출력하던 부분 대신
+                `makeDominoEntity()`와 `place(_:at:in:)`를 호출해 탭한 위치에 도미노를 배치합니다.
 
                 > Note: 탭 한 번이 도미노 하나로 이어지는 흐름이 완성됩니다.
 
