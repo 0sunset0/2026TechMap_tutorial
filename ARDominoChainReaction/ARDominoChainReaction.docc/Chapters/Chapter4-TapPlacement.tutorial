@@ -1,12 +1,8 @@
 @Tutorial(time: 25) {
-    @Intro(title: "탭으로 하나씩 배치하기") {
+    @Intro(title: "탭한 위치에 도미노 세우기") {
         3장에서 만든 도미노를 이제 실제로 세워보겠습니다. 화면을 탭한 위치를 3D 공간 좌표로 바꾸는
         방법, 그리고 도미노가 딛고 설 "보이지 않는 바닥"을 만드는 방법을 배웁니다. 이 장이 끝나면,
         화면을 탭할 때마다 도미노가 한 줄로 세워지는 걸 직접 볼 수 있습니다.
-
-        이 장의 새 코드는 대부분 `ARCoordinator.swift`에 추가합니다. 이름이 비슷한
-        `ARViewContainer.swift`와 헷갈리지 않도록, 각 Step에서 어느 파일을 수정하는지 코드 블록
-        상단의 파일 이름을 확인하세요.
 
         @Image(source: tap-placement-illustration.png, alt: "탭으로 하나씩 배치하기 장 배너")
     }
