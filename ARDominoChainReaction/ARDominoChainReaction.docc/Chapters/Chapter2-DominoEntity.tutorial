@@ -60,9 +60,14 @@
                 > Note: `height`는 위아래 방향(Y축)의 길이입니다. 너비 8cm, 깊이 4cm보다
                 > 높이를 20cm로 크게 잡으면 세로로 긴 도미노가 됩니다. 따로 회전해서 세울 필요가 없습니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator-excerpt.swift", previousFile: "2-1-ARCoordinator-before.swift") {
-                    @Image(source: domino-mesh-dimensions.svg, alt: "너비 8cm, 높이 20cm, 깊이 4cm인 도미노 mesh와 X·Y·Z축 대응")
-                }
+                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator-excerpt.swift", previousFile: "2-1-ARCoordinator-before.swift")
+            }
+
+            @Step {
+                mesh의 크기와 축 대응을 크게 살펴보세요. 너비는 X축 8cm, 높이는 Y축 20cm,
+                깊이는 Z축 4cm입니다.
+
+                @Image(source: domino-mesh-dimensions.svg, alt: "너비 8cm, 높이 20cm, 깊이 4cm인 도미노 mesh와 X·Y·Z축 대응")
             }
 
             @Step {
@@ -72,9 +77,13 @@
                 > Note: PBR 재질은 빛에 대한 표면의 반응을 흉내 냅니다. 고유색·거칠기·금속성을
                 > 조절해 다양한 재질을 표현할 수 있습니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-2a-ARCoordinator-excerpt.swift", previousFile: "2-2a-ARCoordinator-before.swift") {
-                    @Image(source: domino-material.svg, alt: "빨간 도미노와 baseColor 빨간색, roughness 0.4, metallic 0 설정의 의미")
-                }
+                @Code(name: "ARCoordinator.swift", file: "2-2a-ARCoordinator-excerpt.swift", previousFile: "2-2a-ARCoordinator-before.swift")
+            }
+
+            @Step {
+                baseColor·roughness·metallic 세 값이 만드는 빨간 비금속 재질을 크게 확인하세요.
+
+                @Image(source: domino-material.svg, alt: "빨간 도미노와 baseColor 빨간색, roughness 0.4, metallic 0 설정의 의미")
             }
 
             @Step {
@@ -83,9 +92,13 @@
 
                 > Note: 아직 중력과 충돌은 적용되지 않았습니다. 다음 절에서 추가합니다.
 
-                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator-excerpt.swift", previousFile: "2-2-ARCoordinator-before.swift") {
-                    @Image(source: domino-model-entity.svg, alt: "직육면체 mesh와 빨간 재질을 결합하여 ModelEntity를 완성하는 과정")
-                }
+                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator-excerpt.swift", previousFile: "2-2-ARCoordinator-before.swift")
+            }
+
+            @Step {
+                mesh와 재질이 결합되어 `ModelEntity`가 완성되는 과정을 크게 확인하세요.
+
+                @Image(source: domino-model-entity.svg, alt: "직육면체 mesh와 빨간 재질을 결합하여 ModelEntity를 완성하는 과정")
             }
         }
     }
