@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10z" fill="#1670e8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="24" fill="#fafcff"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, sans-serif">
+    <text x="56" y="72" font-size="34" fill="#172b4d">도미노의 물리 반응</text>
+    <text x="56" y="114" font-size="21" fill="#52677e">완성된 도미노가 힘을 받으면 기울고, 옆 도미노와 부딪힙니다.</text>
+    <rect x="56" y="220" width="330" height="360" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="78" y="260" font-size="25" fill="#172b4d">완성된 도미노</text>
+    <polygon points="92,367 104,359 150,359 138,367" fill="#f7857b"/>
+    <polygon points="138,367 150,359 150,532 138,540" fill="#b72d31"/>
+    <rect x="92" y="367" width="46" height="173" fill="#e54d49"/>
+    <rect x="181" y="331" width="170" height="48" rx="12" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="266" y="362" font-size="20" fill="#455b75" text-anchor="middle">Model</text>
+    <rect x="181" y="390" width="170" height="48" rx="12" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="266" y="421" font-size="20" fill="#455b75" text-anchor="middle">Collision</text>
+    <rect x="181" y="449" width="170" height="48" rx="12" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="266" y="480" font-size="20" fill="#455b75" text-anchor="middle">PhysicsBody</text>
+    <path d="M79 540 H362" fill="none" stroke="#455b75" stroke-width="4"/>
+    <path d="M392 398 H444" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="418" y="187" font-size="20" fill="#455b75" text-anchor="middle">힘을 받으면</text>
+    <rect x="450" y="220" width="300" height="360" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="472" y="260" font-size="25" fill="#172b4d">기울어짐</text>
+    <g transform="rotate(25 605 540)">
+      <polygon points="559,367 571,359 617,359 605,367" fill="#f7857b"/>
+      <polygon points="605,367 617,359 617,532 605,540" fill="#b72d31"/>
+      <rect x="559" y="367" width="46" height="173" fill="#e54d49"/>
+    </g>
+    <path d="M474 540 H726" fill="none" stroke="#455b75" stroke-width="4"/>
+    <path d="M756 398 H808" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="782" y="187" font-size="20" fill="#455b75" text-anchor="middle">옆 도미노와 충돌</text>
+    <rect x="814" y="220" width="330" height="360" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="836" y="260" font-size="25" fill="#172b4d">연쇄 반응의 시작</text>
+    <g transform="rotate(52 910 540)">
+      <polygon points="864,367 876,359 922,359 910,367" fill="#f7857b"/>
+      <polygon points="910,367 922,359 922,532 910,540" fill="#b72d31"/>
+      <rect x="864" y="367" width="46" height="173" fill="#e54d49"/>
+    </g>
+    <g transform="rotate(12 1068 540)">
+      <polygon points="1022,367 1034,359 1080,359 1068,367" fill="#f7857b"/>
+      <polygon points="1068,367 1080,359 1080,532 1068,540" fill="#b72d31"/>
+      <rect x="1022" y="367" width="46" height="173" fill="#e54d49"/>
+    </g>
+    <path d="M837 540 H1120" fill="none" stroke="#455b75" stroke-width="4"/>
+    <text x="600" y="649" font-size="21" fill="#52677e" text-anchor="middle">RealityKit 내장 물리 System이 균형과 충돌을 자동으로 처리합니다.</text>
+  </g>
+</svg>

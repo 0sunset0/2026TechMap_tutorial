@@ -124,45 +124,47 @@
 
         @Steps {
             @Step {
-                **충돌 범위를 추가합니다.** `ARCoordinator.swift`의 `makeDominoEntity()` 안에서,
-                `let domino = ModelEntity(...)` 아래에 파란색으로 표시된
-                `domino.generateCollisionShapes(recursive: true)`를 추가하세요.
-                `return domino`는 함수 맨 아래에 둡니다.
+                **충돌 범위를 추가합니다.** 이게 없으면 도미노끼리 서로 몸을 통과해서
+                지나가버려요.
 
-                > Note: 이게 없으면 도미노끼리 서로 몸을 통과해서 지나가버려요.
+                > Note: `domino.generateCollisionShapes(recursive: true)`가 mesh 모양대로
+                > 충돌 범위를 만들어, 도미노끼리 부딪힐 수 있게 합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "2-3-ARCoordinator-excerpt.swift", previousFile: "2-3-ARCoordinator-before.swift")
             }
 
             @Step {
-                **물리 바디를 추가합니다.** 방금 추가한 `generateCollisionShapes` 바로 아래에
-                파란색의 `domino.components.set(...)` 코드를 추가하세요.
-                `PhysicsBodyComponent`의 `mode`를 `.dynamic`으로 설정합니다.
+                **물리 바디를 추가합니다.** 도미노는 중력을 받아 바닥에 서 있다가, 나중에 밀면
+                넘어져야 하므로 물리 바디가 필요합니다.
 
-                > Note: `.dynamic`은 중력과 힘의 영향을 받는 모드입니다.
-                > 질량은 우선 `.default`로 두고, 다음 단계에서 직접 지정합니다.
+                > Note: `domino.components.set(...)`로 `PhysicsBodyComponent`를 붙이고
+                > `mode`를 `.dynamic`으로 설정합니다. `.dynamic`은 중력과 힘의 영향을 받는
+                > 모드입니다.
 
                 @Code(name: "ARCoordinator.swift", file: "2-4a-ARCoordinator-excerpt.swift", previousFile: "2-4a-ARCoordinator-before.swift")
             }
 
             @Step {
-                **도미노 한 개의 질량을 0.7kg으로 설정해봅시다.** 클래스 위쪽의 `dominoSize` 바로 아래에
-                `private let dominoMass: Float = 0.7`을 추가하세요. 이어서 `PhysicsBodyComponent`의
-                `massProperties: .default`를 `massProperties: .init(mass: dominoMass)`로 바꿉니다.
-                두 위치 모두 파란색으로 표시됩니다.
+                **도미노 한 개의 질량을 0.7kg으로 설정해봅시다.** `dominoMass` 상수를 추가하고,
+                `PhysicsBodyComponent`의 `massProperties`에 반영합니다.
 
                 > Note: `dominoMass`는 도미노 한 개의 질량이며 단위는 kg입니다.
                 > 우선 0.7로 설정하고, 나중에 앱을 실행해 도미노가 넘어지는 모습을 확인해보세요.
+
+                > Note: `massProperties: .init(mass: dominoMass)`는 질량만 직접 지정하는
+                > 초기화 방법입니다. 회전 관성처럼 나머지 물리 값은 RealityKit이 충돌 모양을
+                > 바탕으로 자동 계산해줍니다.
 
                 @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator-excerpt.swift", previousFile: "2-4-ARCoordinator-before.swift")
             }
 
             @Step {
-                **여기서는 코드를 추가하지 않습니다.** 그림으로 처리 흐름을 확인하세요.
-                구성한 도미노를 AR 장면에 배치하면, RealityKit의 내장 물리 System이
-                컴포넌트의 데이터를 바탕으로 낙하와 충돌을 계산합니다.
+                **완성된 도미노는 RealityKit이 자동으로 물리 시뮬레이션합니다.** `Model`,
+                `Collision`, `PhysicsBody` 컴포넌트를 갖춘 도미노는 물리 바닥 위에 서 있다가,
+                힘을 받아 넘어지면 다른 도미노와 부딪히는 것까지 RealityKit의 내장 물리
+                System이 자동으로 계산합니다. 따로 코드를 추가하지 않습니다.
 
-                @Image(source: ecs-system.svg, alt: "충돌과 물리 컴포넌트의 데이터를 내장 물리 System이 처리하여 낙하와 충돌을 계산하는 흐름")
+                @Image(source: domino-entity-physics-flow.svg, alt: "Model, Collision, PhysicsBody 컴포넌트를 모두 갖춘 도미노 Entity가 물리 바닥 위에 서 있다가 힘을 받아 넘어지고 다른 도미노와 부딪히는 것까지 RealityKit 내장 물리 System이 자동으로 계산하는 흐름")
             }
         }
     }

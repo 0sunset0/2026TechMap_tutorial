@@ -18,7 +18,7 @@
 
         @Image(source: feature-points-illustration.png, alt: "프로젝트 준비")
 
-        @TutorialReference(tutorial: "doc:Chapter0-ProjectSetup")
+        @TutorialReference(tutorial: "doc:Chapter1-ProjectSetup")
     }
 
     @Chapter(name: "2. 기본 AR 씬 띄우기") {
@@ -26,7 +26,7 @@
 
         @Image(source: feature-points-illustration.png, alt: "기본 AR 씬 띄우기")
 
-        @TutorialReference(tutorial: "doc:Chapter1-BasicARScene")
+        @TutorialReference(tutorial: "doc:Chapter2-BasicARScene")
     }
 
     @Chapter(name: "3. 도미노 한 개 만들기") {
@@ -34,7 +34,7 @@
 
         @Image(source: people-occlusion-proportions.png, alt: "도미노 한 개 만들기")
 
-        @TutorialReference(tutorial: "doc:Chapter2-DominoEntity")
+        @TutorialReference(tutorial: "doc:Chapter3-DominoEntity")
     }
 
     @Chapter(name: "4. 탭으로 하나씩 배치하기") {
@@ -42,7 +42,7 @@
 
         @Image(source: tap-placement-illustration.png, alt: "탭으로 하나씩 배치하기")
 
-        @TutorialReference(tutorial: "doc:Chapter3-TapPlacement")
+        @TutorialReference(tutorial: "doc:Chapter4-TapPlacement")
     }
 
     @Chapter(name: "5. 드래그로 밀어 넘어뜨리기") {
@@ -50,7 +50,7 @@
 
         @Image(source: chain-reaction-illustration.png, alt: "드래그로 밀어 넘어뜨리기")
 
-        @TutorialReference(tutorial: "doc:Chapter4-DragToPush")
+        @TutorialReference(tutorial: "doc:Chapter5-DragToPush")
     }
 
     @Chapter(name: "6. USDZ 모델로 다듬기") {
@@ -58,6 +58,6 @@
 
         @Image(source: mesh-usdz-actual-comparison.png, alt: "USDZ 모델로 다듬기")
 
-        @TutorialReference(tutorial: "doc:Chapter5-USDZPolish")
+        @TutorialReference(tutorial: "doc:Chapter6-USDZPolish")
     }
 }
