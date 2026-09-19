@@ -56,6 +56,10 @@
                 `handlePan(_:)`의 `case .began:` 아래 `break`를 바꿉니다. 드래그를 시작한
                 화면 좌표를 얻습니다.
 
+                > Note: 이 좌표는 다음 스텝에서 `arView.entity(at:)`로 어떤 도미노를 눌렀는지
+                > 찾는 데 씁니다. 드래그가 끝날 때는 손가락이 이미 다른 위치에 가 있어서,
+                > 시작 지점의 좌표를 지금 미리 구해둬야 합니다.
+
                 @Code(name: "ARCoordinator.swift", file: "4-2a-ARCoordinator.swift", previousFile: "4-1-ARCoordinator.swift")
             }
 

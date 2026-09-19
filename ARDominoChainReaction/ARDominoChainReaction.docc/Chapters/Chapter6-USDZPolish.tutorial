@@ -52,12 +52,8 @@
 
     @Section(title: "코드로 그린 mesh를 USDZ 모델로 교체하기") {
         @ContentAndMedia {
-            지금까지 `makeDominoEntity()`는 `MeshResource.generateBox`로 모양을 만들고
-            `PhysicallyBasedMaterial`로 색을 입혔습니다. 이 부분을 방금 추가한 USDZ 파일을 불러오는
-            코드로 바꿔보겠습니다.
-
-            왼쪽은 코드로 만든 빨간 박스, 오른쪽은 이 프로젝트의 `domino.usdz` 파일을 직접 불러와
-            렌더링한 모델입니다.
+            지금까지 `makeDominoEntity()`는 `MeshResource.generateBox`와 `PhysicallyBasedMaterial`로
+            모양을 만들었습니다. 이 부분을 방금 추가한 USDZ 파일을 불러오는 코드로 바꿔보겠습니다.
 
             @Image(source: mesh-usdz-actual-comparison.png, alt: "빨간 박스와 실제 domino.usdz의 나뭇결 직육면체 모델을 나란히 렌더링한 비교 이미지")
         }
@@ -80,6 +76,11 @@
 
             @Step {
                 충돌 shape과 물리 바디는 이전과 똑같이 붙입니다.
+
+                > Note: mesh로 만들었든 USDZ로 불러왔든, `domino`는 여전히 같은 `ModelEntity`
+                > 타입입니다. `generateCollisionShapes`와 `PhysicsBodyComponent`는 mesh나
+                > 재질이 아니라 이 `ModelEntity` 자체에 컴포넌트를 붙이는 코드라서, 모양을
+                > 만드는 방식이 바뀌어도 그대로 재사용할 수 있습니다.
 
                 @Code(name: "ARCoordinator.swift", file: "5-1-ARCoordinator.swift", previousFile: "5-1a-ARCoordinator.swift")
             }

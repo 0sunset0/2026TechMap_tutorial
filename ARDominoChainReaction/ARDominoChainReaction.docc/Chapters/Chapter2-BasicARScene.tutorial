@@ -25,8 +25,7 @@
 
                 > Note: **Step 6까지는 코드가 미완성이므로 오류가 남아 있어도 괜찮습니다.** 지금
                 > `UIViewRepresentable`을 준수하지 않는다는 오류나 `ARStatusModel`을 찾을 수 없다는
-                > 오류가 보이는 것은 아직 필요한 코드를 추가하지 않았기 때문입니다. 우선 Step 6까지
-                > 순서대로 진행하세요.
+                > 오류가 보이는 것은 아직 필요한 코드를 추가하지 않았기 때문입니다.
 
                 @Code(name: "ARViewContainer.swift", file: "1-1a-ARViewContainer.swift")
             }
@@ -43,9 +42,8 @@
                 > `ARCoordinator`가 서로를 참조하면 메모리에서 해제되지 않는데, `weak`를 쓰면
                 > `ARCoordinator`가 `arView`를 소유하지 않아 이 순환이 끊어집니다.
 
-                > Note: 지금은 무시해도 되는 것 두 가지 — `import simd`는 뒤에서 쓸 3D 벡터와 행렬
-                > 계산 도구이고, `Cannot find type 'ARStatusModel' in scope` 에러는 Step 6에서
-                > 타입을 정의하면 사라집니다.
+                > Note: 지금은 무시해도 되는 것 — `Cannot find type 'ARStatusModel' in scope`
+                > 에러는 Step 6에서 타입을 정의하면 사라집니다.
 
                 @Code(name: "ARCoordinator.swift", file: "1-1-ARCoordinator.swift")
             }
@@ -68,7 +66,7 @@
                 `updateUIView(_:context:)`는 일단 비워둡니다.
 
                 > Note: 이제 뷰 생성, 갱신 메서드는 갖췄지만, `ARStatusModel`은 아직 없으므로 관련
-                > 오류가 남을 수 있습니다. Step 6에서 정의합니다.
+                > 오류가 남을 수 있습니다.
 
                 > Note: SwiftUI 쪽 `@State`나 `@Published` 값이 바뀌면 이 메서드가 호출되는데, 지금은
                 > UIKit 뷰로 전달할 상태가 없어서 아무 것도 안 해도 됩니다. (나중에 상태 배너처럼
@@ -80,8 +78,7 @@
             @Step {
                 `makeCoordinator()`가 앞서 만든 `ARCoordinator`를 반환하도록 연결합니다.
 
-                > Note: `ARStatusModel`을 찾을 수 없다는 오류는 이 단계까지도 남아 있을 수
-                > 있습니다. 다음 Step에서 정의하면 사라집니다.
+                > Note: `ARStatusModel`을 찾을 수 없다는 오류는 이 단계까지도 남아 있을 수 있습니다.
 
                 @Code(name: "ARViewContainer.swift", file: "1-1-ARViewContainer.swift", previousFile: "1-1c-ARViewContainer.swift")
             }
@@ -94,8 +91,7 @@
 
                 > Note: `@Published` 프로퍼티가 바뀌면 구독 중인 SwiftUI 뷰가 자동으로 다시
                 > 그려집니다. `ObservableObject`와 `@Published`는 `Combine` 소속이라
-                > `import Foundation`이 아니라 `import Combine`이 필요합니다 — 최신 Xcode의
-                > `MemberImportVisibility` 설정에서는 빠뜨리면 컴파일 에러가 납니다.
+                > `import Foundation`이 아니라 `import Combine`이 필요합니다.
 
                 @Code(name: "ARStatusModel.swift", file: "1-1-ARStatusModel.swift")
             }
@@ -164,7 +160,6 @@
 
                 > Note: 이 설정은 **World Tracking**에 사용합니다. 카메라 영상과 모션 센서로
                 > 기기의 위치, 방향을 추정해, 사용자가 움직여도 도미노가 같은 자리에 보이게 합니다.
-                > 아직 설정을 가져오기만 했으므로 세션 실행은 Step 5에서 연결합니다.
 
                 @Code(name: "ARViewContainer.swift", file: "1-2b-ARViewContainer.swift", previousFile: "1-2a-ARViewContainer.swift")
             }
@@ -210,7 +205,7 @@
             @Step {
                 실기기에서 앱을 빌드해보세요.
 
-                > Note: 처음 실행하면 카메라 접근을 허용할지 묻는 시스템 팝업이 뜹니다. 0장에서
+                > Note: 처음 실행하면 카메라 접근을 허용할지 묻는 시스템 팝업이 뜹니다. 1장에서
                 > 입력한 카메라 권한 문구가 여기 표시됩니다. **허용**을 눌러야 카메라 화면과
                 > 트래킹이 시작됩니다.
 
@@ -218,12 +213,6 @@
                 > 시작할 거예요. ARKit이 카메라 이미지에서 모서리나 무늬 같은 뚜렷한 지점들을 찾아,
                 > 여러 각도에서 관찰하며 3D 위치를 추정해나가는 과정입니다. 축하합니다, AR 씬이
                 > 살아있어요!
-
-                @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer-excerpt.swift", previousFile: "1-4-ARViewContainer-before.swift")
-            }
-
-            @Step {
-                노란 점은 공간을 추적할 때 활용하는 특징점을 나타냅니다.
 
                 @Image(source: feature-points-illustration.png, alt: "노란 특징점이 책상 모서리와 주변 물체에 표시된 AR 트래킹 개념도")
             }
