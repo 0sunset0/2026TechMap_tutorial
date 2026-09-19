@@ -35,7 +35,7 @@
                 `ARCoordinator.swift` 파일을 만들고 `ARCoordinator` 클래스의 뼈대를 작성합니다.
                 이 클래스는 사용자의 터치나 ARKit의 알림을 받아, 그에 맞는 동작을 처리할 델리게이트입니다.
 
-                > Note: 이 클래스는 두 가지를 담당합니다. **제스처**(탭·드래그)를 받아 도미노를
+                > Note: 이 클래스는 두 가지를 담당합니다. **제스처**(탭, 드래그)를 받아 도미노를
                 > 놓거나 밀고, ARKit의 **델리게이트 콜백**(예: 바닥 감지 알림)을 받아 물리 바닥을
                 > 만듭니다. 둘 다 이후 장에서 연결하고, 지금은 뼈대만 만듭니다.
 
@@ -43,7 +43,7 @@
                 > `ARCoordinator`가 서로를 참조하면 메모리에서 해제되지 않는데, `weak`를 쓰면
                 > `ARCoordinator`가 `arView`를 소유하지 않아 이 순환이 끊어집니다.
 
-                > Note: 지금은 무시해도 되는 것 두 가지 — `import simd`는 뒤에서 쓸 3D 벡터·행렬
+                > Note: 지금은 무시해도 되는 것 두 가지 — `import simd`는 뒤에서 쓸 3D 벡터와 행렬
                 > 계산 도구이고, `Cannot find type 'ARStatusModel' in scope` 에러는 Step 6에서
                 > 타입을 정의하면 사라집니다.
 
@@ -67,7 +67,7 @@
             @Step {
                 `updateUIView(_:context:)`는 일단 비워둡니다.
 
-                > Note: 이제 뷰 생성·갱신 메서드는 갖췄지만, `ARStatusModel`은 아직 없으므로 관련
+                > Note: 이제 뷰 생성, 갱신 메서드는 갖췄지만, `ARStatusModel`은 아직 없으므로 관련
                 > 오류가 남을 수 있습니다. Step 6에서 정의합니다.
 
                 > Note: SwiftUI 쪽 `@State`나 `@Published` 값이 바뀌면 이 메서드가 호출되는데, 지금은
@@ -152,11 +152,19 @@
             }
 
             @Step {
+                `ARView`가 `ARSession`을 담고 있고, 설정을 만들어 실행하면 세션이 델리게이트로
+                알림을 보내는 전체 흐름을 그림으로 살펴보세요. 이어지는 스텝에서 이 흐름을
+                하나씩 코드로 채워나갑니다.
+
+                @Image(source: arview-session-relationship.svg, alt: "ARView가 담고 있는 ARSession에 ARWorldTrackingConfiguration이 session.run(configuration)으로 전달되고, 세션이 delegate로 ARCoordinator에 콜백을 보내는 구조")
+            }
+
+            @Step {
                 `makeUIView(context:)`에서 방금 만든 설정을 가져옵니다.
 
                 > Note: 이 설정은 **World Tracking**에 사용합니다. 카메라 영상과 모션 센서로
-                > 기기의 위치·방향을 추정해, 사용자가 움직여도 도미노가 같은 자리에 보이게 합니다.
-                > 아직 설정을 가져오기만 했으므로 세션 실행은 Step 4에서 연결합니다.
+                > 기기의 위치, 방향을 추정해, 사용자가 움직여도 도미노가 같은 자리에 보이게 합니다.
+                > 아직 설정을 가져오기만 했으므로 세션 실행은 Step 5에서 연결합니다.
 
                 @Code(name: "ARViewContainer.swift", file: "1-2b-ARViewContainer.swift", previousFile: "1-2a-ARViewContainer.swift")
             }
