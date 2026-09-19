@@ -53,16 +53,14 @@
 
         @Steps {
             @Step {
-                `ARCoordinator`의 `handlePan(_:)` 안에서 `case .began:` 아래의 `break`를
-                `let location = recognizer.location(in: arView)`로 바꿉니다. 드래그를 시작한
-                화면 좌표를 얻는 코드입니다.
+                `handlePan(_:)`의 `case .began:` 아래 `break`를 바꿉니다. 드래그를 시작한
+                화면 좌표를 얻습니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-2a-ARCoordinator.swift", previousFile: "4-1-ARCoordinator.swift")
             }
 
             @Step {
-                방금 추가한 줄 아래에 `let domino = arView.entity(at: location) as? ModelEntity`를
-                추가합니다. 해당 화면 좌표에 있는 도미노를 찾아 지역 변수 `domino`에 담습니다.
+                해당 화면 좌표에 있는 도미노를 찾아 지역 변수에 담습니다.
 
                 > Note: 물리 바닥은 보이지 않는 `Entity`라 `ModelEntity`로의 캐스팅이 실패해서
                 > 자동으로 걸러지고, 도미노를 집었을 때만 값이 들어옵니다.
@@ -71,8 +69,7 @@
             }
 
             @Step {
-                그다음 줄에 `draggedDomino = domino`를 추가합니다. 찾은 도미노를 클래스의
-                프로퍼티에 저장해 드래그가 끝날 때도 사용할 수 있게 합니다.
+                찾은 도미노를 클래스 프로퍼티에 저장해 드래그가 끝날 때도 사용할 수 있게 합니다.
 
                 > Note: 이 값은 드래그가 끝나는 순간(`.ended`)까지 유지되며, 그때 실제로 힘을 받을
                 > 도미노입니다.
@@ -123,7 +120,7 @@
 
     @Section(title: "임펄스를 가해 넘어뜨리고 세기 튜닝하기") {
         @ContentAndMedia {
-            Impulse(임펄스)는 순간적으로 가해지는 운동량 변화입니다. 매 프레임마다 계속 밀어야 하는
+            임펄스는 순간적으로 가해지는 운동량 변화입니다. 매 프레임마다 계속 밀어야 하는
             Force와 달리, "한 번 턱 치는" 느낌을 낼 때 적합해요. 드래그 중에 계속 힘을 주는 대신,
             드래그가 끝나는 순간(`.ended`)에 딱 한 번만 주면 동작이 더 단순하고 예측 가능해집니다.
         }
@@ -131,7 +128,7 @@
         @Steps {
             @Step {
                 **드래그가 끝난 지점까지의 이동량을 구합니다.** `handlePan(_:)`의 `case .ended:` 아래
-                `break`를 파란색 코드로 바꾸세요. 저장해둔 도미노를 꺼내고, `translation(in:)`으로
+                `break`를 바꿉니다. 저장해둔 도미노를 꺼내고, `translation(in:)`으로
                 시작점에서 끝점까지의 화면 벡터를 얻습니다.
 
                 > Note: 도미노를 꺼낸 뒤 `draggedDomino = nil`로 저장값을 비워둡니다.
@@ -140,8 +137,8 @@
             }
 
             @Step {
-                **짧은 드래그는 무시합니다.** `screenDelta` 아래에 이동 거리 `dragDistance`를
-                계산하는 줄과 `guard dragDistance > 20 else { return }`을 추가하세요.
+                **짧은 드래그는 무시합니다.** 이동 거리를 계산해서, 너무 짧으면 무시하는
+                코드를 추가하세요.
 
                 > Note: 화면에서 이동한 거리가 20포인트 이하이면 힘을 가하지 않습니다.
                 > 실수로 살짝 스친 동작을 걸러내기 위한 기준입니다.
@@ -150,8 +147,7 @@
             }
 
             @Step {
-                **밀어주는 세기를 설정합니다.** `ARCoordinator` 클래스의 `draggedDomino` 아래에
-                `private let dominoPushStrength: Float = 3.0`을 추가하세요.
+                **밀어주는 세기를 설정합니다.** 임펄스 세기를 담을 상수를 추가하세요.
 
                 > Note: 우선 3.0으로 설정해봅시다. 마지막 단계에서 실기기로 밀어본 뒤,
                 > 너무 약하면 값을 높이고 너무 강하면 낮춰보세요.

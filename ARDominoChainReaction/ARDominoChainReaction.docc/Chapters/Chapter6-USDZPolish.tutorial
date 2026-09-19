@@ -9,9 +9,8 @@
 
     @Section(title: "제공된 USDZ 에셋 다운로드하기") {
         @ContentAndMedia {
-            USDZ는 Pixar의 USD(Universal Scene Description) 포맷을 애플이 단일 파일로 묶은 것으로,
-            ARKit과 RealityKit이 공식 지원하는 3D 포맷입니다. 이 튜토리얼에서는 직접 3D 모델링을 하지
-            않고, 미리 만들어둔 `domino.usdz` 파일을 씁니다.
+            USDZ는 ARKit과 RealityKit이 공식 지원하는 3D 파일 포맷입니다. 이 튜토리얼에서는 직접
+            모델링하지 않고, 미리 만들어둔 `domino.usdz` 파일을 씁니다.
         }
 
         @Steps {
@@ -61,23 +60,17 @@
             렌더링한 모델입니다.
 
             @Image(source: mesh-usdz-actual-comparison.png, alt: "빨간 박스와 실제 domino.usdz의 나뭇결 직육면체 모델을 나란히 렌더링한 비교 이미지")
-            코드 예제는 수정할 부분만 발췌했습니다. 바깥의 `class` 또는 `struct` 선언은
-            기존 코드 안에서의 위치를 보여줍니다. 같은 타입을 새로 만들지 말고, 표시된 멤버를
-            기존 타입 안에 추가하거나 수정하세요. 생략한 코드는 그대로 유지합니다.
-
         }
 
         @Steps {
             @Step {
-                `try! ModelEntity.loadModel(named: "domino")`로 USDZ 파일을 동기적으로 불러옵니다.
+                **기존의 mesh 생성 + 재질 설정 코드를, USDZ 파일을 동기적으로 불러오는 한 줄로
+                대체합니다.**
 
-                > Note: 파일 이름은 확장자 없이 씁니다.
-
-                @Code(name: "ARCoordinator.swift", file: "5-1a-ARCoordinator.swift", previousFile: "5-context-ARCoordinator.swift")
-            }
-
-            @Step {
-                기존의 mesh 생성 + 재질 설정 코드를 이 한 줄로 대체합니다.
+                > Note: 파일 이름은 확장자 없이 씁니다. `domino.usdz`는 앱 번들에 포함돼 있어
+                > 로드가 항상 성공하므로, `try!`로 실패 시 바로 크래시시켜 문제를 즉시
+                > 알아챕니다. 작은 파일 하나만 불러오는 정도라 동기 로드로도 화면이 멈추지
+                > 않습니다.
 
                 > Note: USDZ 파일 안에 이미 나무 재질과 색상 정보가 담겨 있어서,
                 > `PhysicallyBasedMaterial`을 직접 만들 필요가 없어집니다.
@@ -105,30 +98,28 @@
                 `domino.visualBounds(relativeTo: nil)`로 불러온 모델의 실제 크기(바운딩 박스)를
                 확인합니다.
 
-                > Note: 코드의 가정만으로는 정확한 값을 알 수 없어서, 실제로 로그를 찍어 확인하는 게
-                > 안전합니다.
+                > Note: 코드의 가정만으로는 정확한 값을 알 수 없어서, 실제로 불러온 모델의
+                > 바운딩 박스를 직접 구해서 쓰는 게 안전합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "5-2a-ARCoordinator.swift", previousFile: "5-1-ARCoordinator.swift")
             }
 
             @Step {
-                `place(_:at:in:)`에서 쓰던 "높이의 절반만큼 올리는" 오프셋을, 방금 확인한 실제 모델
-                크기 기준(`bounds.extents.y / 2`)으로 다시 계산합니다.
+                `place(_:at:in:)`에서 쓰던 오프셋을 실제 모델 크기 기준으로 다시 계산합니다.
 
-                @Code(name: "ARCoordinator.swift", file: "5-2b-ARCoordinator.swift", previousFile: "5-2a-ARCoordinator.swift")
-            }
-
-            @Step {
-                `generateCollisionShapes(recursive: true)`는 그대로 다시 호출해도 됩니다.
-
-                > Note: 새 모델의 실제 형상을 기준으로 충돌 범위가 자동으로 다시 계산되니, 박스
-                > 모양일 때와 동일한 코드로 물리 성질을 그대로 이어갈 수 있습니다.
+                > Note: `dominoSize.y`는 예전 박스 mesh 기준 고정값이라 실제 모델 높이와
+                > 다를 수 있어 `bounds.extents.y`로 바꿉니다. `generateCollisionShapes`는
+                > 새 모델 모양에 맞춰 자동으로 계산되니 그대로 다시 호출해도 됩니다.
 
                 @Code(name: "ARCoordinator.swift", file: "5-2b-ARCoordinator.swift", previousFile: "5-2a-ARCoordinator.swift")
             }
 
             @Step {
                 더 이상 어디서도 쓰이지 않는 `dominoSize` 상수는 이 시점에 함께 삭제합니다.
+
+                > Note: 삭제한 줄은 코드 diff에 따로 표시되지 않습니다. 클래스 위쪽의
+                > `private let dominoSize = SIMD3<Float>(0.08, 0.2, 0.04)` 줄을 직접 찾아
+                > 지우세요.
 
                 @Code(name: "ARCoordinator.swift", file: "5-2-ARCoordinator.swift", previousFile: "5-2b-ARCoordinator.swift")
             }
@@ -146,16 +137,14 @@
 
                 > Note: 탭해서 세운 도미노가 빨간 박스 대신 나무 재질의 3D 모델로 보일 거예요.
 
-                @Code(name: "ARCoordinator.swift", file: "5-2-ARCoordinator.swift", previousFile: "5-2b-ARCoordinator.swift")
+                > Note: 물리 동작(서고, 넘어지고, 체인리액션이 일어나는 것)은 이전과 동일하게
+                > 유지되는지도 확인해보세요.
+
+                @Image(source: domino-usdz-real-device.png, alt: "실내 나무 바닥 위에 나뭇결 도미노 한 개가 똑바로 서 있고 화면 상단에 도미노 1개 배치됨 배너가 표시된 AR 앱 예시 화면")
             }
 
             @Step {
-                물리 동작(서고, 넘어지고, 체인리액션이 일어나는 것)은 이전과 동일하게 유지되는지
-                확인해보세요.
-            }
-
-            @Step {
-                **첫 AR 앱을 완성했습니다!**
+                **AR 도미노 체인리액션 앱을 완성했습니다!**
 
                 실제 공간을 인식하고, 도미노를 배치하고, 손끝으로 연쇄 반응을 일으키는 앱을
                 직접 만들었습니다. 이제 도미노의 간격과 배치를 바꿔 나만의 체인리액션을 만들어보세요.

@@ -19,6 +19,8 @@
                 필요한 객체가 생기면, 상속 구조로는 클래스를 계속 쪼개거나 코드를 중복해야
                 합니다. ECS는 "기능을 상속받는" 대신 "필요한 부품(Component)만 갈아 끼운다"는
                 방식으로 이 문제를 풉니다.
+
+                @Image(source: ecs-motivation.svg, alt: "상속 구조는 조합이 달라질 때마다 클래스를 다시 만들어야 하지만 ECS는 범용 Entity에 필요한 Component를 골라 붙이는 방식이라는 비교 그림")
             }
 
             @Step {
@@ -152,8 +154,8 @@
                 > 우선 0.7로 설정하고, 나중에 앱을 실행해 도미노가 넘어지는 모습을 확인해보세요.
 
                 > Note: `massProperties: .init(mass: dominoMass)`는 질량만 직접 지정하는
-                > 초기화 방법입니다. 회전 관성처럼 나머지 물리 값은 RealityKit이 충돌 모양을
-                > 바탕으로 자동 계산해줍니다.
+                > 방법입니다. 얼마나 잘 회전하는지 같은 나머지 물리 값은 RealityKit이 충돌
+                > 모양을 바탕으로 자동 계산해줍니다.
 
                 @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator-excerpt.swift", previousFile: "2-4-ARCoordinator-before.swift")
             }

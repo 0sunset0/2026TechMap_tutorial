@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#1670e8"/></marker>
+  </defs>
+  <rect width="1200" height="720" rx="24" fill="#fafcff"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, Apple SD Gothic Neo, sans-serif">
+    <text x="56" y="72" font-size="34" fill="#172b4d">왜 ECS를 사용할까요?</text>
+    <text x="56" y="114" font-size="21" fill="#52677e">새 조합마다 클래스를 만드는 대신, 필요한 부품을 골라 붙입니다.</text>
+    <rect x="56" y="175" width="480" height="465" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="82" y="218" font-size="25" fill="#172b4d">상속 구조</text>
+    <rect x="92" y="250" width="408" height="132" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="116" y="288" font-size="25" fill="#172b4d">DominoClass</text>
+    <text x="116" y="331" font-size="20" fill="#455b75">모양 로직 + 충돌 로직 + 물리 로직</text>
+    <path d="M296 390 V454" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="316" y="424" font-size="20" fill="#455b75">새로운 조합이 필요하면?</text>
+    <rect x="92" y="466" width="408" height="132" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="116" y="504" font-size="25" fill="#172b4d">InvisibleFloorClass</text>
+    <text x="116" y="547" font-size="20" fill="#455b75">충돌 로직 + 물리 로직을 다시 구성</text>
+    <text x="600" y="410" font-size="34" fill="#1670e8" text-anchor="middle">VS</text>
+    <rect x="664" y="175" width="480" height="465" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="690" y="218" font-size="25" fill="#172b4d">ECS</text>
+    <rect x="700" y="323" width="172" height="112" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="786" y="388" font-size="25" fill="#172b4d" text-anchor="middle">Entity</text>
+    <rect x="958" y="259" width="150" height="58" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="1033" y="296" font-size="20" fill="#455b75" text-anchor="middle">Model</text>
+    <rect x="958" y="350" width="150" height="58" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="1033" y="387" font-size="20" fill="#455b75" text-anchor="middle">Collision</text>
+    <rect x="958" y="441" width="150" height="58" rx="16" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <text x="1033" y="478" font-size="20" fill="#455b75" text-anchor="middle">PhysicsBody</text>
+    <path d="M948 288 H925 V337 H883" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M948 379 H883" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M948 470 H925 V421 H883" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="904" y="567" font-size="20" fill="#455b75" text-anchor="middle">필요한 부품만 골라 붙이기</text>
+  </g>
+</svg>
