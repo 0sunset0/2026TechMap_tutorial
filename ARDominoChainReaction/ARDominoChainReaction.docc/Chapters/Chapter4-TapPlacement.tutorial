@@ -16,8 +16,8 @@
 
         @Steps {
             @Step {
-                **`ARCoordinator.swift`에 두 가지를 추가합니다.** `private var hasDetectedPlane = false`와
-                `session(_:didAdd:)` 메서드를 클래스 안에 추가하세요.
+                **`ARCoordinator.swift`에 `hasDetectedPlane` 프로퍼티와, 평면을 감지했을 때
+                호출될 델리게이트 메서드 `session`을 추가합니다.**
 
                 > Note: `hasDetectedPlane`은 평면 감지 안내를 이미 표시했는지 기억하는 값입니다.
                 > 처음에는 `false`이고, 첫 수평면을 감지하면 `true`로 바꿔 안내가 반복되지 않게 합니다.
@@ -32,8 +32,13 @@
                 `AnchorEntity(anchor: planeAnchor)`로 그 평면에 그대로 붙는 앵커를 만들고, 그 밑에
                 보이지 않는 `Entity`를 자식으로 넣습니다.
 
-                > Note: 물리 바닥은 실제로 눈에 보일 필요가 없어서, mesh를 가진 `ModelEntity` 대신
-                > 빈 `Entity`를 씁니다.
+                > Note: `addPhysicsFloor`를 `DispatchQueue.main.async`로 감싼 이유는, 씬에
+                > 엔티티를 추가하는 게 메인 스레드에서 실행해야 하는 UIKit/RealityKit
+                > 작업이기 때문입니다.
+
+                > Note: `AnchorEntity(anchor: planeAnchor)`는 특정 평면에 직접 연결돼 있어
+                > 평면이 갱신되면 자동으로 따라가고, 물리 바닥은 눈에 보일 필요가 없어
+                > `ModelEntity` 대신 빈 `Entity`를 씁니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-2a-ARCoordinator-excerpt.swift", previousFile: "3-2a-ARCoordinator-before.swift")
             }
@@ -50,19 +55,21 @@
             @Step {
                 `CollisionComponent`를 붙입니다.
 
-                > Note: 이게 있어야 이 바닥이 다른 물리 객체와 충돌 판정을 할 수 있습니다.
+                > Note: `CollisionComponent`는 충돌 판정에 쓰일 모양(평면 크기의 얇은 박스)만
+                > 정의합니다. 화면에 보이는 건 여전히 없고, 이것만으로는 아직 도미노를
+                > 물리적으로 막지 못합니다 — 다음 스텝에서 `PhysicsBodyComponent`까지
+                > 붙여야 실제로 바닥 역할을 합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-3a-ARCoordinator-excerpt.swift", previousFile: "3-3a-ARCoordinator-before.swift")
             }
 
             @Step {
-                **바닥이 움직이지 않도록 물리 바디를 추가합니다.** `ARCoordinator.swift`의
-                `addPhysicsFloor(for:)` 안에서 `floor.components.set(CollisionComponent(...))`
-                바로 아래에 `floor.components.set(PhysicsBodyComponent(...))`를
-                추가하세요. `mode`는 `.static`으로 설정합니다.
+                **바닥이 움직이지 않도록 물리 바디를 추가합니다.**
 
-                > Note: `.static`은 중력이나 충돌에 움직이지 않는 받침대입니다.
-                > 이 단계에서는 물리 바디 코드와 바로 위의 설명 주석만 추가하세요. 기존 코드는 유지합니다.
+                > Note: `.static`은 중력이나 충돌력을 받아도 위치가 바뀌지 않는 모드입니다.
+                > 도미노에 쓴 `.dynamic`과 반대로, 바닥은 절대 움직이면 안 되기 때문에
+                > `.static`을 씁니다. 이래야 도미노가 이 위에서 안정적으로 서 있거나,
+                > 부딪혔을 때 밀려나지 않고 버텨줄 수 있습니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-3-floor-ARCoordinator.swift", previousFile: "3-3-floor-before-ARCoordinator.swift")
             }
