@@ -32,7 +32,7 @@
     @Chapter(name: "3. 도미노 한 개 만들기") {
         RealityKit의 Entity-Component-System.
 
-        @Image(source: people-occlusion-proportions.png, alt: "도미노 한 개 만들기")
+        @Image(source: domino-entity-hero.png, alt: "도미노 한 개 만들기")
 
         @TutorialReference(tutorial: "doc:Chapter3-DominoEntity")
     }
@@ -40,7 +40,7 @@
     @Chapter(name: "4. 탭으로 하나씩 배치하기") {
         Raycasting과 보이지 않는 물리 바닥.
 
-        @Image(source: tap-placement-illustration.png, alt: "탭으로 하나씩 배치하기")
+        @Image(source: tap-placement-hero.png, alt: "탭으로 하나씩 배치하기")
 
         @TutorialReference(tutorial: "doc:Chapter4-TapPlacement")
     }
@@ -48,7 +48,7 @@
     @Chapter(name: "5. 드래그로 밀어 넘어뜨리기") {
         좌표계 변환과 Impulse.
 
-        @Image(source: chain-reaction-illustration.png, alt: "드래그로 밀어 넘어뜨리기")
+        @Image(source: drag-to-push-hero.png, alt: "드래그로 밀어 넘어뜨리기")
 
         @TutorialReference(tutorial: "doc:Chapter5-DragToPush")
     }

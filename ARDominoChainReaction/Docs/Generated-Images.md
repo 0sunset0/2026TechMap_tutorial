@@ -272,3 +272,32 @@ Create a clean instructional macOS Finder illustration, landscape 1536x1024, lig
 ```text
 Correct the proportions of BOTH red blocks in this two-panel AR occlusion illustration. They are currently far too long and narrow. Each block must be an identical SHARP-EDGED plain red cuboid with actual dimensions WIDTH 8 cm, HEIGHT 20 cm, DEPTH 4 cm. Front face height must be EXACTLY 2.5 times front face width, not 5 times. In each panel make block approximately 230 pixels front-face width and 575 pixels tall, centered, resting on desk, same camera scale. Clearly show a little side depth. No bevels, rounded corners, pips, wood texture or decorative markings. Adjust hand placement to overlap middle of shorter wider block, natural anatomy, hand size realistic relative to 20 cm height. Preserve crucial comparison: LEFT block is rendered continuously IN FRONT OF the foreground hand (incorrect occlusion: full red silhouette painted over fingers); RIGHT foreground hand HIDES middle of block with top visible above fingers and bottom visible below. Same scene and scale both panels, pale wood desk, simple light background, thin white center gutter, landscape 1536x1024. No labels or text. This edit is specifically to match the project's 8x20x4cm cuboid, so squat wider proportion and sharp edges are essential.
 ```
+
+
+## Chapter 3–5 representative images (2026-09-21)
+
+Built-in image_gen. Style reference: mesh-usdz-actual-comparison.png. Applied to chapter intros and tutorial catalog.
+
+### domino-entity-hero.png
+
+Saved in ARDominoChainReaction.docc/Resources/.
+
+Prompt:
+
+Use case: style-transfer. Create one landscape 1536x1024 AR tutorial chapter hero image, matching the provided reference's plain neutral gray seamless studio floor/background, simple realistic 3D render, soft diffuse lighting, subtle contact shadows, elevated three-quarter camera. Use ONLY red matte sharp-edged rectangular cuboids matching the reference's red object, dimensions width 8, height 20, depth 4; no pips, no bevels, no wood, no text, no labels, no UI, no hands, no phone. Keep generous margins and clear silhouette. Reference is style and red block shape guidance, not a comparison layout. Subject: exactly ONE upright red cuboid standing on the gray floor, centered, front and right side and top visible. Clean confident product render, block occupies roughly 60% of image height.
+
+### tap-placement-hero.png
+
+Saved in ARDominoChainReaction.docc/Resources/.
+
+Prompt:
+
+Use case: style-transfer. Create one landscape 1536x1024 AR tutorial chapter hero image, matching the provided reference's plain neutral gray seamless studio floor/background, simple realistic 3D render, soft diffuse lighting, subtle contact shadows, elevated three-quarter camera. Use ONLY red matte sharp-edged rectangular cuboids matching the reference's red object, dimensions width 8, height 20, depth 4; no pips, no bevels, no wood, no text, no labels, no UI, no hands, no phone. Keep generous margins and clear silhouette. Reference is style and red block shape guidance, not a comparison layout. Subject: exactly SIX identical upright red cuboid dominoes standing in one straight evenly spaced line along their thin depth direction, receding diagonally across the gray floor. All upright, all distinct, no overlapping silhouettes excessively. Show one subtle thin blue circular tap target on the floor at the next empty position at the front of the line; no other graphic overlays. Composition shows adding blocks one at a time.
+
+### drag-to-push-hero.png
+
+Saved in ARDominoChainReaction.docc/Resources/.
+
+Prompt:
+
+Use case: style-transfer. Create one landscape 1536x1024 AR tutorial chapter hero image, matching the provided reference's plain neutral gray seamless studio floor/background, simple realistic 3D render, soft diffuse lighting, subtle contact shadows, elevated three-quarter camera. Use ONLY red matte sharp-edged rectangular cuboids matching the reference's red object, dimensions width 8, height 20, depth 4; no pips, no bevels, no wood, no text, no labels, no UI, no hands, no phone. Keep generous margins and clear silhouette. Reference is style and red block shape guidance, not a comparison layout. Subject: SIX identical red cuboid dominoes aligned along their thin depth direction in a physically plausible chain reaction. First lies almost flat, second leans strongly onto third, third tilts slightly, last three remain upright. All rotate around bottom edges toward the next block, remain in contact with floor; no floating or intersecting blocks. Diagonal arrangement, clearly readable changing tilt angles, no arrows or motion effects.

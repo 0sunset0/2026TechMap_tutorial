@@ -4,7 +4,7 @@
         방법, 그리고 도미노가 딛고 설 "보이지 않는 바닥"을 만드는 방법을 배웁니다. 이 장이 끝나면,
         화면을 탭할 때마다 도미노가 한 줄로 세워지는 걸 직접 볼 수 있습니다.
 
-        @Image(source: tap-placement-illustration.png, alt: "탭으로 하나씩 배치하기 장 배너")
+        @Image(source: tap-placement-hero.png, alt: "탭으로 하나씩 배치하기 장 배너")
     }
 
     @Section(title: "평면 감지 시 보이지 않는 물리 바닥 만들기") {

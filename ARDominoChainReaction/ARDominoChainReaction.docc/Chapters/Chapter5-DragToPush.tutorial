@@ -5,7 +5,7 @@
         핵심입니다. 이 장이 끝나면, 도미노를 슥 밀었을 때 쓰러지고 옆으로 전파되는 걸 직접 볼 수
         있습니다.
 
-        @Image(source: chain-reaction-illustration.png, alt: "드래그로 밀어 넘어뜨리기 장 배너")
+        @Image(source: drag-to-push-hero.png, alt: "드래그로 밀어 넘어뜨리기 장 배너")
     }
 
     @Section(title: "팬 제스처 등록하기") {

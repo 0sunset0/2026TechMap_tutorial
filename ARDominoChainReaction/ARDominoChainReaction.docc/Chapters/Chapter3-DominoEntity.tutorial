@@ -2,7 +2,7 @@
     @Intro(title: "도미노 한 개 만들기") {
         도미노 한 개에 모양과 재질, 충돌 범위와 물리 성질을 차례로 추가해보겠습니다.
 
-        @Image(source: people-occlusion-proportions.png, alt: "도미노 한 개 만들기 장 배너")
+        @Image(source: domino-entity-hero.png, alt: "도미노 한 개 만들기 장 배너")
     }
 
     @Section(title: "Entity-Component-System 이해하기") {
