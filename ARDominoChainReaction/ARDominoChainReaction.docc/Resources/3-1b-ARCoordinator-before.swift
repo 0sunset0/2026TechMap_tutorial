@@ -5,7 +5,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
 
     func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
         for anchor in anchors {
-            // as?: ARAnchor 중에서 "평면"으로 인식된 것만 걸러냄 (다른 종류의 앵커는 무시)
             guard let planeAnchor = anchor as? ARPlaneAnchor else { continue }
             guard planeAnchor.alignment == .horizontal else { continue }
 
