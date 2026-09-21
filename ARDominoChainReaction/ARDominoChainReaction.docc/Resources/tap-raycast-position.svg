@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">탭 좌표를 3D 위치로 바꾸기</title>
+  <desc id="description">탭한 화면 좌표에서 raycast를 수행해 감지된 평면과 만나는 3D 지점을 찾는 과정을 왼쪽에서 오른쪽으로 보여줍니다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10Z" fill="#1670e8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="24" fill="#fafcff"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, &quot;Apple SD Gothic Neo&quot;, sans-serif">
+    <text x="56" y="72" font-size="34" fill="#172b4d">탭 좌표를 3D 위치로 바꾸기</text>
+    <text x="56" y="114" font-size="21" fill="#52677e">
+      <tspan x="56">화면을 탭하면 그 지점에서 카메라 방향으로 광선을 쏴,</tspan>
+      <tspan x="56" dy="32">감지된 평면과 만나는 3D 좌표를 찾습니다.</tspan>
+    </text>
+
+    <g fill="#eef5ff" stroke="#bfd0e5" stroke-width="2">
+      <rect x="60" y="226" width="300" height="388" rx="16"/>
+      <rect x="450" y="226" width="300" height="388" rx="16"/>
+      <rect x="840" y="226" width="300" height="388" rx="16"/>
+    </g>
+
+    <g font-size="25" fill="#172b4d" text-anchor="middle">
+      <text x="210" y="274">탭한 화면 좌표 (2D)</text>
+      <text x="600" y="274">raycast</text>
+      <text x="990" y="270">
+        <tspan x="990">감지된 평면과</tspan>
+        <tspan x="990" dy="34">만나는 지점 (3D)</tspan>
+      </text>
+    </g>
+
+    <!-- 화면 좌표: 휴대전화 화면 위에 선택한 지점을 표시합니다. -->
+    <rect x="142" y="321" width="136" height="224" rx="20" fill="#fafcff" stroke="#52677e" stroke-width="3"/>
+    <rect x="153" y="347" width="114" height="166" rx="8" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <path d="M190 335 H230 M194 530 H226" fill="none" stroke="#52677e" stroke-width="3" stroke-linecap="round"/>
+    <path d="M153 418 H224 V513" fill="none" stroke="#bfd0e5" stroke-width="2" stroke-dasharray="6 5"/>
+    <circle cx="224" cy="418" r="22" fill="#1670e8" fill-opacity="0.12"/>
+    <circle cx="224" cy="418" r="8" fill="#1670e8"/>
+    <text x="210" y="580" text-anchor="middle" font-size="20" fill="#455b75">탭 지점 (x, y)</text>
+
+    <!-- 카메라에서 선택한 화면 지점을 향해 뻗는 광선입니다. -->
+    <path d="M533 458 L704 351 L704 509 Z" fill="#1670e8" fill-opacity="0.06"/>
+    <path d="M533 458 L704 351 M533 458 L704 509" fill="none" stroke="#bfd0e5" stroke-width="2" stroke-dasharray="6 5"/>
+    <rect x="481" y="438" width="48" height="40" rx="8" fill="#fafcff" stroke="#52677e" stroke-width="3"/>
+    <path d="M529 448 L546 440 V476 L529 468 Z" fill="#fafcff" stroke="#52677e" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M550 455 L706 397" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="619" y="371" text-anchor="middle" font-size="20" fill="#455b75">가상의 광선</text>
+    <text x="510" y="511" text-anchor="middle" font-size="20" fill="#455b75">카메라</text>
+    <text x="600" y="580" text-anchor="middle" font-size="20" fill="#455b75">탭 위치를 향해 탐색</text>
+
+    <!-- 광선과 감지된 바닥 평면의 교점을 표시합니다. -->
+    <path d="M864 478 L974 414 L1116 465 L1006 533 Z" fill="#dceaff" stroke="#bfd0e5" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M902 491 L1012 428 M947 512 L1057 444 M902 456 L1045 509 M938 435 L1081 488" fill="none" stroke="#bfd0e5" stroke-width="2"/>
+    <path d="M905 344 L990 470" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <ellipse cx="990" cy="470" rx="25" ry="14" fill="#1670e8" fill-opacity="0.15"/>
+    <circle cx="990" cy="470" r="8" fill="#1670e8" stroke="#fafcff" stroke-width="2"/>
+    <text x="1011" y="395" font-size="20" fill="#455b75">히트 포인트</text>
+    <text x="990" y="580" text-anchor="middle" font-size="20" fill="#455b75">3D 위치 (x, y, z)</text>
+
+    <g fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)">
+      <path d="M373 420 H435"/>
+      <path d="M763 420 H825"/>
+    </g>
+    <g font-size="20" fill="#455b75" text-anchor="middle">
+      <text x="405" y="393">광선</text>
+      <text x="795" y="393">교점</text>
+    </g>
+  </g>
+</svg>

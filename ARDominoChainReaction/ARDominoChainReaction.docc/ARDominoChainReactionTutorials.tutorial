@@ -10,7 +10,7 @@
         3D 좌표계, 충돌과 임펄스는 각 장에서 코드와 함께 설명합니다. 3D 모델링 경험도 필요하지
         않습니다. 마지막 장에서 사용할 USDZ 모델은 다운로드할 수 있도록 제공합니다.
 
-        @Image(source: domino-chain-reaction.gif, alt: "나무 도미노 여덟 개가 차례로 넘어지는 반복 애니메이션")
+        @Image(source: domino-blender-demo.gif, alt: "실제 USDZ 나무 모델로 재현한 Blender 애니메이션: 회색 바닥 위 도미노가 차례로 넘어지는 연쇄 반응")
     }
 
     @Chapter(name: "1. 프로젝트 준비") {

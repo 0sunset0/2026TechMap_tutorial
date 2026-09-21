@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">raycast 결과에 도미노 배치하기</title>
+  <desc id="description">raycast 히트 지점에 월드 앵커를 만들고, 도미노를 높이의 절반만큼 올린 뒤, 앵커의 자식으로 추가하고 씬에 등록하는 네 단계입니다. 높이 보정 전 위치는 점선으로 표시합니다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10Z" fill="#1670e8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="720" rx="24" fill="#fafcff"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, &quot;Apple SD Gothic Neo&quot;, sans-serif">
+    <text x="56" y="72" font-size="34" fill="#172b4d">raycast 결과에 도미노 배치하기</text>
+    <text x="56" y="114" font-size="21" fill="#52677e">
+      <tspan x="56">히트 지점에 앵커를 만들고, 높이를 보정한 뒤,</tspan>
+      <tspan x="56" dy="32">씬에 등록해야 도미노가 화면에 나타납니다.</tspan>
+    </text>
+
+    <g fill="#eef5ff" stroke="#bfd0e5" stroke-width="2">
+      <rect x="48" y="224" width="240" height="400" rx="16"/>
+      <rect x="336" y="224" width="240" height="400" rx="16"/>
+      <rect x="624" y="224" width="240" height="400" rx="16"/>
+      <rect x="912" y="224" width="240" height="400" rx="16"/>
+    </g>
+    <g font-size="23" fill="#172b4d" text-anchor="middle">
+      <text x="168" y="269"><tspan x="168">raycast 히트 지점</tspan><tspan x="168" dy="32">(3D)</tspan></text>
+      <text x="456" y="269"><tspan x="456">AnchorEntity(world:)</tspan><tspan x="456" dy="32">생성</tspan></text>
+      <text x="744" y="269"><tspan x="744">높이 보정</tspan><tspan x="744" dy="32">(mesh 원점 → 바닥)</tspan></text>
+      <text x="1032" y="269"><tspan x="1032">앵커의 자식으로 등록</tspan><tspan x="1032" dy="32">+ 씬에 반영</tspan></text>
+    </g>
+
+    <!-- 1. 감지된 평면 위의 3D 교점 -->
+    <path d="M72 469 L157 426 L264 462 L178 506 Z" fill="#dceaff" stroke="#bfd0e5" stroke-width="2"/>
+    <path d="M168 464 V371 M168 464 L113 492 M168 464 L229 485" fill="none" stroke="#bfd0e5" stroke-width="2" stroke-dasharray="6 5"/>
+    <ellipse cx="168" cy="464" rx="25" ry="13" fill="#1670e8" fill-opacity="0.12"/>
+    <circle cx="168" cy="464" r="8" fill="#1670e8"/>
+    <text x="168" y="551" text-anchor="middle" font-size="20" fill="#455b75">배치할 위치</text>
+    <text x="168" y="582" text-anchor="middle" font-size="20" fill="#455b75">(x, y, z)</text>
+
+    <!-- 2. 같은 지점에 고정된 앵커의 좌표 기준 -->
+    <path d="M360 469 L445 426 L552 462 L466 506 Z" fill="#dceaff" stroke="#bfd0e5" stroke-width="2"/>
+    <g fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)">
+      <path d="M456 464 V373"/>
+      <path d="M456 464 L400 493"/>
+      <path d="M456 464 L525 487"/>
+    </g>
+    <circle cx="456" cy="464" r="16" fill="#fafcff" stroke="#1670e8" stroke-width="2"/>
+    <circle cx="456" cy="464" r="5" fill="#1670e8"/>
+    <text x="473" y="383" font-size="20" fill="#455b75">Y</text>
+    <text x="456" y="551" text-anchor="middle" font-size="20" fill="#455b75">히트 지점에 고정</text>
+    <text x="456" y="582" text-anchor="middle" font-size="20" fill="#455b75">배치의 기준점</text>
+
+    <!-- 3. 중심 원점의 도미노를 높이의 절반만큼 올려 바닥과 맞춤 -->
+    <rect x="704" y="420" width="48" height="100" fill="none" stroke="#52677e" stroke-width="2" stroke-dasharray="6 5"/>
+    <path d="M648 470 H841" fill="none" stroke="#bfd0e5" stroke-width="2"/>
+    <rect x="704" y="370" width="48" height="100" fill="#e54d49" stroke="#b72d31" stroke-width="2"/>
+    <circle cx="728" cy="420" r="5" fill="#fafcff"/>
+    <circle cx="728" cy="470" r="5" fill="#1670e8"/>
+    <path d="M779 467 V420" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="766" y="393" font-size="20" fill="#455b75">높이 / 2</text>
+    <text x="744" y="551" text-anchor="middle" font-size="20" fill="#455b75">점선: 보정 전 위치</text>
+    <text x="744" y="582" text-anchor="middle" font-size="20" fill="#455b75">로컬 Y축으로 올리기</text>
+
+    <!-- 4. 앵커에 연결한 도미노가 씬에 나타난 결과 -->
+    <rect x="935" y="335" width="194" height="184" rx="12" fill="#fafcff" stroke="#bfd0e5" stroke-width="2"/>
+    <path d="M947 477 L1020 441 L1117 473 L1044 506 Z" fill="#dceaff" stroke="#bfd0e5" stroke-width="2"/>
+    <ellipse cx="1032" cy="479" rx="33" ry="10" fill="#1670e8" fill-opacity="0.12"/>
+    <path d="M1007 370 L1019 362 H1057 L1045 370 Z" fill="#f7857b" stroke="#b72d31" stroke-width="2"/>
+    <path d="M1045 370 L1057 362 V472 L1045 480 Z" fill="#b72d31" stroke="#b72d31" stroke-width="2"/>
+    <rect x="1007" y="370" width="38" height="110" fill="#e54d49" stroke="#b72d31" stroke-width="2"/>
+    <text x="1032" y="551" text-anchor="middle" font-size="20" fill="#455b75">anchor.addChild</text>
+    <text x="1032" y="582" text-anchor="middle" font-size="20" fill="#455b75">scene.addAnchor</text>
+
+    <g fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)">
+      <path d="M295 424 H327"/>
+      <path d="M583 424 H615"/>
+      <path d="M871 424 H903"/>
+    </g>
+    <g font-size="20" fill="#455b75" text-anchor="middle">
+      <text x="312" y="401">고정</text>
+      <text x="600" y="401">보정</text>
+      <text x="888" y="401">등록</text>
+    </g>
+  </g>
+</svg>

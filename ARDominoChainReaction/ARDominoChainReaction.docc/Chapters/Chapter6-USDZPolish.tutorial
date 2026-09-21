@@ -118,9 +118,10 @@
             @Step {
                 더 이상 어디서도 쓰이지 않는 `dominoSize` 상수는 이 시점에 함께 삭제합니다.
 
-                > Note: 삭제한 줄은 코드 diff에 따로 표시되지 않습니다. 클래스 위쪽의
-                > `private let dominoSize = SIMD3<Float>(0.08, 0.2, 0.04)` 줄을 직접 찾아
-                > 지우세요.
+                > Note: 삭제한 줄은 코드 diff에 따로 표시되지 않습니다. 클래스 위쪽에서 아래
+                > 줄을 직접 찾아 지우세요.
+                >
+                > `private let dominoSize = SIMD3<Float>(0.08, 0.2, 0.04)`
 
                 @Code(name: "ARCoordinator.swift", file: "5-2-ARCoordinator.swift", previousFile: "5-2b-ARCoordinator.swift")
             }
@@ -138,19 +139,16 @@
 
                 > Note: 탭해서 세운 도미노가 빨간 박스 대신 나무 재질의 3D 모델로 보일 거예요.
 
-                > Note: 물리 동작(서고, 넘어지고, 체인리액션이 일어나는 것)은 이전과 동일하게
-                > 유지되는지도 확인해보세요.
-
-                @Image(source: domino-usdz-real-device.png, alt: "실내 나무 바닥 위에 나뭇결 도미노 한 개가 똑바로 서 있고 화면 상단에 도미노 1개 배치됨 배너가 표시된 AR 앱 예시 화면")
+                @Image(source: domino-usdz-real-device.png, alt: "카펫 바닥 위에 나뭇결 도미노 한 개가 서 있고, 화면 상단에 '도미노 3개 배치됨 — 계속 탭해서 줄을 세워보세요' 배너가 표시된 AR 앱 실행 화면")
             }
 
             @Step {
-                **AR 도미노 체인리액션 앱을 완성했습니다!**
+                **AR 도미노 체인리액션 앱을 완성했습니다! 🎉**
 
                 실제 공간을 인식하고, 도미노를 배치하고, 손끝으로 연쇄 반응을 일으키는 앱을
                 직접 만들었습니다. 이제 도미노의 간격과 배치를 바꿔 나만의 체인리액션을 만들어보세요.
 
-                @Image(source: domino-chain-reaction.gif, alt: "나무 도미노 여덟 개가 차례로 넘어지는 연쇄 반응 애니메이션")
+                @Image(source: domino-blender-demo.gif, alt: "실제 USDZ 나무 모델을 사용해 Blender 물리 시뮬레이션으로 재현한 도미노 연쇄 반응")
             }
         }
     }

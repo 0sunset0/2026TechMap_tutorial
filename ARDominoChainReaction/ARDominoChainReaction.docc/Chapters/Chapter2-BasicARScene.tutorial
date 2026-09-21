@@ -42,8 +42,8 @@
                 > `ARCoordinator`가 서로를 참조하면 메모리에서 해제되지 않는데, `weak`를 쓰면
                 > `ARCoordinator`가 `arView`를 소유하지 않아 이 순환이 끊어집니다.
 
-                > Note: 지금은 무시해도 되는 것 — `Cannot find type 'ARStatusModel' in scope`
-                > 에러는 Step 6에서 타입을 정의하면 사라집니다.
+                > Note: `Cannot find type 'ARStatusModel' in scope` 에러는 지금 무시해도 됩니다.
+                > Step 6에서 타입을 정의하면 사라집니다.
 
                 @Code(name: "ARCoordinator.swift", file: "1-1-ARCoordinator.swift")
             }
@@ -52,9 +52,12 @@
                 앞서 만든 `ARViewContainer` 구조체로 돌아와서, `makeUIView(context:)`에서
                 `ARView`를 생성하고 반환합니다.
 
-                > Note: 이 메서드는 SwiftUI가 이 뷰를 화면에 처음 그릴 때 딱 한 번만 호출돼요. 뷰를
-                > 만드는 방법과 만든 뷰를 갱신하는 방법이 서로 다른 메서드로 나뉘어 있는 게
-                > `UIViewRepresentable`의 특징입니다.
+                > Note: 이 메서드는 SwiftUI가 이 뷰를 화면에 처음 그릴 때 딱 한 번만 호출돼요.
+                > `UIViewRepresentable`은 뷰를 만드는 메서드(`makeUIView`)와 갱신하는
+                > 메서드(`updateUIView`)를 이렇게 따로 둡니다. `ARView`는 카메라 세션을 들고
+                > 있는 비싼 뷰라서, SwiftUI 상태가 바뀔 때마다 새로 만들면 트래킹이 매번
+                > 리셋됩니다. `makeUIView`가 인스턴스를 한 번만 만들고, `updateUIView`는 그
+                > 인스턴스에 값만 반영합니다.
 
                 > Note: `ARStatusModel`을 찾을 수 없다는 오류는 아직 남아 있을 수 있습니다.
                 > Step 6에서 정의하면 사라집니다.

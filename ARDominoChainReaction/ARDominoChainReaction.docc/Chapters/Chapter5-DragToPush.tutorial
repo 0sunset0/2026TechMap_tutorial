@@ -12,22 +12,27 @@
         @ContentAndMedia {
             RealityKit은 `installGestures(.translation)`처럼 손가락으로 엔티티를 직접 옮기는 기본
             제스처를 제공합니다. 하지만 이건 "엔티티를 손가락 위치로 이동시키는 것"이지, 우리가 원하는
-            "물리적인 힘을 가해서 자연스럽게 넘어뜨리는 것"과는 다릅니다. 도미노를 손으로 집어 옮기는
-            게 아니라 밀친 방향으로 임펄스(순간적으로 가하는 힘)를 가해서 넘어뜨려야 하기 때문에, 이 장은 UIKit의
-            `UIPanGestureRecognizer`를 직접 다룹니다.
-            코드 예제는 수정할 부분만 발췌했습니다. 바깥의 `class` 또는 `struct` 선언은
-            기존 코드 안에서의 위치를 보여줍니다. 같은 타입을 새로 만들지 말고, 표시된 멤버를
-            기존 타입 안에 추가하거나 수정하세요. 생략한 코드는 그대로 유지합니다.
+            "물리적인 힘을 가해서 자연스럽게 넘어뜨리는 것"과는 다릅니다.
 
+            도미노를 손으로 집어 옮기는 게 아니라 밀친 방향으로 임펄스를 가해서 넘어뜨려야 하기
+            때문에, 이 장은 UIKit의 `UIPanGestureRecognizer`를 직접 다룹니다.
         }
 
         @Steps {
             @Step {
-                **드래그를 받을 메서드를 먼저 만듭니다.** `ARCoordinator` 클래스의 프로퍼티 영역에
-                `private var draggedDomino: ModelEntity?`를 추가하고, 클래스 안에 `handlePan(_:)`
-                메서드를 추가하세요. 시작(`.began`)과 끝(`.ended`)은 우선 `break`로 둡니다.
+                **드래그를 받을 메서드를 만듭니다.** `ARCoordinator`에 `draggedDomino`
+                프로퍼티와 `handlePan` 메서드를 추가하세요. 두 케이스는 다음 스텝에서 채우고,
+                지금은 `break`로 둡니다.
 
-                > Note: 기존 메서드 안에 넣지 말고, `handleTap(_:)`과 나란히 추가하세요.
+                > Note: `UIPanGestureRecognizer`는 손가락이 화면에 닿아 있는 동안 `state`가
+                > `.began` → `.changed`(드래그 중 계속) → `.ended` 순서로 바뀌면서
+                > `handlePan(_:)`을 반복 호출합니다. 이 앱은 시작과 끝 두 순간만 쓰므로
+                > `.changed`는 무시합니다.
+
+                > Note: 드래그는 `.began`(시작)과 `.ended`(끝)에서 `handlePan(_:)`이 각각 따로
+                > 호출됩니다. 밀 도미노는 시작 시점에 정해지지만 실제로 힘을 가하는 건 끝나는
+                > 시점이라, 그 사이 값을 기억해둘 곳이 필요해요. `handlePan(_:)`이 호출될 때마다
+                > 사라지는 지역 변수로는 안 되니 프로퍼티로 저장합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-1-ARCoordinator.swift", previousFile: "4-context-ARCoordinator.swift")
             }
@@ -53,18 +58,23 @@
 
         @Steps {
             @Step {
-                `handlePan(_:)`의 `case .began:` 아래 `break`를 바꿉니다. 드래그를 시작한
-                화면 좌표를 얻습니다.
+                `handlePan(_:)`의 `case .began:` 아래 `break`를 바꿔, 드래그를 시작한
+                화면 좌표를 얻으세요.
 
-                > Note: 이 좌표는 다음 스텝에서 `arView.entity(at:)`로 어떤 도미노를 눌렀는지
-                > 찾는 데 씁니다. 드래그가 끝날 때는 손가락이 이미 다른 위치에 가 있어서,
-                > 시작 지점의 좌표를 지금 미리 구해둬야 합니다.
+                > Note: 드래그가 끝날 때는 손가락이 이미 다른 위치로 가 있어서, 어떤 도미노를
+                > 눌렀는지 알아내려면 시작 지점의 좌표를 지금 미리 구해둬야 합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-2a-ARCoordinator.swift", previousFile: "4-1-ARCoordinator.swift")
             }
 
             @Step {
                 해당 화면 좌표에 있는 도미노를 찾아 지역 변수에 담습니다.
+
+                > Note: `entity(at:)`는 4장의 raycast와 다른 방식입니다. raycast는 화면
+                > 좌표에서 3D 공간으로 광선을 쏴 평면과 만나는 지점을 계산하지만, `entity(at:)`는
+                > 화면의 2D 지점에 이미 렌더링된 엔티티가 있는지 바로 찾는 히트 테스트입니다.
+                > 이미 놓인 도미노를 찾을 때는 3D 좌표를 계산할 필요가 없어서 이 방식이 더
+                > 간단합니다.
 
                 > Note: 물리 바닥은 보이지 않는 `Entity`라 `ModelEntity`로의 캐스팅이 실패해서
                 > 자동으로 걸러지고, 도미노를 집었을 때만 값이 들어옵니다.
@@ -92,6 +102,13 @@
 
         @Steps {
             @Step {
+                화면 드래그 벡터가 카메라의 로컬 축으로 분해되고, 수평면에 투영된 뒤, 최종
+                푸시 방향으로 조합되는 전체 흐름을 그림으로 살펴보세요.
+
+                @Image(source: drag-to-push-direction.svg, alt: "화면의 2D 드래그 벡터에서 카메라의 로컬 right/forward 축을 추출하고, Y 성분을 제거해 수평(XZ) 평면에 투영한 뒤, 두 방향을 조합해 최종 3D 푸시 방향을 구하는 네 단계를 왼쪽에서 오른쪽으로 보여주는 개념도")
+            }
+
+            @Step {
                 **카메라의 방향을 구합니다.** `ARCoordinator` 클래스 안에 `pushDirection(forScreenDelta:in:)`
                 메서드를 추가하세요. 카메라 행렬에서 오른쪽 축과 정면 축을 가져옵니다.
 
@@ -103,9 +120,10 @@
 
             @Step {
                 **수평 방향만 남깁니다.** `cameraForward` 아래에 `rightXZ`와 `forwardXZ`를
-                추가하세요. 각 축의 Y값을 0으로 만들고 길이를 1로 맞춥니다.
+                추가하고 각 축의 Y를 0으로 만들어 길이를 1로 맞추세요.
 
-                > Note: 도미노를 위아래가 아닌 바닥과 나란한 방향으로 밀기 위한 계산입니다.
+                > Note: 도미노는 바닥 위에서 수평으로만 밀려야 하니, 위아래(Y) 성분은 버리고
+                > 수평 방향만 남깁니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-3b-ARCoordinator.swift", previousFile: "4-3a-ARCoordinator.swift")
             }
@@ -114,8 +132,8 @@
                 **드래그 방향을 반영합니다.** `rightAmount`와 `forwardAmount`를 추가하고,
                 임시 `return .zero`를 두 수평 방향을 조합해 정규화하는 코드로 바꾸세요.
 
-                > Note: 화면의 오른쪽 드래그는 `screenDelta.x`, 위쪽 드래그는 `-screenDelta.y`로
-                > 반영합니다. UIKit 화면 좌표는 아래로 갈수록 y값이 커지기 때문입니다.
+                > Note: UIKit 화면 좌표는 아래로 갈수록 y가 커지므로, 위로 드래그하면 y가
+                > 음수가 됩니다. 이 부호를 그대로 반영합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-3-ARCoordinator.swift", previousFile: "4-3b-ARCoordinator.swift")
             }
@@ -141,11 +159,11 @@
             }
 
             @Step {
-                **짧은 드래그는 무시합니다.** 이동 거리를 계산해서, 너무 짧으면 무시하는
+                **짧은 드래그는 무시합니다.** 이동 거리를 계산해서 20포인트 이하면 무시하는
                 코드를 추가하세요.
 
-                > Note: 화면에서 이동한 거리가 20포인트 이하이면 힘을 가하지 않습니다.
-                > 실수로 살짝 스친 동작을 걸러내기 위한 기준입니다.
+                > Note: 손가락이 살짝 스치기만 해도 드래그로 잡히기 때문에, 이런 짧은 드래그는
+                > 걸러내야 합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-4b-ARCoordinator.swift", previousFile: "4-4a-ARCoordinator.swift")
             }
@@ -173,8 +191,6 @@
                 **실기기에서 결과를 확인합니다.** 도미노를 가까이 줄지어 배치하고, 하나를 손가락으로
                 밀어보세요. 옆 도미노와 부딪히며 차례로 넘어지는지 확인합니다.
 
-                > Note: 이 단계에서는 코드를 추가하지 않습니다. 필요하면 앞에서 설정한
-                > `dominoPushStrength` 값을 조절하고 다시 빌드해보세요.
 
                 @Image(source: chain-reaction-illustration.png, alt: "일렬로 선 빨간 도미노 일부가 이웃 도미노에 기대며 연속으로 넘어지는 개념도")
             }

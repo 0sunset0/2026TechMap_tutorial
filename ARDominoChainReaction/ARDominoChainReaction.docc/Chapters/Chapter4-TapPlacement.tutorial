@@ -73,10 +73,9 @@
             @Step {
                 `CollisionComponent`를 붙입니다.
 
-                > Note: `CollisionComponent`는 충돌 판정에 쓰일 모양(평면 크기의 얇은 박스)만
-                > 정의합니다. 화면에 보이는 건 여전히 없고, 이것만으로는 아직 도미노를
-                > 물리적으로 막지 못합니다 — 다음 스텝에서 `PhysicsBodyComponent`까지
-                > 붙여야 실제로 바닥 역할을 합니다.
+                > Note: `CollisionComponent`는 "부딪히면 감지할 모양"만 정해줍니다. 이것만으로는
+                > 아직 도미노가 뚫고 지나가요. 다음 스텝에서 `PhysicsBodyComponent`까지 붙여야
+                > 실제로 막아섭니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-3a-ARCoordinator-excerpt.swift", previousFile: "3-3a-ARCoordinator-before.swift")
             }
@@ -112,25 +111,30 @@
 
         @Steps {
             @Step {
+                탭한 화면 좌표에서 카메라를 통과하는 광선을 쏴, 감지된 평면과 만나는 3D 지점을
+                찾는 전체 흐름을 그림으로 살펴보세요.
+
+                @Image(source: tap-raycast-position.svg, alt: "탭한 화면의 2D 좌표에서 카메라를 통과하는 가상의 광선이 감지된 평면과 만나 3D 히트 포인트를 찾는 과정을 왼쪽에서 오른쪽으로 보여주는 개념도")
+            }
+
+            @Step {
                 **화면 탭을 처리할 `handleTap(_:)` 메서드를 추가합니다.** 탭 제스처가 감지되면
                 호출되는 메서드로, 전달받은 `recognizer`에서 탭한 위치를 알아낼 수 있습니다.
                 지금은 탭을 받았는지 확인하는 문구만 표시합니다. 다음 단계에서 탭 제스처를
                 이 메서드에 연결합니다.
 
-                > Note: 다음 단계에서 탭 제스처를 이 메서드에 연결합니다.
-                > 먼저 메서드를 만들어두면 연결할 때 “handleTap을 찾을 수 없다”는 오류가 나지 않습니다.
+                > Note: 메서드가 아직 없는 상태에서 탭 제스처를 먼저 연결하면,
+                > "handleTap을 찾을 수 없다"는 오류가 납니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-4a-ARCoordinator-excerpt.swift", previousFile: "3-4a-ARCoordinator-before.swift")
             }
 
             @Step {
                 **탭 제스처를 연결합니다.** `ARViewContainer.swift`의 구조체 안에
-                `setupTapGesture(on:coordinator:)` 메서드를 추가하고, `makeUIView(context:)`에
-                `setupTapGesture(on: arView, coordinator: context.coordinator)` 호출을 추가하세요.
+                `setupTapGesture` 메서드를 추가하고, `makeUIView`에 `setupTapGesture` 호출을
+                추가하세요.
 
-                > Note: `setupTapGesture`는 `UITapGestureRecognizer`를 만들어 target을
-                > `coordinator`로, action을 `handleTap(_:)`으로 지정한 뒤 `arView`에
-                > 등록합니다. 이 등록이 있어야 화면을 탭했을 때 UIKit이 실제로
+                > Note: 이 등록이 있어야 화면을 탭했을 때 UIKit이 실제로
                 > `handleTap(_:)`을 호출해줍니다. 메서드만 만들어두고 이 연결을 빼먹으면
                 > 탭해도 아무 일도 일어나지 않습니다.
 
@@ -143,12 +147,8 @@
                 **탭한 위치에서 평면을 찾습니다.** `ARCoordinator.swift`에 `raycastResult(for:in:)`
                 메서드 전체를 추가하세요. 이어서 기존 `handleTap(_:)`의 본문을 수정합니다.
 
-                > Note: 새 메서드는 `ARCoordinator` 클래스 안에, `handleTap(_:)`과 같은 들여쓰기로
-                > 작성합니다. `handleTap(_:)` 내부에 넣지 마세요. 앞에서 만든 다른 메서드는 그대로 둡니다.
-
-                > Note: `.estimatedPlane`은 아직 확정되지 않은 평면 추정치도 탐색에 포함합니다.
-                > 실기기로 바닥을 스캔한 뒤 탭하면 “평면을 찾았어요!”라는 문구와 콘솔의 좌표를 확인할 수 있습니다.
-                > 도미노를 만드는 코드는 다음 절에서 연결합니다.
+                > Note: `.estimatedPlane`을 쓰면 ARKit이 아직 확신하지 못한 평면도 걸립니다.
+                > 실기기로 바닥을 스캔한 뒤 탭하면 “평면을 찾았어요!” 문구가 뜨고 콘솔에 좌표가 찍힙니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator-excerpt.swift", previousFile: "3-5-ARCoordinator-before.swift")
             }
@@ -165,15 +165,17 @@
 
         @Steps {
             @Step {
-                `ARCoordinator.swift`에서 클래스의 마지막 닫는 중괄호(`}`) 바로 앞에
-                `place(_:at:in:)` 메서드를 추가하세요. 우선 `AnchorEntity(world: transform)`으로
-                raycast 결과 위치에 앵커부터 만듭니다.
+                앵커를 만들고, 높이를 보정하고, 씬에 등록하는 세 단계를 그림으로 살펴보세요.
+
+                @Image(source: raycast-domino-placement.svg, alt: "raycast 히트 지점에 AnchorEntity를 만들고, 도미노를 높이의 절반만큼 올려 보정한 뒤, 앵커의 자식으로 등록해 씬에 반영하는 네 단계를 왼쪽에서 오른쪽으로 보여주는 개념도")
+            }
+
+            @Step {
+                `ARCoordinator.swift`에 `place(_:at:in:)` 메서드를 추가하세요. 우선
+                `AnchorEntity(world: transform)`으로 raycast 결과 위치에 앵커부터 만듭니다.
 
                 > Note: 앞서 물리 바닥에서 썼던 것과 같은 방식입니다. 앵커는 특정 위치에
                 > 고정된 기준점이고, 여기에 자식으로 붙인 엔티티는 그 위치를 그대로 따라갑니다.
-
-                > Note: 코드 화면에서는 기존 프로퍼티와 메서드를 생략했습니다.
-                > 기존 코드는 유지하고, 새 메서드만 클래스 안에 추가하세요.
 
                 > Note: 매개변수 타입 `simd_float4x4`를 쓰려면 파일 위쪽에 `import simd`가
                 > 필요합니다. 아직 없다면 다른 `import`문 옆에 추가하세요.
@@ -193,11 +195,10 @@
             @Step {
                 앵커에 도미노를 자식으로 추가하고 씬에 앵커를 등록합니다.
 
-                > Note: 자식으로 붙이는 것과 씬에 등록하는 것은 서로 다른 역할입니다.
-                > 자식으로 붙여야 도미노가 앵커의 위치를 따라가고, `scene.addAnchor`로
-                > 등록해야 그 앵커(와 자식들)가 실제로 화면에 렌더링됩니다. 둘 중 하나만
-                > 하면 도미노가 보이지 않습니다. 이제 탭한 자리에 도미노가 세워진 채로
-                > 나타납니다.
+                > Note: 자식으로 붙이는 것과 씬에 등록하는 건 하는 일이 달라요. 자식으로
+                > 붙여야 도미노가 앵커를 따라가고, `scene.addAnchor`로 등록해야 화면에
+                > 실제로 보입니다. 둘 다 해야 도미노가 나타납니다. 이제 탭한 자리에
+                > 도미노가 서 있는 걸 볼 수 있어요.
 
                 @Code(name: "ARCoordinator.swift", file: "3-6-ARCoordinator.swift", previousFile: "3-6b-ARCoordinator.swift")
             }
@@ -233,7 +234,7 @@
             }
 
             @Step {
-                탭할 때마다 도미노를 하나씩 추가해 줄을 만들어보세요. 흰 원은 다음 탭 위치를 나타냅니다. 자동 정렬 없이 사용자가 간격을 맞춥니다.
+                탭할 때마다 도미노를 하나씩 추가해 줄을 만들어보세요. 자동 정렬은 없어서 간격은 직접 맞춰야 합니다.
 
                 @Image(source: tap-placement-illustration.png, alt: "책상 위에 빨간 도미노 여섯 개가 줄지어 서 있고 다음 탭 위치가 원으로 표시된 배치 개념도")
             }

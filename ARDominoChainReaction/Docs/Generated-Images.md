@@ -301,3 +301,20 @@ Saved in ARDominoChainReaction.docc/Resources/.
 Prompt:
 
 Use case: style-transfer. Create one landscape 1536x1024 AR tutorial chapter hero image, matching the provided reference's plain neutral gray seamless studio floor/background, simple realistic 3D render, soft diffuse lighting, subtle contact shadows, elevated three-quarter camera. Use ONLY red matte sharp-edged rectangular cuboids matching the reference's red object, dimensions width 8, height 20, depth 4; no pips, no bevels, no wood, no text, no labels, no UI, no hands, no phone. Keep generous margins and clear silhouette. Reference is style and red block shape guidance, not a comparison layout. Subject: SIX identical red cuboid dominoes aligned along their thin depth direction in a physically plausible chain reaction. First lies almost flat, second leans strongly onto third, third tilts slightly, last three remain upright. All rotate around bottom edges toward the next block, remain in contact with floor; no floating or intersecting blocks. Diagonal arrangement, clearly readable changing tilt angles, no arrows or motion effects.
+
+## domino-blender-demo.gif
+
+실제 영상 `domino-final-demo.mp4`의 나무 도미노, 직선 배치, 회색 카펫 바닥, 연쇄 충돌을 참고한 Blender 재현 애니메이션입니다. 실제 촬영 영상이 아닙니다. 프로젝트의 `Sources/ARDominoChainReaction/domino.usdz` 모델과 재질을 직접 가져왔습니다.
+
+- 가로형 960×540, 24fps, 96프레임, 4초 반복.
+- 도미노 11개. 첫 도미노를 기울인 뒤 나머지 움직임은 강체 충돌로 계산합니다.
+- Blender Cycles 렌더링, FFmpeg의 공통 팔레트로 GIF 인코딩.
+- 사용 위치: 튜토리얼 목차 표지, 6장 마지막 완료 단계.
+- 재현 스크립트: `Docs/Tools/render_domino_demo.py`.
+
+재생성 예시 (저장소 루트에서 실행):
+
+```sh
+/Applications/Blender.app/Contents/MacOS/Blender -b --python ARDominoChainReaction/Docs/Tools/render_domino_demo.py -- /tmp/techmap-domino-render
+ffmpeg -y -framerate 24 -i /tmp/techmap-domino-render/frame-%04d.png -filter_complex '[0:v]split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=3' -loop 0 ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif
+```
