@@ -41,18 +41,24 @@
                 도미노가 바닥 아래로 떨어지지 않고 서 있을 수 있도록 보이지 않는 물리 바닥을
                 만드는 역할을 합니다.
 
-                `AnchorEntity(anchor: planeAnchor)`로 그 평면에 그대로 붙는 앵커를 만들고, 그 밑에
-                보이지 않는 `Entity`를 자식으로 넣습니다.
-
-                > Note: `addPhysicsFloor`를 `DispatchQueue.main.async`로 감싼 이유는, 씬에
-                > 엔티티를 추가하는 게 메인 스레드에서 실행해야 하는 UIKit/RealityKit
-                > 작업이기 때문입니다.
+                `AnchorEntity(anchor: planeAnchor)`로 그
+                평면에 그대로 붙는 앵커를 만들고, 그 밑에 보이지 않는 `Entity`를 자식으로 넣습니다.
 
                 > Note: `AnchorEntity(anchor: planeAnchor)`는 특정 평면에 직접 연결돼 있어
                 > 평면이 갱신되면 자동으로 따라가고, 물리 바닥은 눈에 보일 필요가 없어
                 > `ModelEntity` 대신 빈 `Entity`를 씁니다.
 
-                @Code(name: "ARCoordinator.swift", file: "3-2a-ARCoordinator-excerpt.swift", previousFile: "3-2a-ARCoordinator-before.swift")
+                @Code(name: "ARCoordinator.swift", file: "3-2a-func-ARCoordinator-excerpt.swift", previousFile: "3-2a-ARCoordinator-before.swift")
+            }
+
+            @Step {
+                **평면을 감지하면 물리 바닥을 만드는 함수를 호출합니다.** `session(_:didAdd:)`에
+                `addPhysicsFloor(for:)` 호출을 추가하세요.
+
+                > Note: `DispatchQueue.main.async`로 감싼 이유는, 씬에 엔티티를 추가하는 게
+                > 메인 스레드에서 실행해야 하는 UIKit/RealityKit 작업이기 때문입니다.
+
+                @Code(name: "ARCoordinator.swift", file: "3-2a-ARCoordinator-excerpt.swift", previousFile: "3-2a-func-ARCoordinator-excerpt.swift")
             }
 
             @Step {
@@ -118,11 +124,9 @@
             }
 
             @Step {
-                **탭 제스처를 연결합니다.** `ARViewContainer.swift`의 구조체 안에서,
-                `configureDebugOptions(for:)` 메서드가 끝나는 중괄호(`}`) 다음에
-                `setupTapGesture(on:coordinator:)` 메서드를 추가하세요.
-                이어서 `makeUIView(context:)` 안의 `configureDebugOptions(for:)` 호출 아래에
-                `setupTapGesture(on: arView, coordinator: context.coordinator)`를 추가하세요.
+                **탭 제스처를 연결합니다.** `ARViewContainer.swift`의 구조체 안에
+                `setupTapGesture(on:coordinator:)` 메서드를 추가하고, `makeUIView(context:)`에
+                `setupTapGesture(on: arView, coordinator: context.coordinator)` 호출을 추가하세요.
 
                 > Note: `setupTapGesture`는 `UITapGestureRecognizer`를 만들어 target을
                 > `coordinator`로, action을 `handleTap(_:)`으로 지정한 뒤 `arView`에
@@ -136,10 +140,8 @@
             }
 
             @Step {
-                **탭한 위치에서 평면을 찾습니다.** `ARCoordinator.swift`에서 `handleTap(_:)`
-                메서드가 끝나는 중괄호(`}`) 다음, `makeDominoEntity()` 바로 위에
-                `raycastResult(for:in:)` 메서드 전체를 추가하세요. 이어서 기존 `handleTap(_:)`의
-                본문을 수정합니다.
+                **탭한 위치에서 평면을 찾습니다.** `ARCoordinator.swift`에 `raycastResult(for:in:)`
+                메서드 전체를 추가하세요. 이어서 기존 `handleTap(_:)`의 본문을 수정합니다.
 
                 > Note: 새 메서드는 `ARCoordinator` 클래스 안에, `handleTap(_:)`과 같은 들여쓰기로
                 > 작성합니다. `handleTap(_:)` 내부에 넣지 마세요. 앞에서 만든 다른 메서드는 그대로 둡니다.
