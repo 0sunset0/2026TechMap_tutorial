@@ -236,7 +236,7 @@
             @Step {
                 탭할 때마다 도미노를 하나씩 추가해 줄을 만들어보세요. 자동 정렬은 없어서 간격은 직접 맞춰야 합니다.
 
-                @Image(source: tap-placement-illustration.png, alt: "책상 위에 빨간 도미노 여섯 개가 줄지어 서 있고 다음 탭 위치가 원으로 표시된 배치 개념도")
+                @Image(source: tap-placement-hero.png, alt: "회색 바닥 위에 빨간 도미노 여섯 개가 일정한 간격으로 대각선으로 줄지어 서 있는 배치 개념도")
             }
         }
     }

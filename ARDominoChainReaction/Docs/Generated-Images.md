@@ -26,7 +26,9 @@ Educational 3D illustration, landscape 3:2, two equal side-by-side panels separa
 Edit only the LEFT panel of this two-panel educational comparison. The left red vertical rectangle MUST be rendered as a continuous opaque red block IN FRONT OF the hand: paint the entire vertical red domino silhouette from its top to its bottom OVER the middle of the fingers, completely hiding the fingers wherever the rectangle intersects them. This deliberately depicts INCORRECT AR compositing when occlusion is disabled. Keep right panel exactly unchanged: hand hides middle of red block correctly. Keep composition, lighting, desk and hand outside left domino silhouette. No text.
 ```
 
-## tap-placement-illustration.png
+## tap-placement-illustration.png (사용 중단)
+
+Chapter4 배너와 마지막 스텝에서 모두 `tap-placement-hero.png`로 교체하며 삭제했습니다. 대체 이유: 챕터 대표 이미지 스타일을 통일하기 위함(원래 두 곳에서 서로 다른 이미지를 썼음).
 
 프롬프트:
 
@@ -34,7 +36,9 @@ Edit only the LEFT panel of this two-panel educational comparison. The left red 
 Educational polished 3D illustration for AR domino tutorial, landscape 3:2. Six identical plain red thin rectangular domino blocks stand upright in a straight evenly spaced row on pale oak tabletop. Each has proportions width 8 height 20 depth 4; row extends along thin depth direction so toppling can propagate. Three-quarter view, all six fully visible, all bottoms rest on table, small gaps less than height. At empty next position a subtle circular touch marker suggests where to tap next. Soft natural light and quiet room background. No hands, no phone frames, no text, no pips or markings on red blocks, no arrows, no UI. Illustrative rendering, not claimed as screenshot.
 ```
 
-## chain-reaction-illustration.png
+## chain-reaction-illustration.png (사용 중단)
+
+Chapter5 마지막 스텝에서 `drag-to-push-hero.png`로 교체하며 삭제했습니다. 대체 이유: 챕터 대표 이미지 스타일을 통일하기 위함(원래 두 곳에서 서로 다른 이미지를 썼음).
 
 프롬프트:
 

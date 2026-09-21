@@ -55,8 +55,8 @@
 
 - [x] Chapter1: `feature-points-illustration.png` — 설명 및 대체 텍스트 포함
 - [x] Chapter2: `people-occlusion-illustration.png` — 설명 및 대체 텍스트 포함
-- [x] Chapter3: `tap-placement-illustration.png` — 설명 및 대체 텍스트 포함
-- [x] Chapter4: `chain-reaction-illustration.png` — 설명 및 대체 텍스트 포함
+- [x] Chapter3: `tap-placement-hero.png` — 설명 및 대체 텍스트 포함 (구 `tap-placement-illustration.png`에서 교체)
+- [x] Chapter4: `drag-to-push-hero.png` — 설명 및 대체 텍스트 포함 (구 `chain-reaction-illustration.png`에서 교체)
 - [x] Chapter5: `mesh-usdz-actual-comparison.png` — 실제 USDZ 직접 렌더링으로 교체, 설명 및 대체 텍스트 포함
 
 생성 프롬프트와 사용 도구는 [Generated-Images.md](Generated-Images.md)에 기록했습니다.
