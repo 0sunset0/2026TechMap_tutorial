@@ -17,3 +17,6 @@ ARDominoChainReaction.xcodeproj/
 
 # macOS
 .DS_Store
+
+# OMC local state and logs
+.omc/
