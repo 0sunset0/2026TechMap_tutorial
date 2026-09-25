@@ -12,7 +12,9 @@
 Educational editorial 3D illustration for an AR programming tutorial. Wide landscape 3:2. Camera-view-like view of an empty real oak desk in a softly lit room with a book and plant in background; small bright yellow feature-point dots sparsely attached to visually distinctive desk corners, wood texture and book edges. No dominoes yet. Show spatial tracking visually, no connecting mesh, no plane grid. Clean realistic materials with subtly illustrative rendering. No phone frame, no UI, no text, no logos. This is a conceptual illustration, not a screenshot.
 ```
 
-## people-occlusion-illustration.png
+## people-occlusion-illustration.png (사용 중단)
+
+비율이 코드의 8×20×4cm와 맞지 않아 `people-occlusion-proportions.png`로 대체했고, 2026-09-25에 파일을 삭제했습니다.
 
 프롬프트:
 
@@ -46,7 +48,9 @@ Chapter5 마지막 스텝에서 `drag-to-push-hero.png`로 교체하며 삭제�
 Educational polished 3D illustration of physically plausible domino chain reaction on pale oak desk, landscape 3:2. Eight identical plain red slender rectangular blocks in a single straight row, row runs left foreground to right background along thin-depth direction. Leftmost blocks already lying down, middle blocks progressively leaning into next neighbor, last three still upright. Domino spacing less than block height so tilted blocks contact neighbors; clean visible contact sequence, gravity grounded, nothing floating or exploding. Each block proportions width 8 height 20 depth 4. Soft daylight, quiet background. No hands, no text, no motion arrows, no phone, no UI, no pips. Instructional 3D illustration rather than screenshot.
 ```
 
-## mesh-usdz-comparison-illustration.png
+## mesh-usdz-comparison-illustration.png (사용 중단)
+
+실제 모델과 형태가 달라 `mesh-usdz-actual-comparison.png`로 대체했고, 2026-09-25에 파일을 삭제했습니다.
 
 프롬프트:
 
@@ -74,28 +78,42 @@ Create a clean instructional UI illustration for a Korean Xcode tutorial, landsc
 
 ## xcode-target-membership.png
 
-내장 image_gen으로 생성한 Step 4 타겟 멤버십 예시. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-target-membership.png`.
+Step 4 타겟 멤버십 예시. 2026-09-25에 사용자가 첨부한 실제 Xcode 파일 추가 옵션 화면(다크 모드)을 참고해, built-in image_gen으로 라이트톤으로 다시 만들었습니다. 실제 캡처가 아닌 설명용 생성 이미지입니다. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-target-membership.png`.
 
 프롬프트:
+
+```text
+Create a faithful LIGHT MODE version of input image 1, an Xcode file import options dialog. Input image 1 is the exact UI content and arrangement reference. Input image 2 is ONLY the light white/gray palette and blue instructional highlight style reference; do not reproduce its File Inspector or editor layout. Landscape 1536x1024, entire dialog visible, rounded window, white background, very light gray panels, thin gray borders, dark crisp macOS sans-serif text, soft subtle shadow. Heading exactly "Choose options for adding these files:". Below it label "Action:" and dropdown "Copy files to destination". Below that label "Targets:" and a large white bordered list with exactly three rows: first blue CHECKED checkbox, small app icon and exact text "ARDominoChainReaction"; second EMPTY checkbox and text "ARDominoChainReactionTests"; third EMPTY checkbox and text "ARDominoChainReactionUITests". Keep all full names legible, ample width, no truncation. Only main app target checked. Generous blank area below the three rows within list like screenshot. Bottom left button "Cancel", bottom right BLUE enabled button "Finish". Emphasize the first target row with a thin blue rounded outline and very pale blue tint, plus one short blue arrow from open whitespace on the left pointing at the CHECKED blue app target checkbox, not its label. Preserve reference image 1's layout and ordering, converting dark appearance to light. No File Inspector, no project navigator, no extra checkboxes, no Copy items if needed option, no Add button, no Korean captions, no warning text, no added filename. This is a polished instructional UI illustration matching existing light-tone tutorial pictures.
+```
+
+### 이전 버전 (2026-09-08)
+
+내장 image_gen으로 생성한 Step 4 타겟 멤버십 예시. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-target-membership.png`.
+
+이전 프롬프트:
 
 ```text
 Create a focused instructional Xcode UI illustration for a programming tutorial, landscape 1536x1024, light theme, crisp legible typography. Show simplified Xcode window with project navigator on LEFT and File Inspector on RIGHT. Left tree: project "ARDominoChainReaction", nested folder "Sources", nested folder "ARDominoChainReaction", selected file "domino.usdz" highlighted blue. Center is quiet empty pale gray editor space, no invented 3D model preview. Right File Inspector has document icon selected at top, title "File Inspector", section "Identity and Type" with "Name" and value "domino.usdz". Below it expanded section headed exactly "Target Membership". Beneath this is a clearly CHECKED blue square checkbox with white checkmark, followed by exact app target name "ARDominoChainReaction". Give right pane enough width so name fits without truncation. Add a thin blue rounded rectangle callout around this Target Membership section and one small blue arrow pointing at checked checkbox. Readability and exact spelling are essential. No modal, no Add to targets dialog, no other checkboxes, no Korean text, no decorative stripes, no extra banners, no warning messages. This is a simplified explanatory illustration of File Inspector target membership, not an exact screenshot of a specific Xcode release.
 ```
-
-
-
 ## xcode-ios-app-template.png
 
-내장 image_gen으로 생성한 프로젝트 준비 Step 1 예시. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-ios-app-template.png`.
+프로젝트 준비 Step 1 예시. 2026-09-25에 사용자가 첨부한 실제 Xcode 템플릿 선택 화면(다크 모드)의 배치를 유지하고, built-in image_gen으로 라이트톤과 파란 강조 화살표를 적용해 다시 만들었습니다. 실제 캡처가 아닌 설명용 생성 이미지입니다. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-ios-app-template.png`.
 
 프롬프트:
 
 ```text
-Create a clean instructional Xcode new project template chooser UI illustration, landscape 1536x1024, light macOS theme, crisp readable typography. A single centered rounded macOS dialog, title exactly "Choose a template for your new project:". Across upper area tabs "Multiplatform", "iOS", "macOS", "watchOS", "tvOS", "visionOS"; iOS visibly selected with blue highlight. Below section label "Application". A template grid contains three clearly separated tiles: "App", "Document App", "Game". The FIRST tile "App" is selected with pale blue rounded rectangular background and distinct blue border, showing a simple blue application icon. Other tiles neutral gray. Two subtle blue callout arrows only: one points to selected iOS tab and another to selected App tile. Bottom left "Cancel", bottom right prominent blue enabled "Next" button. No editor, no project options form, no code, no AR template, no extra text, no Korean lettering. Plenty of whitespace, all words correctly spelled and fully visible. Focus is selecting iOS platform and standard App template. Simplified instructional illustration, not exact screenshot of a specific Xcode release.
+Edit reference image 1 into a clean LIGHT MODE Xcode template picker tutorial illustration. Reference 1 is the exact content/layout target. Reference 2 provides the existing tutorial's white/light gray visual style and blue instructional arrows ONLY. Preserve ALL template choices and their arrangement from reference 1, never simplify to the three cards of reference 2. Landscape 1536x1024. Whole dialog visible, rounded corners, white outside background, very light gray window, subtle gray borders, dark crisp legible sans-serif text, blue outline template icons. Heading exactly "Choose a template for your new project:". Top tabs in order: Multiplatform, iOS, macOS, watchOS, tvOS, visionOS, DriverKit, Other. iOS selected with blue background white text. Filter field at upper right. Application section: first row App (selected), Document App, Game, Augmented Reality App, App Playground. Second row Sticker Pack App, iMessage App, Safari Extension App. Lower Framework & Library section with Framework, Static Library, Metal Library. Preserve blue line icon forms in original screenshot, including flying saucer Game and dashed cube Augmented Reality App. App icon tile selected with pale blue background and blue thin rounded outline; label App white on blue pill. Other template labels dark gray and unselected. Scrollbar on right, footer Cancel left, disabled Previous and blue Next right. Add exactly two small blue instructional arrows from clear whitespace: one pointing to iOS tab, one to selected App tile, without covering any text or icons. No Korean annotation, no other labels, no warning or strike-through on AR template. Match polished light-tone existing tutorial images, retaining reference screenshot's complete grid. Do not crop any buttons or labels.
 ```
 
+### 이전 버전 (2026-09-08)
 
+내장 image_gen으로 생성한 프로젝트 준비 Step 1 예시. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-ios-app-template.png`.
 
+이전 프롬프트:
+
+```text
+Create a clean instructional Xcode new project template chooser UI illustration, landscape 1536x1024, light macOS theme, crisp readable typography. A single centered rounded macOS dialog, title exactly "Choose a template for your new project:". Across upper area tabs "Multiplatform", "iOS", "macOS", "watchOS", "tvOS", "visionOS"; iOS visibly selected with blue highlight. Below section label "Application". A template grid contains three clearly separated tiles: "App", "Document App", "Game". The FIRST tile "App" is selected with pale blue rounded rectangular background and distinct blue border, showing a simple blue application icon. Other tiles neutral gray. Two subtle blue callout arrows only: one points to selected iOS tab and another to selected App tile. Bottom left "Cancel", bottom right prominent blue enabled "Next" button. No editor, no project options form, no code, no AR template, no extra text, no Korean lettering. Plenty of whitespace, all words correctly spelled and fully visible. Focus is selecting iOS platform and standard App template. Simplified instructional illustration, not exact screenshot of a specific Xcode release.
+```
 ## xcode-project-options.png
 
 내장 image_gen으로 생성. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-project-options.png`.
@@ -298,7 +316,9 @@ Prompt:
 
 Use case: style-transfer. Create one landscape 1536x1024 AR tutorial chapter hero image, matching the provided reference's plain neutral gray seamless studio floor/background, simple realistic 3D render, soft diffuse lighting, subtle contact shadows, elevated three-quarter camera. Use ONLY red matte sharp-edged rectangular cuboids matching the reference's red object, dimensions width 8, height 20, depth 4; no pips, no bevels, no wood, no text, no labels, no UI, no hands, no phone. Keep generous margins and clear silhouette. Reference is style and red block shape guidance, not a comparison layout. Subject: exactly SIX identical upright red cuboid dominoes standing in one straight evenly spaced line along their thin depth direction, receding diagonally across the gray floor. All upright, all distinct, no overlapping silhouettes excessively. Show one subtle thin blue circular tap target on the floor at the next empty position at the front of the line; no other graphic overlays. Composition shows adding blocks one at a time.
 
-### drag-to-push-hero.png
+### drag-to-push-hero.png (사용 중단)
+
+Chapter5 배너, 목차 썸네일, 마지막 스텝을 `finger-drag-domino-illustration.png`로 바꾸면서 쓰지 않게 되어 2026-09-25에 파일을 삭제했습니다.
 
 Saved in ARDominoChainReaction.docc/Resources/.
 
@@ -321,4 +341,27 @@ Use case: style-transfer. Create one landscape 1536x1024 AR tutorial chapter her
 ```sh
 /Applications/Blender.app/Contents/MacOS/Blender -b --python ARDominoChainReaction/Docs/Tools/render_domino_demo.py -- /tmp/techmap-domino-render
 ffmpeg -y -framerate 24 -i /tmp/techmap-domino-render/frame-%04d.png -filter_complex '[0:v]split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=3' -loop 0 ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif
+```
+
+## finger-drag-domino-illustration.png
+
+Chapter5 마지막 스텝과 배너, 목차 썸네일에서 쓰는 손가락 드래그 삽화입니다. built-in image_gen으로 만든 설명용 생성 이미지이며 실제 앱 캡처가 아닙니다. 저장 위치: `ARDominoChainReaction.docc/Resources/finger-drag-domino-illustration.png`. 참조: `mesh-usdz-actual-comparison.png`.
+
+### 현재 버전: 빨간 도미노 편집 (2026-09-25)
+
+처음 버전은 화면 속 도미노가 나무 재질이었습니다. 하지만 USDZ 나무 모델은 Chapter6에서 처음 나오므로 빨간색으로 바꿨습니다. 드래그 화살표도 다음 도미노 쪽인 오른쪽 위 방향으로 고쳤습니다.
+
+편집 프롬프트:
+
+```text
+Edit this existing tutorial illustration with ONLY two corrections. 1. Replace the wood material on ALL SIX domino blocks INSIDE THE PHONE SCREEN with solid matte RED, matching the red blocks outside the screen. No wood grain whatsoever on any domino. Preserve their exact sharp cuboid shapes, dimensions, positions, lighting, contact shadows and upright arrangement. Keep the wood FLOOR unchanged. 2. Replace the current horizontal right-pointing pale blue gesture arrow with a short pale blue arrow pointing DIAGONALLY UP AND RIGHT, toward the NEXT domino in the row (roughly 2 o'clock, following the domino chain into the distance). Arrow tail beside the touching index fingertip at the front block, arrowhead toward the second block; clearly diagonal, never horizontal. Keep arrow small and visible, do not obscure the fingertip. Preserve everything else: realistic hands and their exact pose, black portrait phone, composition, softly blurred room and outside red blocks, warm daylight, photographic rendering, landscape 3:2 resolution 1536x1024. No text or extra UI.
+```
+
+### 처음 버전 (2026-09-25, 대체됨)
+
+생성 프롬프트:
+
+```text
+Use case: photorealistic-natural. Create a landscape 3:2 (1536x1024) photorealistic instructional illustration for an AR domino tutorial. Reference image is ONLY for domino shape/material: plain rectangular blocks, no pips or markings, natural warm wood grain like the right-hand reference block, proportions width 8 height 20 depth 4. Not a split-screen composition.
+Over-the-shoulder close-up of a person holding a realistic modern unbranded smartphone in their left hand, portrait orientation, camera pointing down toward an indoor pale oak floor. Right index finger visibly touches the glass exactly over the nearest domino on screen, performing a short rightward drag. Natural plausible anatomy, exactly two hands, realistic phone-to-hand scale. Phone occupies a large central portion of composition, entire screen visible and legible visually. On the screen an edge-to-edge live AR camera view of that same floor with six upright warm wood-grain domino blocks in one straight evenly spaced row receding diagonally from lower left foreground to upper right background; front block large enough to identify fingertip contact. All blocks still mostly upright at the instant of drag. A single short faint pale blue rightward motion arrow just below the touching fingertip on the glass demonstrates the gesture, unobtrusive. Outside the phone, softly blurred several red upright plain domino blocks on the floor being viewed, per the requested scene; inside phone the corresponding dominoes are rendered with the tutorial's wood material. Align floor perspective coherently. Soft natural window daylight, clean warm neutral interior, shallow depth of field, sharp phone screen and touching index fingertip. Clean photographic-quality 3D illustration. No text, no letters, no logos, no app controls, no status bar, no UI overlays except the requested faint gesture arrow. No extra fingers, no floating hands, no pips, no ornate domino designs. Primary teaching goal: touch the on-screen front domino and gently swipe right.
 ```
