@@ -1,0 +1,11 @@
+# 화면 도미노 드래그 삽화
+
+도구: built-in image_gen. 실제 앱 캡처가 아닌 설명용 생성 이미지.
+파일: `../ARDominoChainReaction.docc/Resources/finger-drag-domino-illustration.png`
+참조: `mesh-usdz-actual-comparison.png`
+
+## 생성 프롬프트
+
+Use case: photorealistic-natural. Create a landscape 3:2 (1536x1024) photorealistic instructional illustration for an AR domino tutorial. Reference image is ONLY for domino shape/material: plain rectangular blocks, no pips or markings, natural warm wood grain like the right-hand reference block, proportions width 8 height 20 depth 4. Not a split-screen composition.
+Over-the-shoulder close-up of a person holding a realistic modern unbranded smartphone in their left hand, portrait orientation, camera pointing down toward an indoor pale oak floor. Right index finger visibly touches the glass exactly over the nearest domino on screen, performing a short rightward drag. Natural plausible anatomy, exactly two hands, realistic phone-to-hand scale. Phone occupies a large central portion of composition, entire screen visible and legible visually. On the screen an edge-to-edge live AR camera view of that same floor with six upright warm wood-grain domino blocks in one straight evenly spaced row receding diagonally from lower left foreground to upper right background; front block large enough to identify fingertip contact. All blocks still mostly upright at the instant of drag. A single short faint pale blue rightward motion arrow just below the touching fingertip on the glass demonstrates the gesture, unobtrusive. Outside the phone, softly blurred several red upright plain domino blocks on the floor being viewed, per the requested scene; inside phone the corresponding dominoes are rendered with the tutorial's wood material. Align floor perspective coherently. Soft natural window daylight, clean warm neutral interior, shallow depth of field, sharp phone screen and touching index fingertip. Clean photographic-quality 3D illustration. No text, no letters, no logos, no app controls, no status bar, no UI overlays except the requested faint gesture arrow. No extra fingers, no floating hands, no pips, no ornate domino designs. Primary teaching goal: touch the on-screen front domino and gently swipe right.
+

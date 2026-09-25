@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
+  <title id="title">손가락으로 옮기기 vs 힘으로 밀기</title>
+  <desc id="description">왼쪽은 점선으로 표시한 원래 위치에서 오른쪽으로 손가락과 도미노가 함께 이동합니다. 오른쪽은 손가락을 놓은 위치와 도미노 사이가 떨어져 있고, 도미노만 오른쪽으로 힘을 받아 바닥 모서리를 중심으로 기울어집니다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10Z" fill="#1670e8"/>
+    </marker>
+    <!-- Finger tip is at the origin; the hand extends downward. -->
+    <g id="finger" stroke="#52677e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-13 73V0C-13 -17 13 -17 13 0V43C20 34 34 38 35 49C44 42 56 47 57 58C68 52 78 60 78 71V99C78 123 65 139 44 143H18C5 139 -1 127 -10 115L-33 86C-43 72 -26 60 -16 73L-3 87" fill="#fafcff"/>
+      <path d="M35 50v25m22 -16v22M-6 1H6" fill="none" stroke="#bfd0e5" stroke-width="2"/>
+    </g>
+    <g id="domino" stroke="#b72d31" stroke-width="2" stroke-linejoin="round">
+      <path d="M-64 -170 -46 -182 18 -182 0 -170Z" fill="#f7857b"/>
+      <path d="M0 -170 18 -182V-12L0 0Z" fill="#b72d31"/>
+      <path d="M-64 -170H0V0H-64Z" fill="#e54d49"/>
+    </g>
+    <g id="ghost" fill="none" stroke="#91a7bf" stroke-width="2" stroke-dasharray="7 6" stroke-linejoin="round">
+      <path d="M-64 0V-170L-46 -182H18V-12L0 0ZM-64 -170H0L18 -182M0 -170V0"/>
+    </g>
+  </defs>
+  <rect width="1200" height="720" rx="24" fill="#fafcff"/>
+  <g font-family="-apple-system, BlinkMacSystemFont, &quot;Apple SD Gothic Neo&quot;, sans-serif">
+    <text x="56" y="72" font-size="34" fill="#172b4d">손가락으로 옮기기 vs 힘으로 밀기</text>
+    <text x="56" y="114" font-size="20" fill="#52677e">
+      <tspan x="56">installGestures는 손가락 위치로 엔티티를 그대로 이동시키지만,</tspan>
+      <tspan x="56" dy="30">이 앱은 밀친 방향으로 임펄스를 가해 자연스럽게 넘어뜨립니다.</tspan>
+    </text>
+    <g fill="#eef5ff" stroke="#bfd0e5" stroke-width="2">
+      <rect x="48" y="186" width="528" height="478" rx="16"/>
+      <rect x="624" y="186" width="528" height="478" rx="16"/>
+    </g>
+    <path d="M600 202V648" stroke="#bfd0e5" stroke-width="1"/>
+    <g text-anchor="middle" font-size="25" fill="#172b4d">
+      <text x="312" y="234">installGestures(.translation)</text>
+      <text x="888" y="234">임펄스 (applyLinearImpulse)</text>
+    </g>
+
+    <!-- Translation: identical upright poses, with the finger attached to the final pose. -->
+    <path d="M85 505H539" fill="none" stroke="#bfd0e5" stroke-width="2"/>
+    <use href="#ghost" transform="translate(195 505)"/>
+    <use href="#domino" transform="translate(426 505)"/>
+    <path d="M204 294H423" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="312" y="276" text-anchor="middle" font-size="20" fill="#455b75">함께 이동</text>
+    <path d="M175 428H381" fill="none" stroke="#1670e8" stroke-width="2" stroke-dasharray="5 6"/>
+    <circle cx="394" cy="428" r="23" fill="none" stroke="#1670e8" stroke-width="2"/>
+    <use href="#finger" transform="translate(394 428) scale(.8)"/>
+    <text x="165" y="548" text-anchor="middle" font-size="20" fill="#455b75">원래 위치</text>
+
+    <!-- Impulse: the hand stays at release, while the block rotates around its bottom edge. -->
+    <path d="M661 505H1115" fill="none" stroke="#bfd0e5" stroke-width="2"/>
+    <use href="#ghost" transform="translate(935 505)"/>
+    <use href="#domino" transform="translate(935 505) rotate(48)"/>
+    <circle cx="935" cy="505" r="5" fill="#1670e8"/>
+    <use href="#finger" transform="translate(758 428) scale(.8)"/>
+    <path d="M740 401l-10 -12m28 7v-16m18 21 10 -12" fill="none" stroke="#52677e" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M822 294H1057" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="939" y="276" text-anchor="middle" font-size="20" fill="#455b75">힘의 방향</text>
+    <text x="780" y="568" text-anchor="middle" font-size="20" fill="#455b75">손을 놓음</text>
+
+    <g text-anchor="middle" font-size="23" fill="#172b4d">
+      <text x="312" y="620">손가락 위치로 그대로 이동</text>
+      <text x="888" y="620">밀친 방향으로 힘을 받아 쓰러짐</text>
+    </g>
+  </g>
+</svg>

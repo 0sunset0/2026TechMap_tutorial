@@ -18,8 +18,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
     private func place(_ domino: ModelEntity, at transform: simd_float4x4, in arView: ARView) {
         let anchorEntity = AnchorEntity(world: transform)
 
-        // 아직은 procedural 시절의 dominoSize 기준 오프셋을 그대로 씀 — 실제 USDZ 모델 크기와
-        // 안 맞을 수 있어서 다음 섹션에서 visualBounds로 교체함
         domino.position = SIMD3<Float>(0, dominoSize.y / 2, 0)
 
         anchorEntity.addChild(domino)

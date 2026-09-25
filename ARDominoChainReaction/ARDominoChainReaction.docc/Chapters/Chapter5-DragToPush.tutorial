@@ -20,19 +20,24 @@
 
         @Steps {
             @Step {
+                손가락 위치로 그대로 옮기는 것과, 힘을 받아 넘어지는 것이 어떻게 다른지
+                그림으로 살펴보세요.
+
+                @Image(source: translation-vs-impulse.svg, alt: "왼쪽은 installGestures(.translation)로 도미노가 손가락 위치를 그대로 따라 이동하는 모습, 오른쪽은 임펄스로 손을 놓은 자리에서 도미노가 밀친 방향으로 힘을 받아 기울어지며 쓰러지는 모습을 비교하는 개념도")
+            }
+
+            @Step {
                 **드래그를 받을 메서드를 만듭니다.** `ARCoordinator`에 `draggedDomino`
                 프로퍼티와 `handlePan` 메서드를 추가하세요. 두 케이스는 다음 스텝에서 채우고,
                 지금은 `break`로 둡니다.
 
                 > Note: `UIPanGestureRecognizer`는 손가락이 화면에 닿아 있는 동안 `state`가
                 > `.began` → `.changed`(드래그 중 계속) → `.ended` 순서로 바뀌면서
-                > `handlePan(_:)`을 반복 호출합니다. 이 앱은 시작과 끝 두 순간만 쓰므로
-                > `.changed`는 무시합니다.
-
-                > Note: 드래그는 `.began`(시작)과 `.ended`(끝)에서 `handlePan(_:)`이 각각 따로
-                > 호출됩니다. 밀 도미노는 시작 시점에 정해지지만 실제로 힘을 가하는 건 끝나는
-                > 시점이라, 그 사이 값을 기억해둘 곳이 필요해요. `handlePan(_:)`이 호출될 때마다
-                > 사라지는 지역 변수로는 안 되니 프로퍼티로 저장합니다.
+                > `handlePan(_:)`을 별개의 호출로 여러 번 실행합니다. 이 앱은 시작과 끝 두
+                > 순간만 쓰므로 `.changed`는 무시합니다. 밀 도미노는 `.began` 시점에 정해지지만
+                > 힘을 가하는 건 `.ended` 시점이라, 그 사이 값을 기억해둘 곳이 필요해요.
+                > `handlePan(_:)`이 호출될 때마다 사라지는 지역 변수로는 안 되니, 클래스
+                > 프로퍼티로 저장합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-1-ARCoordinator.swift", previousFile: "4-context-ARCoordinator.swift")
             }
@@ -42,8 +47,10 @@
                 메서드를 추가하세요. 이어서 `makeUIView(context:)`의 `setupTapGesture` 호출 아래에
                 `setupPanGesture(on: arView, coordinator: context.coordinator)`를 추가합니다.
 
-                > Note: `#selector`가 앞에서 만든 `handlePan(_:)`을 가리킵니다.
-                > 아직 드래그해도 도미노는 움직이지 않습니다. 다음 절부터 처리 코드를 채웁니다.
+                > Note: `handlePan(_:)`을 만들어도, 실제로 호출해줄 `UIPanGestureRecognizer`가
+                > 없으면 드래그해도 아무 일도 안 일어납니다. `#selector`가 앞에서 만든
+                > `handlePan(_:)`을 가리킵니다. 아직 드래그해도 도미노는 움직이지 않습니다.
+                > 다음 절부터 처리 코드를 채웁니다.
 
                 @Code(name: "ARViewContainer.swift", file: "4-1-ARViewContainer.swift", previousFile: "4-context-ARViewContainer.swift")
             }
@@ -58,8 +65,8 @@
 
         @Steps {
             @Step {
-                `handlePan(_:)`의 `case .began:` 아래 `break`를 바꿔, 드래그를 시작한
-                화면 좌표를 얻으세요.
+                `ARCoordinator`의 `handlePan(_:)`에서 `case .began:` 아래 `break`를 바꿔,
+                드래그를 시작한 화면 좌표를 얻으세요.
 
                 > Note: 드래그가 끝날 때는 손가락이 이미 다른 위치로 가 있어서, 어떤 도미노를
                 > 눌렀는지 알아내려면 시작 지점의 좌표를 지금 미리 구해둬야 합니다.
@@ -70,14 +77,14 @@
             @Step {
                 해당 화면 좌표에 있는 도미노를 찾아 지역 변수에 담습니다.
 
-                > Note: `entity(at:)`는 4장의 raycast와 다른 방식입니다. raycast는 화면
-                > 좌표에서 3D 공간으로 광선을 쏴 평면과 만나는 지점을 계산하지만, `entity(at:)`는
-                > 화면의 2D 지점에 이미 렌더링된 엔티티가 있는지 바로 찾는 히트 테스트입니다.
-                > 이미 놓인 도미노를 찾을 때는 3D 좌표를 계산할 필요가 없어서 이 방식이 더
-                > 간단합니다.
+                > Note: `entity(at:)`는 4장의 raycast와 달라요. raycast는 화면 좌표에서 3D로
+                > 광선을 쏴서 평면과 만나는 지점을 찾는 거고, `entity(at:)`는 그 화면 지점에
+                > 이미 놓여 있는 엔티티를 바로 찾아줍니다. 도미노처럼 이미 있는 걸 찾을 때는
+                > 이 방식이 더 간단해요.
 
-                > Note: 물리 바닥은 보이지 않는 `Entity`라 `ModelEntity`로의 캐스팅이 실패해서
-                > 자동으로 걸러지고, 도미노를 집었을 때만 값이 들어옵니다.
+                > Note: 물리 바닥은 4장에서 `Entity()`로 만들었지, `ModelEntity`로 만들지
+                > 않았어요. 타입 자체가 다르니 `as? ModelEntity` 캐스팅이 실패해서 자동으로
+                > 걸러지고, 실제로 `ModelEntity`인 도미노를 집었을 때만 값이 들어옵니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-2b-ARCoordinator.swift", previousFile: "4-2a-ARCoordinator.swift")
             }
@@ -102,10 +109,9 @@
 
         @Steps {
             @Step {
-                화면 드래그 벡터가 카메라의 로컬 축으로 분해되고, 수평면에 투영된 뒤, 최종
-                푸시 방향으로 조합되는 전체 흐름을 그림으로 살펴보세요.
+                화면 드래그가 카메라 기준 3D 방향으로 바뀌는 과정을 그림으로 살펴보세요.
 
-                @Image(source: drag-to-push-direction.svg, alt: "화면의 2D 드래그 벡터에서 카메라의 로컬 right/forward 축을 추출하고, Y 성분을 제거해 수평(XZ) 평면에 투영한 뒤, 두 방향을 조합해 최종 3D 푸시 방향을 구하는 네 단계를 왼쪽에서 오른쪽으로 보여주는 개념도")
+                @Image(source: drag-to-push-direction.svg, alt: "화면의 2D 드래그를 위에서 본 카메라 기준의 정면과 오른쪽으로 해석하고, 두 방향을 조합해 도미노를 밀 최종 3D 방향을 구하는 세 단계 개념도")
             }
 
             @Step {
@@ -122,8 +128,8 @@
                 **수평 방향만 남깁니다.** `cameraForward` 아래에 `rightXZ`와 `forwardXZ`를
                 추가하고 각 축의 Y를 0으로 만들어 길이를 1로 맞추세요.
 
-                > Note: 도미노는 바닥 위에서 수평으로만 밀려야 하니, 위아래(Y) 성분은 버리고
-                > 수평 방향만 남깁니다.
+                > Note: 수평 방향만 남기는 이유는, 도미노가 바닥 위에서 수평으로만
+                > 밀려야 하기 때문입니다.
 
                 @Code(name: "ARCoordinator.swift", file: "4-3b-ARCoordinator.swift", previousFile: "4-3a-ARCoordinator.swift")
             }
@@ -191,7 +197,7 @@
                 **실기기에서 결과를 확인합니다.** 도미노를 가까이 줄지어 배치하고, 하나를 손가락으로
                 밀어보세요. 옆 도미노와 부딪히며 차례로 넘어지는지 확인합니다.
 
-                @Image(source: drag-to-push-hero.png, alt: "회색 바닥 위에 빨간 도미노 여섯 개가 나란히 서 있다가 앞쪽부터 차례로 기울며 넘어지는 연쇄 반응 개념도")
+                @Image(source: finger-drag-domino-illustration.png, alt: "손으로 든 폰의 AR 카메라 화면 안에서, 손가락이 맨 앞 도미노가 보이는 지점을 터치한 채 오른쪽으로 드래그하는 모습. 배경의 실제 도미노 여러 개가 화면 속 도미노와 같은 자리에 나란히 서 있음")
             }
         }
     }

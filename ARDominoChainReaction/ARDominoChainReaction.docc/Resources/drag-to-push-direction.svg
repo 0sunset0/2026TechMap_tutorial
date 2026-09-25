@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title description">
   <title id="title">화면 드래그를 3D 힘의 방향으로 바꾸기</title>
-  <desc id="description">화면의 2D 드래그, 카메라의 오른쪽과 정면 축 추출, Y 성분을 제거한 수평 XZ 평면 투영, 두 방향을 조합한 최종 3D 푸시 방향을 네 박스로 보여줍니다.</desc>
+  <desc id="description">세 패널을 왼쪽에서 오른쪽으로 연결합니다. 스마트폰 화면의 오른쪽 위 드래그를 카메라 기준의 정면과 오른쪽으로 해석하여 도미노를 미는 하나의 방향으로 조합합니다. 가운데 패널은 위에서 본 평면도로, 카메라에서 정면과 오른쪽 화살표가 직각으로 뻗습니다.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10Z" fill="#1670e8"/>
@@ -10,76 +10,67 @@
   <g font-family="-apple-system, BlinkMacSystemFont, &quot;Apple SD Gothic Neo&quot;, sans-serif">
     <text x="56" y="72" font-size="34" fill="#172b4d">화면 드래그를 3D 힘의 방향으로 바꾸기</text>
     <text x="56" y="114" font-size="21" fill="#52677e">
-      <tspan x="56">화면의 2D 드래그를 카메라가 보는 방향 기준으로 분해하고,</tspan>
-      <tspan x="56" dy="32">수평면에 투영해 도미노를 밀 방향을 구합니다.</tspan>
+      <tspan x="56">화면의 2D 드래그를, 카메라가 지금 보고 있는 방향 기준의 정면/오른쪽으로 해석해</tspan>
+      <tspan x="56" dy="32">도미노를 밀 방향을 구합니다.</tspan>
     </text>
     <g fill="#eef5ff" stroke="#bfd0e5" stroke-width="2">
-      <rect x="48" y="224" width="240" height="408" rx="16"/>
-      <rect x="336" y="224" width="240" height="408" rx="16"/>
-      <rect x="624" y="224" width="240" height="408" rx="16"/>
-      <rect x="912" y="224" width="240" height="408" rx="16"/>
+      <rect x="48" y="202" width="320" height="446" rx="16"/>
+      <rect x="440" y="202" width="320" height="446" rx="16"/>
+      <rect x="832" y="202" width="320" height="446" rx="16"/>
     </g>
-    <g font-size="23" fill="#172b4d" text-anchor="middle">
-      <text x="168" y="269"><tspan x="168">화면 드래그 벡터</tspan><tspan x="168" dy="32">(2D)</tspan></text>
-      <text x="456" y="269"><tspan x="456">카메라의</tspan><tspan x="456" dy="32">로컬 축 추출</tspan></text>
-      <text x="744" y="269"><tspan x="744">수평(XZ) 평면에</tspan><tspan x="744" dy="32">투영</tspan></text>
-      <text x="1032" y="265"><tspan x="1032">두 방향을 조합한</tspan><tspan x="1032" dy="30">최종 푸시 방향</tspan><tspan x="1032" dy="30">(3D)</tspan></text>
+    <g font-size="24" fill="#172b4d" text-anchor="middle">
+      <text x="208" y="246"><tspan x="208">화면 드래그 벡터</tspan><tspan x="208" dy="32">(2D)</tspan></text>
+      <text x="600" y="246"><tspan x="600">위에서 본</tspan><tspan x="600" dy="32">카메라 기준 방향</tspan></text>
+      <text x="992" y="246"><tspan x="992">두 방향을 조합한</tspan><tspan x="992" dy="32">최종 푸시 방향 (3D)</tspan></text>
     </g>
 
-    <!-- 1. 화면 위에서 오른쪽 위로 드래그하는 예 -->
-    <rect x="105" y="332" width="126" height="205" rx="20" fill="#fafcff" stroke="#52677e" stroke-width="3"/>
-    <rect x="116" y="358" width="104" height="149" rx="8" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
-    <path d="M151 346 H185 M153 522 H183" fill="none" stroke="#52677e" stroke-width="3" stroke-linecap="round"/>
-    <path d="M139 476 H200 V393" fill="none" stroke="#bfd0e5" stroke-width="2" stroke-dasharray="6 5"/>
-    <circle cx="139" cy="476" r="6" fill="#1670e8"/>
-    <path d="M139 476 L200 393" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
-    <text x="124" y="498" font-size="20" fill="#455b75">시작</text>
-    <text x="183" y="380" font-size="20" fill="#455b75">끝</text>
-    <text x="168" y="578" text-anchor="middle" font-size="20" fill="#455b75">가로·세로 이동량</text>
+    <!-- 1. A single screen-space drag, from the lower left to the upper right. -->
+    <rect x="127" y="320" width="162" height="246" rx="20" fill="#fafcff" stroke="#52677e" stroke-width="3"/>
+    <rect x="139" y="350" width="138" height="184" rx="8" fill="#eef5ff" stroke="#bfd0e5" stroke-width="2"/>
+    <path d="M187 335H229M190 550H226" fill="none" stroke="#52677e" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="164" cy="499" r="6" fill="#1670e8"/>
+    <path d="M164 499 248 392" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <g font-size="20" fill="#455b75">
+      <text x="151" y="524">시작점</text>
+      <text x="216" y="379">끝점</text>
+    </g>
 
-    <!-- 2. 카메라 기준 오른쪽과 정면 방향 -->
-    <path d="M423 469 L393 387 M423 469 L536 442" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
-    <rect x="401" y="468" width="46" height="35" rx="7" fill="#fafcff" stroke="#52677e" stroke-width="3"/>
-    <path d="M447 478 L460 471 V500 L447 493 Z" fill="#fafcff" stroke="#52677e" stroke-width="3" stroke-linejoin="round"/>
-    <text x="393" y="353" text-anchor="middle" font-size="20" fill="#455b75">정면</text>
-    <text x="393" y="377" text-anchor="middle" font-size="20" fill="#455b75">forward</text>
-    <text x="522" y="400" text-anchor="middle" font-size="20" fill="#455b75">오른쪽</text>
-    <text x="522" y="424" text-anchor="middle" font-size="20" fill="#455b75">right</text>
-    <text x="456" y="578" text-anchor="middle" font-size="20" fill="#455b75">카메라가 보는 방향 기준</text>
-
-    <!-- 3. 원래 축(점선)을 Y=0인 바닥 평면 위로 투영 -->
-    <path d="M642 473 L709 414 L849 459 L782 522 Z" fill="#dceaff" stroke="#bfd0e5" stroke-width="2"/>
-    <path d="M705 479 V356 M705 479 L681 385 M705 479 L825 408" fill="none" stroke="#bfd0e5" stroke-width="2" stroke-dasharray="6 5"/>
-    <path d="M681 385 V445 M825 408 V473" fill="none" stroke="#52677e" stroke-width="2" stroke-dasharray="4 5"/>
-    <path d="M705 479 L681 445 M705 479 L825 473" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
-    <circle cx="705" cy="479" r="5" fill="#1670e8"/>
-    <text x="719" y="365" font-size="20" fill="#455b75">Y = 0</text>
-    <text x="673" y="431" font-size="20" fill="#455b75">forward</text>
-    <text x="778" y="503" font-size="20" fill="#455b75">right</text>
-    <text x="744" y="550" text-anchor="middle" font-size="20" fill="#455b75">위아래 성분 제거</text>
-    <text x="744" y="578" text-anchor="middle" font-size="20" fill="#455b75">바닥과 나란한 두 축</text>
-
-    <!-- 4. 같은 수평면 위에서 두 방향을 합한 최종 푸시 방향 -->
-    <path d="M929 475 L993 417 L1137 462 L1074 521 Z" fill="#dceaff" stroke="#bfd0e5" stroke-width="2"/>
-    <path d="M960 373 L972 365 H1005 L993 373 Z" fill="#f7857b" stroke="#b72d31" stroke-width="2"/>
-    <path d="M993 373 L1005 365 V472 L993 480 Z" fill="#b72d31" stroke="#b72d31" stroke-width="2"/>
-    <rect x="960" y="373" width="33" height="107" fill="#e54d49" stroke="#b72d31" stroke-width="2"/>
-    <path d="M1014 484 L1090 480 L1073 451 L997 455 Z" fill="none" stroke="#bfd0e5" stroke-width="2" stroke-dasharray="5 5"/>
-    <circle cx="1014" cy="484" r="5" fill="#1670e8"/>
-    <path d="M1014 484 L1073 451" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
-    <text x="1066" y="409" text-anchor="middle" font-size="20" fill="#455b75">최종 방향</text>
-    <text x="1032" y="550" text-anchor="middle" font-size="20" fill="#455b75">드래그 이동량에 맞춰</text>
-    <text x="1032" y="578" text-anchor="middle" font-size="20" fill="#455b75">두 수평 방향 조합</text>
-
+    <!-- 2. Strictly top-down: two perpendicular directions, no 3D axes or plane. -->
     <g fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)">
-      <path d="M295 424 H327"/>
-      <path d="M583 424 H615"/>
-      <path d="M871 424 H903"/>
+      <path d="M563 493V355"/>
+      <path d="M563 493H712"/>
     </g>
     <g font-size="20" fill="#455b75" text-anchor="middle">
-      <text x="312" y="401">추출</text>
-      <text x="600" y="401">투영</text>
-      <text x="888" y="401">조합</text>
+      <text x="563" y="334">정면</text>
+      <text x="694" y="472">오른쪽</text>
+    </g>
+    <g transform="translate(563 493)" stroke="#52677e" stroke-width="2.5" stroke-linejoin="round">
+      <path d="M-12 -20V-30H12V-20" fill="#fafcff"/>
+      <rect x="-23" y="-20" width="46" height="42" rx="7" fill="#fafcff"/>
+      <circle cx="0" cy="0" r="10" fill="#dceaff"/>
+      <path d="M-14 14H-8" fill="none"/>
+    </g>
+    <text x="600" y="602" text-anchor="middle" font-size="20" fill="#455b75">카메라가 지금 향한 방향 기준</text>
+
+    <!-- 3. One final push arrow on the ground beside the domino. -->
+    <path d="M859 502 959 437 1122 479 1022 544Z" fill="#dceaff" stroke="#bfd0e5" stroke-width="2" stroke-linejoin="round"/>
+    <g stroke="#b72d31" stroke-width="2" stroke-linejoin="round">
+      <path d="M904 357 927 343H981L958 357Z" fill="#f7857b"/>
+      <path d="M958 357 981 343V486L958 500Z" fill="#b72d31"/>
+      <path d="M904 357H958V500H904Z" fill="#e54d49"/>
+    </g>
+    <circle cx="991" cy="513" r="6" fill="#1670e8"/>
+    <path d="M991 513 1085 452" fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)"/>
+    <text x="1062" y="426" text-anchor="middle" font-size="20" fill="#455b75">최종 방향</text>
+    <text x="992" y="602" text-anchor="middle" font-size="20" fill="#455b75">도미노를 밀 방향</text>
+
+    <g fill="none" stroke="#1670e8" stroke-width="4" marker-end="url(#arrow)">
+      <path d="M378 425H429"/>
+      <path d="M770 425H821"/>
+    </g>
+    <g font-size="20" fill="#455b75" text-anchor="middle">
+      <text x="404" y="402">해석</text>
+      <text x="796" y="402">조합</text>
     </g>
   </g>
 </svg>
