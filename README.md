@@ -33,3 +33,7 @@ open ARDominoChainReaction.xcodeproj
 **튜토리얼 보기**
 
 이 저장소에는 위 목차를 실제로 따라 만들 수 있는 DocC 튜토리얼(`ARDominoChainReaction/ARDominoChainReaction.docc`)이 포함되어 있습니다. Xcode에서 프로젝트를 연 뒤 **Product ▸ Build Documentation**(⌃⇧⌘D)을 실행하면 Xcode 문서 창에서 1장부터 6장까지 단계별 코드와 함께 읽을 수 있습니다.
+
+**완성본 받기**
+
+6장까지 완성된 Xcode 프로젝트(xcodegen 없이 바로 열 수 있음)는 [ARDominoChainReaction-Final.zip](https://0sunset0.github.io/2026TechMap_tutorial/ARDominoChainReaction-Final.zip)에서 받을 수 있습니다. `main` 브랜치에 푸시될 때마다 GitHub Actions가 자동으로 새로 만듭니다.

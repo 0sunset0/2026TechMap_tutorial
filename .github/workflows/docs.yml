@@ -50,6 +50,17 @@ jobs:
             --hosting-base-path 2026TechMap_tutorial \
             --output-path docs-output
 
+      - name: Package final project for download
+        run: |
+          set -eo pipefail
+          pkg=/tmp/final/ARDominoChainReaction
+          mkdir -p "$pkg"
+          cp -R ARDominoChainReaction/Sources "$pkg/"
+          # The downloadable project ships app code only, without the DocC catalog.
+          grep -v 'path: ARDominoChainReaction.docc' ARDominoChainReaction/project.yml > "$pkg/project.yml"
+          (cd "$pkg" && xcodegen generate)
+          (cd /tmp/final && zip -rqX "$GITHUB_WORKSPACE/docs-output/ARDominoChainReaction-Final.zip" ARDominoChainReaction -x '*.DS_Store')
+
       - name: Add root redirect to the tutorial
         run: |
           echo '<script>window.location.href += "tutorials/ardominochainreactiontutorials"</script>' > docs-output/index.html

@@ -10,6 +10,9 @@
         몰라도 괜찮아요. 평면 감지, 엔티티와 컴포넌트, 3D 좌표계, 충돌과 임펄스 같은 개념도
         코드를 짜면서 그때그때 설명해드릴게요!
 
+        먼저 완성된 모습을 보고 싶거나 따라가다 막혔다면
+        [완성된 프로젝트](https://0sunset0.github.io/2026TechMap_tutorial/ARDominoChainReaction-Final.zip)를 받아 비교해보세요.
+
         @Image(source: domino-blender-demo.gif, alt: "실제 USDZ 나무 모델로 재현한 Blender 애니메이션: 회색 바닥 위 도미노가 차례로 넘어지는 연쇄 반응")
     }
 
@@ -59,5 +62,15 @@
         @Image(source: mesh-usdz-actual-comparison.png, alt: "USDZ 모델로 다듬기")
 
         @TutorialReference(tutorial: "doc:Chapter6-USDZPolish")
+    }
+
+    @Resources {
+        튜토리얼을 마친 결과물을 내려받아 직접 실행해보세요.
+
+        @Downloads(destination: "https://0sunset0.github.io/2026TechMap_tutorial/ARDominoChainReaction-Final.zip") {
+            6장까지 모두 완성된 Xcode 프로젝트입니다. 압축을 풀고
+            `ARDominoChainReaction.xcodeproj`를 열어 Signing & Capabilities에서 Team을 고른 뒤
+            실기기에서 실행하세요.
+        }
     }
 }
