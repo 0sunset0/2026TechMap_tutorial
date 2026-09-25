@@ -114,8 +114,9 @@
                 같은 **Info** 탭에 `Requires full screen`(`UIRequiresFullScreen`) 키를 추가합니다.
                 **Type**은 **Boolean**, **Value**는 **YES**로 설정합니다.
 
-                > Note: AR 세션은 화면 일부만 쓰는 멀티태스킹(Split View, Slide Over)과 궁합이 안
-                > 좋아서, iPad에서도 항상 전체 화면을 쓰도록 강제합니다.
+                > Note: Split View나 Slide Over로 화면을 나누면 카메라 화면이 좁은 창 안에 눌려서
+                > 공간을 제대로 인식하기 어려워집니다. 그래서 iPad에서도 항상 전체 화면을 쓰도록
+                > 강제합니다.
 
                 @Image(source: xcode-full-screen.png, alt: "Requires full screen의 Type을 Boolean, Value를 YES로 설정한 모습")
             }

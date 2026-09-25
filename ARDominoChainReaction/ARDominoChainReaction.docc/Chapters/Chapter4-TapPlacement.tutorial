@@ -16,9 +16,9 @@
 
         @Steps {
             @Step {
-                **`hasDetectedPlane` 프로퍼티와 `session(_:didAdd:)` 메서드를 추가합니다.**
-                ARKit이 새 앵커를 추가하면 이 메서드가 호출됩니다. 전달된 앵커 중 수평면을
-                찾고, 첫 감지 여부를 기록합니다.
+                **`ARCoordinator`에 `hasDetectedPlane` 프로퍼티와 `session(_:didAdd:)` 메서드를
+                추가합니다.** ARKit이 새 앵커를 추가하면 이 메서드가 호출됩니다. 전달된 앵커 중
+                수평면을 찾고, 첫 감지 여부를 기록합니다.
 
                 > Note: `hasDetectedPlane`은 평면 감지 안내를 이미 표시했는지 기억하는 값입니다.
                 > 처음에는 `false`이고, 첫 수평면을 감지하면 `true`로 바꿔 안내가 반복되지 않게 합니다.
