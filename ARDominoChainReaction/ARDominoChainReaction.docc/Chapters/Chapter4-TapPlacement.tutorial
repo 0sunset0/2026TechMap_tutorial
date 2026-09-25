@@ -55,8 +55,11 @@
                 **평면을 감지하면 물리 바닥을 만드는 함수를 호출합니다.** `session(_:didAdd:)`에
                 `addPhysicsFloor(for:)` 호출을 추가하세요.
 
-                > Note: `DispatchQueue.main.async`로 감싼 이유는, 씬에 엔티티를 추가하는 게
-                > 메인 스레드에서 실행해야 하는 UIKit/RealityKit 작업이기 때문입니다.
+                > Note: `session(_:didAdd:)` 같은 ARKit 델리게이트 콜백은 메인 스레드에서
+                > 온다는 보장이 없어요. 반면 씬에 엔티티를 추가하는 것 같은 UIKit/RealityKit
+                > 화면 작업은 반드시 메인 스레드에서 실행해야 합니다. 그래서 어느 스레드에서
+                > 호출될지 모르는 콜백 안에서 화면 작업을 할 때는 `DispatchQueue.main.async`로
+                > 감싸서 메인 스레드 실행을 보장해야 합니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-2a-ARCoordinator-excerpt.swift", previousFile: "3-2a-func-ARCoordinator-excerpt.swift")
             }
@@ -73,9 +76,11 @@
             @Step {
                 `CollisionComponent`를 붙입니다.
 
-                > Note: `CollisionComponent`는 "부딪히면 감지할 모양"만 정해줍니다. 이것만으로는
-                > 아직 도미노가 뚫고 지나가요. 다음 스텝에서 `PhysicsBodyComponent`까지 붙여야
-                > 실제로 막아섭니다.
+                > Note: `CollisionComponent`는 "부딪히면 감지할 모양"만 정해줍니다.
+                > `shapes: [.generateBox(...)]`에 `planeAnchor.planeExtent.width`와
+                > `.height`를 그대로 넘겨서, 감지된 평면의 실제 크기와 똑같은 얇은 박스(높이 1cm)
+                > 모양으로 충돌 범위를 만듭니다. 눈에 보이는 모델은 없지만, 이 박스가 바로
+                > 도미노와 부딪힐 수 있는 영역이 됩니다.
 
                 @Code(name: "ARCoordinator.swift", file: "3-3a-ARCoordinator-excerpt.swift", previousFile: "3-3a-ARCoordinator-before.swift")
             }
@@ -123,14 +128,11 @@
                 지금은 탭을 받았는지 확인하는 문구만 표시합니다. 다음 단계에서 탭 제스처를
                 이 메서드에 연결합니다.
 
-                > Note: 메서드가 아직 없는 상태에서 탭 제스처를 먼저 연결하면,
-                > "handleTap을 찾을 수 없다"는 오류가 납니다.
-
                 @Code(name: "ARCoordinator.swift", file: "3-4a-ARCoordinator-excerpt.swift", previousFile: "3-4a-ARCoordinator-before.swift")
             }
 
             @Step {
-                **탭 제스처를 연결합니다.** `ARViewContainer.swift`의 구조체 안에
+                **탭 제스처를 연결합니다.** `ARViewContainer.swift`를 고쳐서, 구조체 안에
                 `setupTapGesture` 메서드를 추가하고, `makeUIView`에 `setupTapGesture` 호출을
                 추가하세요.
 
@@ -144,13 +146,21 @@
             }
 
             @Step {
-                **탭한 위치에서 평면을 찾습니다.** `ARCoordinator.swift`에 `raycastResult(for:in:)`
-                메서드 전체를 추가하세요. 이어서 기존 `handleTap(_:)`의 본문을 수정합니다.
+                **탭한 위치에서 평면을 찾는 메서드를 추가합니다.** `ARCoordinator.swift`에
+                `raycastResult(for:in:)` 메서드 전체를 추가하세요.
 
                 > Note: `.estimatedPlane`을 쓰면 ARKit이 아직 확신하지 못한 평면도 걸립니다.
-                > 실기기로 바닥을 스캔한 뒤 탭하면 “평면을 찾았어요!” 문구가 뜨고 콘솔에 좌표가 찍힙니다.
 
-                @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator-excerpt.swift", previousFile: "3-5-ARCoordinator-before.swift")
+                @Code(name: "ARCoordinator.swift", file: "3-5-raycast-ARCoordinator-excerpt.swift", previousFile: "3-5-ARCoordinator-before.swift")
+            }
+
+            @Step {
+                기존 `handleTap(_:)`의 본문을 수정해 raycast 결과를 처리합니다.
+
+                > Note: 실기기로 바닥을 스캔한 뒤 탭하면 “평면을 찾았어요!” 문구가 뜨고 콘솔에
+                > 좌표가 찍힙니다.
+
+                @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator-excerpt.swift", previousFile: "3-5-raycast-ARCoordinator-excerpt.swift")
             }
         }
     }
@@ -177,8 +187,6 @@
                 > Note: 앞서 물리 바닥에서 썼던 것과 같은 방식입니다. 앵커는 특정 위치에
                 > 고정된 기준점이고, 여기에 자식으로 붙인 엔티티는 그 위치를 그대로 따라갑니다.
 
-                > Note: 매개변수 타입 `simd_float4x4`를 쓰려면 파일 위쪽에 `import simd`가
-                > 필요합니다. 아직 없다면 다른 `import`문 옆에 추가하세요.
 
                 @Code(name: "ARCoordinator.swift", file: "3-6a-ARCoordinator.swift", previousFile: "3-6-context-ARCoordinator.swift")
             }
@@ -205,9 +213,12 @@
         }
     }
 
-    @Section(title: "연속 탭으로 줄 세우기") {
+    @Section(title: "탭에 배치 로직 연결하기") {
         @ContentAndMedia {
-            탭할 때마다 같은 과정이 반복되니, 자연스럽게 여러 개를 이어붙일 수 있습니다.
+            아직 `place(_:at:in:)`를 호출하는 코드가 없어서, 지금까지는 탭해도 평면만 찾고
+            도미노는 생기지 않았어요. `handleTap(_:)`이 이 함수를 부르도록 고치면 탭할 때마다
+            도미노가 실제로 나타납니다. `handleTap(_:)`은 탭마다 매번 새로 호출되니, 별다른
+            추가 작업 없이 자연스럽게 여러 개가 줄지어 세워집니다.
         }
 
         @Steps {
