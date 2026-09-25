@@ -48,7 +48,7 @@
     @Chapter(name: "5. 드래그로 밀어 넘어뜨리기") {
         좌표계 변환과 Impulse.
 
-        @Image(source: drag-to-push-hero.png, alt: "드래그로 밀어 넘어뜨리기")
+        @Image(source: finger-drag-domino-illustration.png, alt: "드래그로 밀어 넘어뜨리기")
 
         @TutorialReference(tutorial: "doc:Chapter5-DragToPush")
     }

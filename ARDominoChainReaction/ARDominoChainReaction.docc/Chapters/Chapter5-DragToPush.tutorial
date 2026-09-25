@@ -5,7 +5,7 @@
         핵심입니다. 이 장이 끝나면, 도미노를 슥 밀었을 때 쓰러지고 옆으로 전파되는 걸 직접 볼 수
         있습니다.
 
-        @Image(source: drag-to-push-hero.png, alt: "드래그로 밀어 넘어뜨리기 장 배너")
+        @Image(source: finger-drag-domino-illustration.png, alt: "폰의 AR 화면 속 빨간 도미노를 손가락으로 밀어 넘어뜨리는 모습")
     }
 
     @Section(title: "팬 제스처 등록하기") {
