@@ -45,7 +45,7 @@
 
                 > Note: 빠지면 실행 시 모델을 못 찾아 런타임 에러가 납니다.
 
-                @Image(source: xcode-target-membership.png, alt: "domino.usdz를 선택한 뒤 오른쪽 File Inspector의 Target Membership에서 ARDominoChainReaction 앱 타겟이 체크된 모습")
+                @Image(source: xcode-target-membership.png, alt: "Xcode 파일 추가 옵션 창에서 Copy files to destination이 선택되고, Targets 목록의 ARDominoChainReaction 앱 타겟만 체크된 모습")
             }
         }
     }

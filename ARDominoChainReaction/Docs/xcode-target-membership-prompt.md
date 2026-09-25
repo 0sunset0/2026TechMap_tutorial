@@ -1,0 +1,9 @@
+# Step 4 타겟 멤버십 이미지
+
+도구: built-in image_gen. 사용자 첨부 파일 추가 옵션 화면을 참고한 라이트톤 설명용 이미지이며 실제 캡처가 아닙니다.
+저장: `../ARDominoChainReaction.docc/Resources/xcode-target-membership.png`
+
+## 프롬프트
+
+Create a faithful LIGHT MODE version of input image 1, an Xcode file import options dialog. Input image 1 is the exact UI content and arrangement reference. Input image 2 is ONLY the light white/gray palette and blue instructional highlight style reference; do not reproduce its File Inspector or editor layout. Landscape 1536x1024, entire dialog visible, rounded window, white background, very light gray panels, thin gray borders, dark crisp macOS sans-serif text, soft subtle shadow. Heading exactly "Choose options for adding these files:". Below it label "Action:" and dropdown "Copy files to destination". Below that label "Targets:" and a large white bordered list with exactly three rows: first blue CHECKED checkbox, small app icon and exact text "ARDominoChainReaction"; second EMPTY checkbox and text "ARDominoChainReactionTests"; third EMPTY checkbox and text "ARDominoChainReactionUITests". Keep all full names legible, ample width, no truncation. Only main app target checked. Generous blank area below the three rows within list like screenshot. Bottom left button "Cancel", bottom right BLUE enabled button "Finish". Emphasize the first target row with a thin blue rounded outline and very pale blue tint, plus one short blue arrow from open whitespace on the left pointing at the CHECKED blue app target checkbox, not its label. Preserve reference image 1's layout and ordering, converting dark appearance to light. No File Inspector, no project navigator, no extra checkboxes, no Copy items if needed option, no Add button, no Korean captions, no warning text, no added filename. This is a polished instructional UI illustration matching existing light-tone tutorial pictures.
+

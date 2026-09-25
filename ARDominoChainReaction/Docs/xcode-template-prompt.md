@@ -1,0 +1,10 @@
+# Step 1 템플릿 선택 이미지 재생성
+
+도구: built-in image_gen.
+저장 파일: `../ARDominoChainReaction.docc/Resources/xcode-ios-app-template.png`
+사용자가 첨부한 다크 모드 Xcode 화면의 템플릿 배치를 유지하고, 기존 튜토리얼의 라이트톤과 파란 강조 화살표를 적용했습니다. 실제 캡처가 아닌 설명용 생성 이미지입니다.
+
+## 프롬프트
+
+Edit reference image 1 into a clean LIGHT MODE Xcode template picker tutorial illustration. Reference 1 is the exact content/layout target. Reference 2 provides the existing tutorial's white/light gray visual style and blue instructional arrows ONLY. Preserve ALL template choices and their arrangement from reference 1, never simplify to the three cards of reference 2. Landscape 1536x1024. Whole dialog visible, rounded corners, white outside background, very light gray window, subtle gray borders, dark crisp legible sans-serif text, blue outline template icons. Heading exactly "Choose a template for your new project:". Top tabs in order: Multiplatform, iOS, macOS, watchOS, tvOS, visionOS, DriverKit, Other. iOS selected with blue background white text. Filter field at upper right. Application section: first row App (selected), Document App, Game, Augmented Reality App, App Playground. Second row Sticker Pack App, iMessage App, Safari Extension App. Lower Framework & Library section with Framework, Static Library, Metal Library. Preserve blue line icon forms in original screenshot, including flying saucer Game and dashed cube Augmented Reality App. App icon tile selected with pale blue background and blue thin rounded outline; label App white on blue pill. Other template labels dark gray and unselected. Scrollbar on right, footer Cancel left, disabled Previous and blue Next right. Add exactly two small blue instructional arrows from clear whitespace: one pointing to iOS tab, one to selected App tile, without covering any text or icons. No Korean annotation, no other labels, no warning or strike-through on AR template. Match polished light-tone existing tutorial images, retaining reference screenshot's complete grid. Do not crop any buttons or labels.
+
