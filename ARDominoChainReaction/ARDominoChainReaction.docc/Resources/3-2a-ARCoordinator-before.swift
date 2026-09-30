@@ -19,4 +19,6 @@ class ARCoordinator: NSObject, ARSessionDelegate {
             }
         }
     }
+
+    // (기존 코드 생략)
 }

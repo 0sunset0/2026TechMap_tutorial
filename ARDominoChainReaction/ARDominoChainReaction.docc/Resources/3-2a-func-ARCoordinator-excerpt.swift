@@ -17,6 +17,8 @@ class ARCoordinator: NSObject, ARSessionDelegate {
         }
     }
 
+    // (기존 코드 생략)
+
     private func addPhysicsFloor(for planeAnchor: ARPlaneAnchor) {
         guard let arView = arView else { return }
 
