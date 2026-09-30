@@ -15,6 +15,8 @@ struct ARViewContainer: UIViewRepresentable {
         return arView
     }
 
+    // (기존 코드 생략)
+
     private func setupTapGesture(on arView: ARView, coordinator: ARCoordinator) {
         let tapGesture = UITapGestureRecognizer(
             target: coordinator,

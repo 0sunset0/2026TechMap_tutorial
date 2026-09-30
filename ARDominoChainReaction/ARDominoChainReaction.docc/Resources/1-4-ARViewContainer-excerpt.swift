@@ -14,6 +14,8 @@ struct ARViewContainer: UIViewRepresentable {
         return arView
     }
 
+    // (기존 코드 생략)
+
     private func configureDebugOptions(for arView: ARView) {
         arView.debugOptions = [.showFeaturePoints]
     }
