@@ -255,17 +255,6 @@ Instructional Xcode Info tab close-up landscape 1536x1024 light macOS style whit
 ```
 
 
-## xcode-full-screen.png
-
-내장 image_gen으로 생성. 저장 위치: `ARDominoChainReaction.docc/Resources/xcode-full-screen.png`.
-
-프롬프트:
-
-```text
-Instructional Xcode Info tab close-up landscape 1536x1024 light macOS style white background crisp readable labels. Selected tab Info, heading Custom iOS Target Properties. Table columns Key, Type, Value. Single row Key Requires full screen, Type Boolean, Value YES. Value YES is clearly selected in editable dropdown, blue outlined focus and blue arrow to it. Below concise Korean caption "Requires full screen 값을 YES로 설정하세요". No code snippets, no simulator, no other properties, no checkbox that could conflict with YES. Exact labels and clean readable instructional UI.
-```
-
-
 ## finder-domino-download.png
 
 내장 image_gen으로 생성. 저장 위치: `ARDominoChainReaction.docc/Resources/finder-domino-download.png`.
