@@ -118,8 +118,8 @@
             @Step {
                 더 이상 어디서도 쓰이지 않는 `dominoSize` 상수는 이 시점에 함께 삭제합니다.
 
-                > Note: 삭제한 줄은 코드 diff에 따로 표시되지 않습니다. 클래스 위쪽에서 아래
-                > 줄을 직접 찾아 지우세요.
+                > Note: 삭제한 줄은 코드 diff에 따로 표시되지 않습니다. `dominoSize`
+                > 프로퍼티를 검색해 직접 지우세요.
                 >
                 > `private let dominoSize = SIMD3<Float>(0.08, 0.2, 0.04)`
 
