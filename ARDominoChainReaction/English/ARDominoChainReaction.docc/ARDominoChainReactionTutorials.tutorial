@@ -1,0 +1,58 @@
+@Tutorials(name: "AR Domino Chain Reaction") {
+    @Intro(title: "Build an AR Domino Chain Reaction") {
+        This tutorial is also available in [Korean](/2026TechMap_tutorial/ko/tutorials/ardominochainreactiontutorials/).
+
+        ARDominoChainReaction lets you place virtual dominoes in the real space seen by your camera and start a chain reaction with a swipe.
+
+        Across six chapters, you'll recognize space with ARKit, build dominoes with RealityKit, and push them with a drag. Finally, you'll polish the app with a realistic 3D model.
+
+        You should know basic Swift syntax, but you don't need experience with ARKit, RealityKit, or 3D modeling. You'll learn plane detection, entities and components, 3D coordinates, collisions, and impulses as you write the code.
+
+        To try the finished app or compare your work when you get stuck, download the [completed project](https://0sunset0.github.io/2026TechMap_tutorial/ARDominoChainReaction-Final-EN.zip).
+
+        @Image(source: domino-blender-demo.gif, alt: "A Blender animation using the actual wooden USDZ model, showing dominoes falling in sequence on a gray floor")
+    }
+    @Chapter(name: "1. Set Up Your Project") {
+        Learn why AR apps need camera permission and a physical device.
+
+        @Image(source: project-setup-hero.png, alt: "A Mac running Xcode and a connected iPhone ready for AR development")
+        @TutorialReference(tutorial: "doc:Chapter1-ProjectSetup")
+    }
+    @Chapter(name: "2. Display Your First AR Scene") {
+        Run an ARSession, detect planes, and bridge UIKit and SwiftUI.
+
+        @Image(source: feature-points-illustration.png, alt: "Feature points illustrate spatial tracking")
+        @TutorialReference(tutorial: "doc:Chapter2-BasicARScene")
+    }
+    @Chapter(name: "3. Create a Single Domino") {
+        Explore RealityKit's Entity-Component-System architecture.
+
+        @Image(source: domino-entity-hero.png, alt: "A single red domino")
+        @TutorialReference(tutorial: "doc:Chapter3-DominoEntity")
+    }
+    @Chapter(name: "4. Place Dominoes with a Tap") {
+        Use raycasting and an invisible physics floor.
+
+        @Image(source: tap-placement-hero.png, alt: "A row of dominoes placed with taps")
+        @TutorialReference(tutorial: "doc:Chapter4-TapPlacement")
+    }
+    @Chapter(name: "5. Push Dominoes with a Drag") {
+        Convert coordinates and apply an impulse.
+
+        @Image(source: finger-drag-domino-illustration.png, alt: "A finger pushes a domino on an AR screen")
+        @TutorialReference(tutorial: "doc:Chapter5-DragToPush")
+    }
+    @Chapter(name: "6. Polish the App with a USDZ Model") {
+        Replace a procedural mesh with a USDZ asset.
+
+        @Image(source: mesh-usdz-actual-comparison.png, alt: "A procedural red box beside a wooden USDZ model")
+        @TutorialReference(tutorial: "doc:Chapter6-USDZPolish")
+    }
+    @Resources {
+        Download the completed project and run it on your device.
+
+        @Downloads(destination: "https://0sunset0.github.io/2026TechMap_tutorial/ARDominoChainReaction-Final-EN.zip") {
+            This Xcode project includes all six chapters. Unzip it, open `ARDominoChainReaction.xcodeproj`, choose your Team in Signing & Capabilities, and run it on a physical device.
+        }
+    }
+}

@@ -1,0 +1,175 @@
+@Tutorial(time: 25) {
+    @Intro(title: "Place Dominoes with a Tap") {
+        Now you'll place the domino from Chapter 3 in the real world. Learn to turn a screen tap into a 3D position and create an invisible floor to support the dominoes.
+        By the end, you'll be able to build a row by tapping the screen.
+
+        @Image(source: tap-placement-hero.png, alt: "A row of red dominoes placed on a floor")
+    }
+    @Section(title: "Create an Invisible Physics Floor on Plane Detection") {
+        @ContentAndMedia {
+            An ARKit plane anchor (`ARPlaneAnchor`) describes where a plane exists; it doesn't participate in collisions itself.
+            To support dominoes, you'll create a separate invisible floor with physical properties.
+        }
+        @Steps {
+            @Step {
+                **Add `hasDetectedPlane` and `session(_:didAdd:)` to `ARCoordinator`.** ARKit calls this method when it adds anchors. Find horizontal planes among those anchors and record the first detection.
+
+                > Note: `hasDetectedPlane` tracks whether you've already shown the plane detection message. It starts as `false` and becomes `true` when the first horizontal plane is detected, preventing repeated notifications.
+
+                @Code(name: "ARCoordinator.swift", file: "3-1-ARCoordinator-excerpt.swift", previousFile: "3-1-ARCoordinator-before.swift")
+            }
+            @Step {
+                **Update the banner when the first horizontal plane is detected.** Change the status text inside `if !hasDetectedPlane` in `session(_:didAdd:)`.
+
+                > Note: Delegate callbacks may arrive off the main thread. Update the banner on the main thread using `DispatchQueue.main.async`.
+
+                @Code(name: "ARCoordinator.swift", file: "3-1b-ARCoordinator-excerpt.swift", previousFile: "3-1b-ARCoordinator-before.swift")
+            }
+            @Step {
+                **Create `addPhysicsFloor`.** This function uses the detected plane to create an invisible physics floor, preventing dominoes from falling below it.
+
+                Create an anchor attached to the plane with `AnchorEntity(anchor: planeAnchor)` and add an invisible `Entity` as its child.
+
+                > Note: The anchor is attached directly to the plane and follows its updates. The physics floor doesn't need a visible model, so use an empty `Entity` instead of `ModelEntity`.
+
+                @Code(name: "ARCoordinator.swift", file: "3-2a-func-ARCoordinator-excerpt.swift", previousFile: "3-2a-ARCoordinator-before.swift")
+            }
+            @Step {
+                **Call the floor creation function when a plane is detected.** Add a call to `addPhysicsFloor(for:)` in `session(_:didAdd:)`.
+
+                > Note: ARKit delegate callbacks aren't guaranteed to arrive on the main thread. UIKit and RealityKit scene operations, such as adding entities, must run there. Wrap these operations in `DispatchQueue.main.async` when handling a callback that could arrive on another thread.
+
+                @Code(name: "ARCoordinator.swift", file: "3-2a-ARCoordinator-excerpt.swift", previousFile: "3-2a-func-ARCoordinator-excerpt.swift")
+            }
+            @Step {
+                Apply `planeAnchor.center` as well.
+
+                > Note: The anchor's origin can differ from the center of the detected plane. Without this offset, the physics floor can be misaligned with the real plane.
+
+                @Code(name: "ARCoordinator.swift", file: "3-2-ARCoordinator-excerpt.swift", previousFile: "3-2-ARCoordinator-before.swift")
+            }
+            @Step {
+                Attach a `CollisionComponent`.
+
+                > Note: This component defines the collision shape. Pass `planeAnchor.planeExtent.width` and `.height` to `shapes: [.generateBox(...)]` to make a thin, 1 cm tall box matching the detected plane's dimensions. It has no visible model, but this box can collide with dominoes.
+
+                @Code(name: "ARCoordinator.swift", file: "3-3a-ARCoordinator-excerpt.swift", previousFile: "3-3a-ARCoordinator-before.swift")
+            }
+            @Step {
+                **Add a physics body that keeps the floor stationary.**
+
+                > Note: `.static` bodies don't move under gravity or collision forces. Unlike the domino's `.dynamic` body, the floor must stay in place to support dominoes and resist their collisions.
+
+                @Code(name: "ARCoordinator.swift", file: "3-3-floor-ARCoordinator.swift", previousFile: "3-3-floor-before-ARCoordinator.swift")
+            }
+            @Step {
+                **Your physics floor is ready.** The blue region in the diagram represents the invisible floor that will support the dominoes. You'll place them on it in the next section.
+
+                > Note: Blue is used for explanation only; this region isn't visible in the app.
+
+                @Image(source: physics-floor.svg, alt: "A dynamic red domino on a static physics floor, shown in blue for explanation above the real floor")
+            }
+        }
+    }
+    @Section(title: "Turn a Tap into a 3D Position with Raycasting") {
+        @ContentAndMedia {
+            The screen is 2D, but dominoes belong in 3D space. Raycasting connects the two: it casts a virtual ray from the tapped screen position through the camera and finds where it intersects a detected plane.
+        }
+        @Steps {
+            @Step {
+                Study how a ray from the tapped screen position intersects a detected plane to find a 3D point.
+
+                @Image(source: tap-raycast-position.svg, alt: "A 2D tap casts a virtual ray through the camera to a 3D hit point on a detected plane")
+            }
+            @Step {
+                **Add `handleTap(_:)` to handle screen taps.** The gesture recognizer provides the tap position. For now, only display a message confirming the tap; you'll connect the recognizer in the next step.
+
+                @Code(name: "ARCoordinator.swift", file: "3-4a-ARCoordinator-excerpt.swift", previousFile: "3-4a-ARCoordinator-before.swift")
+            }
+            @Step {
+                **Connect the tap gesture.** In `ARViewContainer.swift`, add `setupTapGesture` inside the structure and call it from `makeUIView`.
+
+                > Note: This registration lets UIKit call `handleTap(_:)` when you tap. Defining the method without connecting it won't produce any response.
+
+                > Note: On your device, tapping the screen now changes the status to "Tap detected".
+
+                @Code(name: "ARViewContainer.swift", file: "3-4-ARViewContainer-excerpt.swift", previousFile: "3-4-ARViewContainer-before.swift")
+            }
+            @Step {
+                **Add a method to find a plane at the tap position.** Add the entire `raycastResult(for:in:)` method to `ARCoordinator.swift`.
+
+                > Note: `.estimatedPlane` includes planes ARKit hasn't fully confirmed yet.
+
+                @Code(name: "ARCoordinator.swift", file: "3-5-raycast-ARCoordinator-excerpt.swift", previousFile: "3-5-ARCoordinator-before.swift")
+            }
+            @Step {
+                Update the body of `handleTap(_:)` to process the raycast result.
+
+                > Note: Scan the floor with your device, then tap it. The banner should show "Plane found!" and the console should print the coordinates.
+
+                @Code(name: "ARCoordinator.swift", file: "3-5-ARCoordinator-excerpt.swift", previousFile: "3-5-raycast-ARCoordinator-excerpt.swift")
+            }
+        }
+    }
+    @Section(title: "Place a Domino at the Raycast Result") {
+        @ContentAndMedia {
+            Placing an upright domino takes three steps: create an anchor at the hit position, correct the height offset caused by the mesh origin, and add the domino to the anchor and the scene. You'll group these operations in `place(_:at:in:)`.
+        }
+        @Steps {
+            @Step {
+                Review how to create the anchor, adjust the height, and register it in the scene.
+
+                @Image(source: raycast-domino-placement.svg, alt: "Four stages: raycast hit, world anchor, half-height offset, and adding the domino and anchor to the scene")
+            }
+            @Step {
+                Add `place(_:at:in:)` to `ARCoordinator.swift`. Start by creating an anchor at the raycast result with `AnchorEntity(world: transform)`.
+
+                > Note: As with the physics floor, an anchor provides a fixed reference point. Child entities follow that anchor's position.
+
+                @Code(name: "ARCoordinator.swift", file: "3-6a-ARCoordinator.swift", previousFile: "3-6-context-ARCoordinator.swift")
+            }
+            @Step {
+                Raise the domino's `position` by half its height along the local Y axis.
+
+                > Note: The mesh is centered on its origin. Without this adjustment, half the domino would be buried below the floor.
+
+                @Code(name: "ARCoordinator.swift", file: "3-6b-ARCoordinator.swift", previousFile: "3-6a-ARCoordinator.swift")
+            }
+            @Step {
+                Add the domino as the anchor's child, then add the anchor to the scene.
+
+                > Note: These operations do different jobs. Attaching the child makes the domino follow the anchor; `scene.addAnchor` makes it appear in the scene. Both are required. Once connected in the next section, a domino will stand where you tap.
+
+                @Code(name: "ARCoordinator.swift", file: "3-6-ARCoordinator.swift", previousFile: "3-6b-ARCoordinator.swift")
+            }
+        }
+    }
+    @Section(title: "Connect Placement to Taps") {
+        @ContentAndMedia {
+            Nothing calls `place(_:at:in:)` yet, so taps only find planes. Update `handleTap(_:)` to call it and create a domino on each tap. Because the handler runs for every tap, you can place several dominoes in a row without any extra loop.
+        }
+        @Steps {
+            @Step {
+                Replace the existing `handleTap(_:)` method with the code below. Instead of printing coordinates, call `makeDominoEntity()` and `place(_:at:in:)` to place a domino at the tapped position.
+
+                > Note: The full flow from one tap to one domino is now connected.
+
+                @Code(name: "ARCoordinator.swift", file: "3-7a-ARCoordinator-excerpt.swift", previousFile: "3-7a-ARCoordinator-before.swift")
+            }
+            @Step {
+                Store placed dominoes in an array to track their count, and update the banner to "N dominoes placed".
+
+                > Note: You can now see how many dominoes you've placed directly on the screen.
+
+                > Note: Tap repeatedly on a detected plane. Each tap adds a red domino, letting you build a row and fill your AR space.
+
+                @Code(name: "ARCoordinator.swift", file: "3-7-ARCoordinator-excerpt.swift", previousFile: "3-7-ARCoordinator-before.swift")
+            }
+            @Step {
+                Add dominoes one at a time to build a row. There is no automatic alignment, so adjust the spacing yourself.
+
+                @Image(source: tap-placement-hero.png, alt: "Six red dominoes arranged diagonally at regular intervals on a gray floor")
+            }
+        }
+    }
+}

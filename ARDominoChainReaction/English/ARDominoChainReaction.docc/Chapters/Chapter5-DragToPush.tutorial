@@ -1,0 +1,143 @@
+@Tutorial(time: 25) {
+    @Intro(title: "Push Dominoes with a Drag") {
+        Push one domino with your finger and let it knock down the next to create a chain reaction.
+        The key is turning a 2D screen drag into a physical impulse in 3D space.
+        By the end, you'll be able to swipe a domino and watch the reaction travel along the row.
+
+        @Image(source: finger-drag-domino-illustration.png, alt: "A finger pushes a red domino on a phone's AR screen")
+    }
+    @Section(title: "Register a Pan Gesture") {
+        @ContentAndMedia {
+            RealityKit provides gestures such as `installGestures(.translation)` to move entities directly with your finger.
+            That moves the entity to the finger position, rather than applying a physical impulse to knock it over.
+
+            To push dominoes in the swipe direction instead of picking them up and moving them, you'll use UIKit's `UIPanGestureRecognizer` directly.
+        }
+        @Steps {
+            @Step {
+                Compare moving an object with your finger and making it fall under an impulse.
+
+                @Image(source: translation-vs-impulse.svg, alt: "Direct translation follows the finger on the left; an impulse makes the domino tilt and fall on the right")
+            }
+            @Step {
+                **Create a drag handler.** Add the `draggedDomino` property and `handlePan` method to `ARCoordinator`. Leave both cases as `break` for now; you'll fill them in later.
+
+                > Note: While your finger is on the screen, the recognizer moves through `.began`, repeated `.changed` events, and `.ended`, calling `handlePan(_:)` separately each time. This app uses only the beginning and end. It selects a domino at `.began` but applies the impulse at `.ended`, so store the selection in a class property rather than a local variable that disappears between calls.
+
+                @Code(name: "ARCoordinator.swift", file: "4-1-ARCoordinator.swift", previousFile: "4-context-ARCoordinator.swift")
+            }
+            @Step {
+                **Connect the drag gesture.** Add `setupPanGesture(on:coordinator:)` inside `ARViewContainer`. In `makeUIView(context:)`, add `setupPanGesture(on: arView, coordinator: context.coordinator)` below the call to `setupTapGesture`.
+
+                > Note: The handler alone won't respond to drags without a recognizer calling it. `#selector` points to the `handlePan(_:)` method. Dominoes won't move yet; you'll implement the response in the following sections.
+
+                @Code(name: "ARViewContainer.swift", file: "4-1-ARViewContainer.swift", previousFile: "4-context-ARViewContainer.swift")
+            }
+        }
+    }
+    @Section(title: "Find the Domino Where the Drag Begins") {
+        @ContentAndMedia {
+            To apply an impulse when a drag ends, first remember which domino was under your finger when it began.
+        }
+        @Steps {
+            @Step {
+                In `handlePan(_:)`, replace `break` under `case .began:` with code that gets the drag's starting screen position.
+
+                > Note: By the end of a drag, your finger is elsewhere. Capture the starting position now to identify the domino you touched.
+
+                @Code(name: "ARCoordinator.swift", file: "4-2a-ARCoordinator.swift", previousFile: "4-1-ARCoordinator.swift")
+            }
+            @Step {
+                Find the domino at that screen position and store it in a local variable.
+
+                > Note: `entity(at:)` differs from Chapter 4's raycast. Raycasting finds a 3D intersection with a plane; `entity(at:)` finds an entity already at a screen position. It's simpler when selecting an existing domino.
+
+                > Note: The physics floor is an `Entity()`, not a `ModelEntity`. The `as? ModelEntity` cast filters it out, accepting only dominoes of the expected type.
+
+                @Code(name: "ARCoordinator.swift", file: "4-2b-ARCoordinator.swift", previousFile: "4-2a-ARCoordinator.swift")
+            }
+            @Step {
+                Save the selected domino in the class property so you can use it when the drag ends.
+
+                > Note: This reference remains available until `.ended`, when the selected domino receives the impulse.
+
+                @Code(name: "ARCoordinator.swift", file: "4-2-ARCoordinator.swift", previousFile: "4-2b-ARCoordinator.swift")
+            }
+        }
+    }
+    @Section(title: "Convert a 2D Drag into a Camera-Relative 3D Direction") {
+        @ContentAndMedia {
+            At the end of the drag, you can get the screen vector from its start to its end.
+            The camera rotates as you move, so screen-right isn't always world-right. Convert the vector using the camera's orientation.
+        }
+        @Steps {
+            @Step {
+                Review how a screen drag becomes a camera-relative 3D direction.
+
+                @Image(source: drag-to-push-direction.svg, alt: "A 2D drag is decomposed into camera forward and right, then combined into a 3D push direction")
+            }
+            @Step {
+                **Get the camera's orientation.** Add `pushDirection(forScreenDelta:in:)` inside `ARCoordinator`. Read the camera's right and forward axes from its transform matrix.
+
+                > Note: The camera looks along its local -Z axis, so negate the Z axis to obtain forward. Use `return .zero` temporarily until the method is complete; you won't call it yet.
+
+                @Code(name: "ARCoordinator.swift", file: "4-3a-ARCoordinator.swift", previousFile: "4-context-ARCoordinator.swift")
+            }
+            @Step {
+                **Keep only horizontal directions.** Add `rightXZ` and `forwardXZ` below `cameraForward`, set each Y component to zero, and normalize each vector to length 1.
+
+                > Note: Dominoes should be pushed horizontally across the floor, so discard the vertical component.
+
+                @Code(name: "ARCoordinator.swift", file: "4-3b-ARCoordinator.swift", previousFile: "4-3a-ARCoordinator.swift")
+            }
+            @Step {
+                **Apply the drag direction.** Add `rightAmount` and `forwardAmount`, then replace the temporary `return .zero` with code that combines and normalizes the horizontal directions.
+
+                > Note: UIKit's screen Y coordinate increases downward, so an upward drag has a negative Y value. Account for that sign in the conversion.
+
+                @Code(name: "ARCoordinator.swift", file: "4-3-ARCoordinator.swift", previousFile: "4-3b-ARCoordinator.swift")
+            }
+        }
+    }
+    @Section(title: "Apply an Impulse and Tune Its Strength") {
+        @ContentAndMedia {
+            An impulse is an instantaneous change in momentum. Unlike a continuous force applied over time, it suits a quick push.
+            Applying it once when the drag ends (`.ended`) makes the interaction simpler and more predictable than pushing throughout the drag.
+        }
+        @Steps {
+            @Step {
+                **Get the drag displacement.** Replace `break` under `case .ended:` in `handlePan(_:)`. Retrieve the saved domino and use `translation(in:)` to get the screen vector from start to end.
+
+                > Note: Clear the saved reference with `draggedDomino = nil` after retrieving it.
+
+                @Code(name: "ARCoordinator.swift", file: "4-4a-ARCoordinator.swift", previousFile: "4-2-ARCoordinator.swift")
+            }
+            @Step {
+                **Ignore short drags.** Calculate the distance and ignore drags of 20 points or less.
+
+                > Note: Even a slight brush can register as a drag, so filter out these short movements.
+
+                @Code(name: "ARCoordinator.swift", file: "4-4b-ARCoordinator.swift", previousFile: "4-4a-ARCoordinator.swift")
+            }
+            @Step {
+                **Set the push strength.** Add a constant for the impulse magnitude.
+
+                > Note: Start with 3.0. After testing on a device in the final step, increase it if the push is too weak or decrease it if it's too strong.
+
+                @Code(name: "ARCoordinator.swift", file: "4-4c-ARCoordinator.swift", previousFile: "4-4b-ARCoordinator.swift")
+            }
+            @Step {
+                **Apply the impulse in the calculated direction.** Below the distance-checking `guard`, call `pushDirection` and `applyLinearImpulse`, then update the status text.
+
+                > Note: This connects the direction calculation method you created earlier. `relativeTo: nil` interprets the direction in world coordinates.
+
+                @Code(name: "ARCoordinator.swift", file: "4-4-ARCoordinator.swift", previousFile: "4-4c-ARCoordinator.swift")
+            }
+            @Step {
+                **Test on a physical device.** Place dominoes close together in a row and push one with your finger. Check that it hits the next domino and starts a chain reaction.
+
+                @Image(source: finger-drag-domino-illustration.png, alt: "A finger touches the first red domino on an AR screen and drags diagonally up and right toward the next domino")
+            }
+        }
+    }
+}
