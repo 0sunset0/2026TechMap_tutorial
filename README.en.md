@@ -1,16 +1,22 @@
 # AR Domino Chain Reaction Tutorial
 
-[한국어](README.md)
+[한국어로 읽기](README.md)
+
+<br>
 
 ![A row of dominoes falling in a chain reaction](ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif)
 
 *This scene recreates the finished app's chain reaction in Blender, using a recording from a physical device as a reference.*
 
+<br>
+
 This repository teaches you how to build an AR domino chain reaction app with ARKit and RealityKit. Place dominoes in your space and push one to make its neighbors fall through physics simulation.
+
+<br>
 
 **👉 [Start the tutorial](https://0sunset0.github.io/2026TechMap_tutorial/en/tutorials/ardominochainreactiontutorials/)**
 
-[한국어](https://0sunset0.github.io/2026TechMap_tutorial/ko/tutorials/ardominochainreactiontutorials/) · [English](https://0sunset0.github.io/2026TechMap_tutorial/en/tutorials/ardominochainreactiontutorials/)
+<br>
 
 ## Chapters
 
@@ -23,12 +29,16 @@ This repository teaches you how to build an AR domino chain reaction app with AR
 | 5 | Push Dominoes with a Drag | Coordinate conversion and impulses |
 | 6 | Polish with a USDZ Model | Replacing a procedural mesh with a USDZ asset |
 
+<br>
+
 ## Requirements
 
 - Xcode 15 or later
 - A physical device running iOS 17.0 or later with an A12 chip or newer (iPhone XS/XR or later), supporting both ARKit world tracking and People Occlusion
 - A physical device is required because the simulator has no camera and cannot run the AR session
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+
+<br>
 
 ## Build
 
@@ -43,6 +53,8 @@ open ARDominoChainReaction.xcodeproj
 
 In Xcode, select the `ARDominoChainReaction` scheme for Korean or `ARDominoChainReaction-English` for English.
 
+<br>
+
 ## Repository Structure
 
 ```text
@@ -54,6 +66,8 @@ ARDominoChainReaction/
 ├── English/                       # English tutorials, translation mappings, and images
 └── Docs/                          # Design documents and development notes
 ```
+
+<br>
 
 ## Reference Documents
 

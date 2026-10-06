@@ -1,16 +1,22 @@
 # AR 도미노 체인리액션 튜토리얼
 
-[English](README.en.md)
+[Read this README in English](README.en.md)
+
+<br>
 
 ![도미노가 한 줄로 연쇄적으로 쓰러지는 완성 모습](ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif)
 
 *완성된 앱의 연쇄 반응을 실기기 녹화를 참고해 Blender로 재현한 장면입니다.*
 
+<br>
+
 공간에 도미노를 여러 개 세워 배치하고, 하나를 밀면 물리 시뮬레이션으로 옆 도미노가 연쇄적으로 쓰러지는 ARKit + RealityKit 기반 AR 도미노 체인리액션 앱을 만드는 튜토리얼 저장소입니다.
+
+<br>
 
 **👉 [튜토리얼 바로 보기](https://0sunset0.github.io/2026TechMap_tutorial/)**
 
-[한국어](https://0sunset0.github.io/2026TechMap_tutorial/ko/tutorials/ardominochainreactiontutorials/) · [English](https://0sunset0.github.io/2026TechMap_tutorial/en/tutorials/ardominochainreactiontutorials/)
+<br>
 
 ## 전체 목차
 
@@ -23,12 +29,16 @@
 | 5 | 드래그로 밀어 넘어뜨리기 | 좌표계 변환과 Impulse |
 | 6 | USDZ 모델로 다듬기 | 절차적 mesh에서 USDZ 에셋으로 |
 
+<br>
+
 ## 요구 사항
 
 - Xcode 15 이상
 - iOS 17.0 이상 실기기 (A12 칩 이상, iPhone XS/XR 이후). ARKit 월드 트래킹과 People Occlusion을 모두 지원합니다
 - 카메라가 없는 시뮬레이터에서는 AR 세션을 실행할 수 없어 실기기가 필요합니다
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)
+
+<br>
 
 ## 빌드하기
 
@@ -43,6 +53,8 @@ open ARDominoChainReaction.xcodeproj
 
 Xcode 상단에서 `ARDominoChainReaction`(한국어) 또는 `ARDominoChainReaction-English`(영어) scheme을 선택합니다.
 
+<br>
+
 ## 저장소 구조
 
 ```
@@ -54,6 +66,8 @@ ARDominoChainReaction/
 ├── English/                       # 영어 본문, 번역표, 영어용 이미지
 └── Docs/                           # 설계 문서와 작업 기록
 ```
+
+<br>
 
 ## 참고 문서
 
