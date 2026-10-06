@@ -18,5 +18,8 @@ ARDominoChainReaction.xcodeproj/
 # macOS
 .DS_Store
 
+# Generated English app and DocC resources for the Xcode English scheme
+ARDominoChainReaction/English/Generated/
+
 # OMC local state and logs
 .omc/

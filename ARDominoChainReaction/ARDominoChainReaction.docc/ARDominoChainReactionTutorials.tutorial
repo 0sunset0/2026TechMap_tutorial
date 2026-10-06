@@ -1,5 +1,7 @@
 @Tutorials(name: "AR 도미노 체인리액션") {
     @Intro(title: "AR 도미노 체인리액션 만들기") {
+        This tutorial is also available in [English](/2026TechMap_tutorial/en/tutorials/ardominochainreactiontutorials/).
+
         ARDominoChainReaction은 카메라로 비추는 실제 공간에 가상 도미노를 세우고, 손끝으로 밀어
         연쇄 반응을 일으키는 AR 앱이에요.
 

@@ -1,0 +1,152 @@
+@Tutorial(time: 20) {
+    @Intro(title: "Create a Single Domino") {
+        You'll add a shape, material, collision shape, and physical properties to a single domino, one at a time.
+
+        @Image(source: domino-entity-hero.png, alt: "A single red domino")
+    }
+    @Section(title: "Understand Entity-Component-System") {
+        @ContentAndMedia {
+            Before writing code, let's explore the three roles that make up a domino.
+            This architecture is called Entity-Component-System, or ECS.
+        }
+        @Steps {
+            @Step {
+                **Why use this architecture?** An inheritance-based design often puts shape, collision, and physics logic into a single "Domino" class.
+
+                Different apps need different combinations. For an invisible physics floor, like the one you'll build in Chapter 4, you need physics without a visible model. An inheritance hierarchy may require more subclasses or duplicated code. ECS solves this by attaching the components you need instead of inheriting every feature.
+
+                @Image(source: ecs-motivation.svg, alt: "Inheritance requires new classes for different combinations; ECS attaches selected components to a general entity")
+            }
+            @Step {
+                **An Entity is the foundation of an object.** It represents one domino and provides position, orientation, scale, and parent-child relationships. Attach components to give it capabilities.
+
+                > Note: There's no dedicated `Domino` class. Both a domino and the physics floor are entities; their components determine how they differ.
+
+                @Image(source: ecs-entity.svg, alt: "An entity provides position, orientation, scale, and parent-child relationships")
+            }
+            @Step {
+                **A Component describes an object's appearance or stores data needed for its behavior.**
+
+                A domino needs a `ModelComponent` for its shape and materials, a `CollisionComponent` for its collision shape, and a `PhysicsBodyComponent` for its mass and physics mode.
+
+                @Image(source: ecs-components.svg, alt: "A domino entity combines ModelComponent, CollisionComponent, and PhysicsBodyComponent")
+            }
+            @Step {
+                **A System processes behavior using component data.** With the required physics components in place, RealityKit's built-in physics system calculates falling and collisions. You won't create a custom system in this tutorial.
+
+                > Note: RealityKit provides systems for physics and rendering, so many apps don't need custom systems. Use a custom system for specialized behavior the built-in engine doesn't handle.
+
+                @Image(source: ecs-system.svg, alt: "The built-in physics system uses component data to calculate position and rotation during falling and collisions")
+            }
+            @Step {
+                **Choose only the components each object needs.** A domino needs a visible model and physics, but Chapter 4's invisible floor needs only collision and physics data. You can combine these without creating a separate class hierarchy for every combination.
+
+                @Image(source: ecs-composition.svg, alt: "A domino uses model, collision, and dynamic physics; an invisible floor uses collision and static physics")
+            }
+        }
+    }
+    @Section(title: "Create the Shape and Material") {
+        @ContentAndMedia {
+            Build the domino's appearance by creating its shape, configuring a material, and combining the two.
+        }
+        @Steps {
+            @Step {
+                **Add a domino factory function to `ARCoordinator.swift`.** Add the entire `makeDominoEntity()` function inside `ARCoordinator`. It creates a mesh 8 cm wide, 20 cm tall, and 4 cm deep, and returns a `ModelEntity`.
+
+                @Code(name: "ARCoordinator.swift", file: "2-1-ARCoordinator-excerpt.swift", previousFile: "2-1-ARCoordinator-before.swift")
+            }
+            @Step {
+                Review the dimensions and axes: width is 8 cm along X, height is 20 cm along Y, and depth is 4 cm along Z.
+
+                @Image(source: domino-mesh-dimensions.svg, alt: "An 8 by 20 by 4 cm domino mesh mapped to the X, Y, and Z axes")
+            }
+            @Step {
+                **Configure the surface material.** Create a `PhysicallyBasedMaterial` with a red `baseColor`, `roughness` of 0.4, and `metallic` of 0.
+
+                > Note: Physically based rendering (PBR) materials describe how a surface responds to light. Adjust its base color, roughness, and metallic properties to create different materials.
+
+                @Code(name: "ARCoordinator.swift", file: "2-2a-ARCoordinator-excerpt.swift", previousFile: "2-2a-ARCoordinator-before.swift")
+            }
+            @Step {
+                Review how baseColor, roughness, and metallic produce a red, nonmetallic material.
+
+                @Image(source: domino-material.svg, alt: "A red domino and the meaning of red baseColor, roughness 0.4, and metallic 0")
+            }
+            @Step {
+                **Combine the shape and material.** Pass `materials: [material]` to the `ModelEntity` created from the mesh to finish the red domino's appearance.
+
+                > Note: Gravity and collisions aren't enabled yet. You'll add them in the next section.
+
+                @Code(name: "ARCoordinator.swift", file: "2-2-ARCoordinator-excerpt.swift", previousFile: "2-2-ARCoordinator-before.swift")
+            }
+            @Step {
+                Review how the mesh and material combine into a `ModelEntity`.
+
+                @Image(source: domino-model-entity.svg, alt: "Combining a box mesh and a red material into a ModelEntity")
+            }
+        }
+    }
+    @Section(title: "Add Collision and a Physics Body") {
+        @ContentAndMedia {
+            What happens if these dominoes meet right now? They pass through each other: they only have an appearance.
+            Two components let them collide, respond to gravity, and fall when pushed.
+        }
+        @Steps {
+            @Step {
+                **Add a collision shape.** Without one, dominoes pass through each other.
+
+                > Note: `domino.generateCollisionShapes(recursive: true)` creates collision shapes from the mesh so the dominoes can collide.
+
+                @Code(name: "ARCoordinator.swift", file: "2-3-ARCoordinator-excerpt.swift", previousFile: "2-3-ARCoordinator-before.swift")
+            }
+            @Step {
+                **Add a physics body.** A domino needs to rest on the floor under gravity and fall when you push it.
+
+                > Note: Attach `PhysicsBodyComponent` with `domino.components.set(...)` and set `mode` to `.dynamic`. A dynamic body responds to gravity and forces.
+
+                @Code(name: "ARCoordinator.swift", file: "2-4a-ARCoordinator-excerpt.swift", previousFile: "2-4a-ARCoordinator-before.swift")
+            }
+            @Step {
+                **Set each domino's mass to 0.7 kg.** Add a `dominoMass` constant and use it in the physics body's `massProperties`.
+
+                > Note: `dominoMass` is the mass of one domino in kilograms. Start with 0.7 and observe how it falls when you run the app later.
+
+                > Note: `massProperties: .init(mass: dominoMass)` specifies the mass directly. RealityKit calculates other properties, such as resistance to rotation, from the collision shape.
+
+                @Code(name: "ARCoordinator.swift", file: "2-4-ARCoordinator-excerpt.swift", previousFile: "2-4-ARCoordinator-before.swift")
+            }
+            @Step {
+                **RealityKit automatically simulates the completed domino.** With model, collision, and physics body components, it rests on the physics floor, falls when pushed, and collides with neighboring dominoes. RealityKit's built-in physics system handles those calculations.
+
+                @Image(source: domino-entity-physics-flow.svg, alt: "RealityKit simulates a domino with model, collision, and physics components as it rests, falls, and hits the next domino")
+            }
+        }
+    }
+    @Section(title: "Occlude Dominoes Behind People") {
+        @ContentAndMedia {
+            If a hand is in front of a domino, the domino should disappear behind it. Without occlusion, it renders over the hand.
+            People Occlusion lets ARKit identify people in camera frames in real time and hide virtual content behind them.
+        }
+        @Steps {
+            @Step {
+                First check device support with `ARWorldTrackingConfiguration.supportsFrameSemantics(.personSegmentationWithDepth)`.
+
+                > Note: People Occlusion requires an **A12 chip or later**, a higher requirement than Chapter 1's A9 baseline, so not every ARKit device supports it.
+
+                @Code(name: "ARViewContainer.swift", file: "2-5a-ARViewContainer-excerpt.swift", previousFile: "2-5a-ARViewContainer-before.swift")
+            }
+            @Step {
+                If supported, add `.personSegmentationWithDepth` to `configuration.frameSemantics`.
+
+                > Note: Dominoes will now be occluded naturally when a person moves in front of the camera.
+
+                @Code(name: "ARViewContainer.swift", file: "2-5-ARViewContainer-excerpt.swift", previousFile: "2-5-ARViewContainer-before.swift")
+            }
+            @Step {
+                On the left, the domino renders over the hand without occlusion. On the right, it disappears behind the hand.
+
+                @Image(source: people-occlusion-proportions.png, alt: "People Occlusion comparison: a domino renders over a hand on the left and behind it on the right")
+            }
+        }
+    }
+}

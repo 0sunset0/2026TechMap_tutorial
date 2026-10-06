@@ -1,0 +1,165 @@
+@Tutorial(time: 20) {
+    @Intro(title: "Display Your First AR Scene") {
+        Before you can place dominoes, the app needs to understand the real space in front of the camera.
+        In this chapter, you'll run an ARKit session and display its camera view in SwiftUI.
+        When the camera view appears and yellow dots begin to flicker, it's working: those dots show ARKit mapping the space.
+
+        @Image(source: feature-points-illustration.png, alt: "Feature points on a desk and nearby objects")
+    }
+
+    @Section(title: "Connect ARView to SwiftUI") {
+        @ContentAndMedia {
+            `ARView` is RealityKit's main view for displaying the camera feed and rendering 3D content.
+            As a UIKit class, it can't go directly into a SwiftUI view hierarchy. You'll bridge the two with `UIViewRepresentable`.
+        }
+        @Steps {
+            @Step {
+                Create `ARViewContainer.swift` and define a structure that conforms to `UIViewRepresentable`.
+
+                > Note: `ARView` is a UIKit class. `UIViewRepresentable` makes that UIKit view available inside SwiftUI.
+
+                > Note: **The code is incomplete until Step 6, so errors are expected for now.** Errors about `UIViewRepresentable` conformance or a missing `ARStatusModel` appear because you haven't added all the required code yet.
+
+                @Code(name: "ARViewContainer.swift", file: "1-1a-ARViewContainer.swift")
+            }
+            @Step {
+                Create `ARCoordinator.swift` and write the skeleton of the `ARCoordinator` class. This delegate will handle user touches and ARKit notifications.
+
+                > Note: This class has two jobs: handle **gestures** (taps and drags) to place or push dominoes, and handle ARKit **delegate callbacks** (such as plane detection) to create a physics floor. You'll connect both in later chapters; for now, create the skeleton.
+
+                > Note: `arView` is `weak` to prevent a reference cycle. If `ARView` and `ARCoordinator` retain each other, neither can be released. A weak reference lets the coordinator access the view without owning it.
+
+                > Note: You can ignore `Cannot find type 'ARStatusModel' in scope` for now. You'll define that type in Step 6.
+
+                @Code(name: "ARCoordinator.swift", file: "1-1-ARCoordinator.swift")
+            }
+            @Step {
+                Return to `ARViewContainer` and create and return an `ARView` in `makeUIView(context:)`.
+
+                > Note: SwiftUI calls this method once when creating this view instance. `UIViewRepresentable` separates creation (`makeUIView`) from updates (`updateUIView`). An `ARView` holds an expensive camera session; recreating it on every state change would reset tracking. Create the instance in `makeUIView` and update its values in `updateUIView`.
+
+                > Note: The missing `ARStatusModel` error may remain until you define it in Step 6.
+
+                @Code(name: "ARViewContainer.swift", file: "1-1b-ARViewContainer.swift", previousFile: "1-1a-ARViewContainer.swift")
+            }
+            @Step {
+                Leave `updateUIView(_:context:)` empty for now.
+
+                > Note: Like `makeUIView`, `updateUIView` is required. Unlike the optional `makeCoordinator`, it must exist to satisfy the protocol, even if its body is empty.
+
+                > Note: The creation and update methods are now in place, but errors related to the missing `ARStatusModel` may remain.
+
+                > Note: SwiftUI calls this method when values such as `@State` or `@Published` change. There's no state to pass to the UIKit view yet. If SwiftUI state needs to affect `ARView` later, handle it here.
+
+                @Code(name: "ARViewContainer.swift", file: "1-1c-ARViewContainer.swift", previousFile: "1-1b-ARViewContainer.swift")
+            }
+            @Step {
+                Implement `makeCoordinator()` to return the `ARCoordinator` you created earlier.
+
+                > Note: `makeCoordinator()` is optional; without it, `Coordinator` defaults to `Void`. This app will use `context.coordinator` as an actual `ARCoordinator` in the next section, so return a real instance here.
+
+                > Note: The missing `ARStatusModel` error may still appear at this step.
+
+                @Code(name: "ARViewContainer.swift", file: "1-1-ARViewContainer.swift", previousFile: "1-1c-ARViewContainer.swift")
+            }
+            @Step {
+                Create `ARStatusModel.swift` to manage the text in the status banner at the top of the screen.
+
+                > Note: `ARCoordinator` isn't a SwiftUI `View`, so it can't manage view-local `@State`. `ContentView`, which displays the banner, and `ARCoordinator`, which updates it from UIKit callbacks, need a shared object. `ObservableObject` connects them.
+
+                > Note: If errors remain, check that the methods from Steps 3–5 are inside the braces of `ARViewContainer`, and check their spelling.
+
+                > Note: Changing a `@Published` property automatically updates observing SwiftUI views. `ObservableObject` and `@Published` belong to `Combine`, so use `import Combine`, rather than only `import Foundation`.
+
+                @Code(name: "ARStatusModel.swift", file: "1-1-ARStatusModel.swift")
+            }
+            @Step {
+                Xcode already created `ContentView.swift` with the project. Remove the `#Preview` block at the bottom.
+
+                > Note: `ARView` needs a live camera, so you can't preview this scene in Xcode's SwiftUI canvas. Keeping the preview won't cause an error, but it won't show the AR scene.
+
+                @Code(name: "ContentView.swift", file: "1-1a-ContentView.swift")
+            }
+            @Step {
+                Replace `body` with a layout that overlays the status banner on `ARViewContainer`.
+
+                > Note: Both views use the same `ARStatusModel`, but `ContentView` uses `@StateObject` and `ARViewContainer` uses `@ObservedObject`. Use `@StateObject` where the object is created and owned, and `@ObservedObject` where an existing object is passed in. Keep one owner to avoid creating duplicate state.
+
+                @Code(name: "ContentView.swift", file: "1-1-ContentView.swift", previousFile: "1-1a-ContentView.swift")
+            }
+            @Step {
+                The app entry point, `ARDominoChainReactionApp.swift`, also already exists. You don't need to change it; just confirm that `WindowGroup` displays `ContentView` first.
+
+                > Note: The project must contain exactly one `@main` structure.
+
+                @Code(name: "ARDominoChainReactionApp.swift", file: "1-1-ARDominoChainReactionApp.swift")
+            }
+        }
+    }
+
+    @Section(title: "Run the AR Session") {
+        @ContentAndMedia {
+            Creating an `ARView` and starting tracking are separate tasks. You'll configure what the session should detect, then run it with that configuration.
+        }
+        @Steps {
+            @Step {
+                Add `makeSessionConfiguration()` inside `ARViewContainer`. This method creates and returns an `ARWorldTrackingConfiguration`.
+
+                > Note: Creating the view alone isn't enough. `ARView` is the container; `ARSession` handles the camera and spatial tracking.
+
+                @Code(name: "ARViewContainer.swift", file: "1-2a-ARViewContainer.swift", previousFile: "1-1-ARViewContainer.swift")
+            }
+            @Step {
+                Study the diagram: `ARView` contains an `ARSession`, and running it with a configuration causes the session to send delegate callbacks. You'll implement this flow one step at a time.
+
+                @Image(source: arview-session-relationship.svg, alt: "ARView contains ARSession; session.run receives a configuration, and the session sends callbacks to ARCoordinator")
+            }
+            @Step {
+                Obtain the configuration in `makeUIView(context:)`.
+
+                > Note: **World Tracking** estimates device position and orientation from camera images and motion sensors, keeping dominoes in the same place as you move.
+
+                @Code(name: "ARViewContainer.swift", file: "1-2b-ARViewContainer.swift", previousFile: "1-2a-ARViewContainer.swift")
+            }
+            @Step {
+                Add horizontal plane detection and environment texturing to `makeSessionConfiguration()`.
+
+                > Note: Without plane detection, tracking can run, but there are no detected planes on which to place dominoes.
+
+                > Note: `environmentTexturing` uses the surroundings to render material reflections.
+
+                @Code(name: "ARViewContainer.swift", file: "1-2-ARViewContainer.swift", previousFile: "1-2b-ARViewContainer.swift")
+            }
+            @Step {
+                Run the session with this configuration.
+
+                > Note: Creating a configuration and running a session use separate APIs. This call starts the camera and tracking for the session you've configured.
+
+                @Code(name: "ARViewContainer.swift", file: "1-3a-ARViewContainer.swift", previousFile: "1-2-ARViewContainer.swift")
+            }
+            @Step {
+                Connect the delegate to receive session notifications, and give it access to the AR view.
+
+                > Note: ARKit separates configuration from `run`, letting you change the configuration and run the same session again. To enable People Occlusion later, add an option and call `run()` again without creating a new `ARView`.
+
+                @Code(name: "ARViewContainer.swift", file: "1-3-ARViewContainer.swift", previousFile: "1-3a-ARViewContainer.swift")
+            }
+            @Step {
+                Enable the `showFeaturePoints` debug visualization.
+
+                > Note: This displays yellow dots at distinctive points ARKit finds in camera images, such as corners and patterns. Watching these points appear lets you confirm that tracking is working.
+
+                @Code(name: "ARViewContainer.swift", file: "1-4-ARViewContainer-excerpt.swift", previousFile: "1-4-ARViewContainer-before.swift")
+            }
+            @Step {
+                Build and run the app on a physical device.
+
+                > Note: On first launch, a system dialog asks for camera access, showing the description you entered in Chapter 1. Tap **Allow** to use the camera and tracking.
+
+                > Note: Move the camera slowly and watch yellow feature points appear. ARKit finds distinctive corners and patterns and estimates their 3D positions by observing them from multiple angles. Your AR scene is now running!
+
+                @Image(source: feature-points-illustration.png, alt: "Yellow feature points on desk corners and nearby objects illustrate AR tracking")
+            }
+        }
+    }
+}

@@ -1,0 +1,119 @@
+@Tutorial(time: 15) {
+    @Intro(title: "Polish the App with a USDZ Model") {
+        So far, dominoes have been box meshes created in code. In this chapter, replace that shape with a 3D model in USDZ format.
+        Your dominoes will look like real wooden blocks instead of plain boxes.
+
+        @Image(source: mesh-usdz-actual-comparison.png, alt: "A red procedural box beside a wooden USDZ domino")
+    }
+    @Section(title: "Download the Provided USDZ Asset") {
+        @ContentAndMedia {
+            USDZ is a 3D file format supported by ARKit and RealityKit. You'll use the provided `domino.usdz` instead of modeling one yourself.
+        }
+        @Steps {
+            @Step {
+                Download `domino.usdz` from the link below.
+
+                > Note: This is a binary asset containing a custom 3D model. You can't recreate it by typing code as you did in earlier chapters.
+
+                [Download domino.usdz](https://raw.githubusercontent.com/0sunset0/2026TechMap_tutorial/main/ARDominoChainReaction/Sources/ARDominoChainReaction/domino.usdz)
+
+                @Image(source: finder-domino-download.png, alt: "Checking the domino.usdz filename and extension in Finder's Downloads folder")
+            }
+            @Step {
+                Open the downloaded file with macOS **Quick Look**: select it and press the space bar.
+
+                > Note: If you see the wooden domino model, you're ready to continue.
+
+                @Image(source: domino-usdz-preview.png, alt: "The domino.usdz model: a rectangular domino with wood grain")
+            }
+            @Step {
+                Drag the file into the `Sources/ARDominoChainReaction` group in your Xcode project.
+
+                @Image(source: xcode-usdz-import.png, alt: "Dragging domino.usdz from Finder into Sources/ARDominoChainReaction in Xcode")
+            }
+            @Step {
+                Confirm **target membership**: the checkbox for the app target must be selected.
+
+                > Note: If it's missing, the app won't find the model and will fail at runtime.
+
+                @Image(source: xcode-target-membership.png, alt: "Copy files to destination selected, with only the ARDominoChainReaction app target checked")
+            }
+        }
+    }
+    @Section(title: "Replace the Procedural Mesh with the USDZ Model") {
+        @ContentAndMedia {
+            Until now, `makeDominoEntity()` has used `MeshResource.generateBox` and `PhysicallyBasedMaterial`. Replace that code with a call that loads the USDZ file you just added.
+
+            @Image(source: mesh-usdz-actual-comparison.png, alt: "A rendered comparison of a red box and the actual wooden domino.usdz model")
+        }
+        @Steps {
+            @Step {
+                **In `ARCoordinator`, replace mesh creation and material configuration with one synchronous USDZ loading call.**
+
+                > Note: Use the filename without its extension. This tutorial expects `domino.usdz` to be in the app bundle, so `try!` makes a loading failure immediately visible as a crash. The small file is loaded synchronously here.
+
+                > Note: The USDZ file already contains the wood material and colors, so you no longer need to create a `PhysicallyBasedMaterial` manually.
+
+                @Code(name: "ARCoordinator.swift", file: "5-1a-ARCoordinator.swift", previousFile: "5-context-ARCoordinator.swift")
+            }
+            @Step {
+                Attach collision shapes and a physics body just as before.
+
+                > Note: Whether created from a mesh or loaded from USDZ, `domino` is still a `ModelEntity`. `generateCollisionShapes` and `PhysicsBodyComponent` act on that entity, so you can reuse them when the model's source changes.
+
+                @Code(name: "ARCoordinator.swift", file: "5-1-ARCoordinator.swift", previousFile: "5-1a-ARCoordinator.swift")
+            }
+        }
+    }
+    @Section(title: "Adjust the Size and Pivot") {
+        @ContentAndMedia {
+            The `dominoSize` constant (0.08, 0.2, 0.04) describes the old box mesh. A loaded USDZ model can have different dimensions or a different origin, or pivot. Using the old offset could leave it floating above or buried below the floor.
+        }
+        @Steps {
+            @Step {
+                Use `domino.visualBounds(relativeTo: nil)` to inspect the loaded model's actual bounding box.
+
+                > Note: Rather than relying on assumed dimensions, calculate the bounds of the model you've loaded.
+
+                @Code(name: "ARCoordinator.swift", file: "5-2a-ARCoordinator.swift", previousFile: "5-1-ARCoordinator.swift")
+            }
+            @Step {
+                Recalculate the offset in `place(_:at:in:)` using the model's actual dimensions.
+
+                > Note: Replace the old fixed height, `dominoSize.y`, with `bounds.extents.y`. `generateCollisionShapes` derives shapes from the new model, so you can keep calling it as before.
+
+                @Code(name: "ARCoordinator.swift", file: "5-2b-ARCoordinator.swift", previousFile: "5-2a-ARCoordinator.swift")
+            }
+            @Step {
+                Delete the `dominoSize` constant, which is no longer used.
+
+                > Note: This removed line isn't shown separately in the code diff. Search for the `dominoSize` property and remove it yourself:
+                >
+                > `private let dominoSize = SIMD3<Float>(0.08, 0.2, 0.04)`
+
+                @Code(name: "ARCoordinator.swift", file: "5-2-ARCoordinator.swift", previousFile: "5-2b-ARCoordinator.swift")
+            }
+        }
+    }
+    @Section(title: "Compare the Result on Your Device") {
+        @ContentAndMedia {
+            Finally, check the result on a physical device.
+        }
+        @Steps {
+            @Step {
+                Build and run the app on your device again.
+
+                > Note: Dominoes placed with a tap should now appear as wooden 3D models instead of red boxes.
+
+                @Image(source: domino-usdz-real-device.png, alt: "A wooden domino on a carpet floor, with an English status banner showing 3 dominoes placed; the banner is translated from the original device capture")
+            }
+            @Step {
+                **You've completed your AR Domino Chain Reaction app! 🎉**
+
+                You've built an app that recognizes real space, places dominoes, and starts a chain reaction with a swipe. Change their spacing and arrangement to create your own chain reactions.
+
+                @Image(source: domino-blender-demo.gif, alt: "A domino chain reaction recreated in Blender with the actual wooden USDZ model")
+            }
+        }
+    }
+}

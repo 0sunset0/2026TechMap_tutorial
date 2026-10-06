@@ -1,5 +1,7 @@
 # AR 도미노 체인리액션 튜토리얼
 
+[English](README.en.md)
+
 ![도미노가 한 줄로 연쇄적으로 쓰러지는 완성 모습](ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif)
 
 *완성된 앱의 연쇄 반응을 실기기 녹화를 참고해 Blender로 재현한 장면입니다.*
@@ -7,6 +9,8 @@
 공간에 도미노를 여러 개 세워 배치하고, 하나를 밀면 물리 시뮬레이션으로 옆 도미노가 연쇄적으로 쓰러지는 ARKit + RealityKit 기반 AR 도미노 체인리액션 앱을 만드는 튜토리얼 저장소입니다.
 
 **👉 [튜토리얼 바로 보기](https://0sunset0.github.io/2026TechMap_tutorial/)**
+
+[한국어](https://0sunset0.github.io/2026TechMap_tutorial/ko/tutorials/ardominochainreactiontutorials/) · [English](https://0sunset0.github.io/2026TechMap_tutorial/en/tutorials/ardominochainreactiontutorials/)
 
 ## 전체 목차
 
@@ -26,11 +30,6 @@
 - 카메라가 없는 시뮬레이터에서는 AR 세션을 실행할 수 없어 실기기가 필요합니다
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)
 
-## 튜토리얼 보기
-
-- **웹에서 보기**: [0sunset0.github.io/2026TechMap_tutorial](https://0sunset0.github.io/2026TechMap_tutorial/)에서 1장부터 6장까지 단계별 코드와 함께 읽을 수 있습니다. `main` 브랜치에 푸시될 때마다 GitHub Actions가 자동으로 다시 배포합니다.
-- **Xcode에서 보기**: 아래 [빌드하기](#빌드하기)대로 프로젝트를 연 뒤 **Product ▸ Build Documentation**(⌃⇧⌘D)을 실행하면 Xcode 문서 창에서 같은 튜토리얼을 볼 수 있습니다.
-
 ## 빌드하기
 
 이 프로젝트는 `.xcodeproj`를 커밋하지 않고 `project.yml`로부터 생성합니다.
@@ -42,17 +41,17 @@ xcodegen generate
 open ARDominoChainReaction.xcodeproj
 ```
 
-## 완성본 받기
-
-6장까지 완성된 Xcode 프로젝트(xcodegen 없이 바로 열 수 있음)는 [ARDominoChainReaction-Final.zip](https://0sunset0.github.io/2026TechMap_tutorial/ARDominoChainReaction-Final.zip)에서 받을 수 있습니다. `main` 브랜치에 푸시될 때마다 GitHub Actions가 자동으로 새로 만듭니다.
+Xcode 상단에서 `ARDominoChainReaction`(한국어) 또는 `ARDominoChainReaction-English`(영어) scheme을 선택합니다.
 
 ## 저장소 구조
 
 ```
 ARDominoChainReaction/
-├── project.yml                     # XcodeGen 프로젝트 정의
+├── project.yml                     # 한국어·영어 타겟을 연결하는 XcodeGen 정의
+├── app-project.yml                 # 공통 앱 프로젝트 정의
 ├── Sources/ARDominoChainReaction/  # 6장까지 완성된 앱 코드와 domino.usdz
 ├── ARDominoChainReaction.docc/     # DocC 튜토리얼 (Chapters/, Resources/)
+├── English/                       # 영어 본문, 번역표, 영어용 이미지
 └── Docs/                           # 설계 문서와 작업 기록
 ```
 

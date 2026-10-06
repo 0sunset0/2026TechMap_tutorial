@@ -1,0 +1,106 @@
+@Tutorial(time: 10) {
+    @Intro(title: "Set Up Your Project") {
+        The camera is essential to an AR app, so getting started involves a few extra steps.
+        In this chapter, you'll create a project and learn why camera permission and a physical device are both required.
+
+        @Image(source: project-setup-hero.png, alt: "A Mac running Xcode and a connected iPhone showing a camera permission request")
+    }
+
+    @Section(title: "Create an Xcode Project") {
+        @ContentAndMedia {
+            Xcode includes an "Augmented Reality App" template, but this project starts with the standard "App" template instead.
+        }
+        @Steps {
+            @Step {
+                In Xcode's new project window, select the **iOS** tab and the **App** template.
+
+                > Note: The "Augmented Reality App" template includes boilerplate such as SceneKit asset folders and its own view controller structure. This project starts with a plain SwiftUI app and wraps RealityKit's `ARView` in `UIViewRepresentable`. Choosing a matching structure from the beginning saves you from removing and rewriting template code later.
+
+                @Image(source: xcode-ios-app-template.png, alt: "The iOS tab and App template selected in Xcode's new project window")
+            }
+            @Step {
+                Set Product Name to "ARDominoChainReaction". Choose **SwiftUI** for Interface and **Swift** for Language.
+
+                @Image(source: xcode-project-options.png, alt: "Project options with ARDominoChainReaction, SwiftUI, and Swift selected")
+            }
+            @Step {
+                Choose where to save your project and click **Create**. You're ready to start writing code in the next chapter.
+
+                @Image(source: xcode-project-save.png, alt: "Selecting a Developer folder under Documents and clicking Create")
+            }
+        }
+    }
+
+    @Section(title: "Configure Camera Permission") {
+        @ContentAndMedia {
+            An AR app needs camera access. If you omit the required usage description, the app crashes as soon as it accesses the camera.
+        }
+        @Steps {
+            @Step {
+                In the project navigator on the left, click the project file at the top—the blue project icon.
+
+                @Image(source: xcode-select-project.png, alt: "Selecting the blue project icon at the top of the project navigator")
+            }
+            @Step {
+                In the settings sidebar, select the app target under **TARGETS**.
+
+                > Note: Select the entry under **TARGETS**, rather than the one under **PROJECT** above it.
+
+                @Image(source: xcode-select-app-target.png, alt: "Selecting ARDominoChainReaction under TARGETS, separately from PROJECT")
+            }
+            @Step {
+                Click the **Info** tab at the top.
+
+                @Image(source: xcode-target-info-tab.png, alt: "The Info tab in the app target settings")
+            }
+            @Step {
+                Hover over **Custom iOS Target Properties**, click the `+` button to add a key, and select `Privacy - Camera Usage Description`.
+
+                > Note: This setting has different names depending on where you view it. Xcode's Info tab displays `Privacy - Camera Usage Description`, while the `Info.plist` file stores it as `NSCameraUsageDescription`.
+
+                @Image(source: xcode-camera-usage-key.png, alt: "Adding Privacy - Camera Usage Description to Custom iOS Target Properties")
+            }
+            @Step {
+                Double-click the new row's **Value** cell, to the right of `String`, in the same **Info** tab.
+
+                Enter "Camera access is required for ARKit camera tracking in AR Domino Chain Reaction."
+
+                @Image(source: xcode-camera-usage-value-filled.png, alt: "The camera usage description entered in the Value cell")
+            }
+            @Step {
+                Without this description, iOS terminates the app when it calls a camera API.
+
+                > Note: To protect privacy, iOS terminates an app if it accesses the camera without explaining why.
+
+                @Image(source: camera-permission-missing.png, alt: "Missing usage description leads to camera access and app termination")
+            }
+            @Step {
+                In the same **Info** tab, add `Required device capabilities` (`UIRequiredDeviceCapabilities`) and set its **Type** to **Array**. Expand it using the disclosure triangle, then click `+` to add an item. Set **Item 0** to **String** with the **Value** `arkit`.
+
+                > Note: This isn't a runtime check. It lets the App Store filter out devices that don't support ARKit before offering or installing the app.
+
+                @Image(source: xcode-arkit-capability.png, alt: "Required device capabilities with Item 0 set to the String value arkit")
+            }
+        }
+    }
+
+    @Section(title: "Why You Need a Physical Device") {
+        @ContentAndMedia {
+            You can't test this project in the simulator.
+        }
+        @Steps {
+            @Step {
+                ARKit's `ARWorldTrackingConfiguration` requires a device with an **A9 chip or later** (iPhone 6s or first-generation SE and later).
+
+                @Image(source: arkit-real-device.png, alt: "ARKit world tracking requires an A9 or later chip and a physical device camera")
+            }
+            @Step {
+                The simulator has no camera, so it can't supply the real camera frames and motion sensor data this ARKit session needs.
+
+                > Note: Every chapter in this tutorial requires building and running on a physical device.
+
+                @Image(source: arkit-device-vs-simulator.png, alt: "Comparing camera and motion sensor input on a physical device and in the simulator")
+            }
+        }
+    }
+}
