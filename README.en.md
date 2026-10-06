@@ -1,6 +1,5 @@
 # AR Domino Chain Reaction Tutorial
 
-[한국어로 읽기](README.md)
 
 <br>
 
