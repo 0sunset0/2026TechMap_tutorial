@@ -19,7 +19,7 @@
     @Chapter(name: "1. 프로젝트 준비") {
         AR 앱은 왜 카메라 권한과 실기기가 필요한가.
 
-        @Image(source: feature-points-illustration.png, alt: "프로젝트 준비")
+        @Image(source: project-setup-hero.png, alt: "Xcode가 열린 Mac과 연결된 iPhone으로 AR 앱 개발을 준비하는 모습")
 
         @TutorialReference(tutorial: "doc:Chapter1-ProjectSetup")
     }

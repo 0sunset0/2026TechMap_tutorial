@@ -4,6 +4,23 @@
 
 저장 위치: `ARDominoChainReaction.docc/Resources/`
 
+## project-setup-hero.png (2026-10-06)
+
+1장 목차 썸네일과 상단 배너용 이미지. built-in `image_gen`으로 생성한 설명용 사진이며 실제 Xcode·앱 캡처가 아닙니다. Xcode가 열린 Mac과 USB로 연결된 iPhone의 카메라 권한 화면으로 프로젝트 준비를 표현합니다.
+
+프롬프트:
+
+```text
+Use case: photorealistic-natural
+Asset type: landscape 3:2 chapter hero image for a Korean AR iOS development tutorial, chapter 1 project preparation.
+Primary request: a MacBook with Xcode open and an iPhone physically connected by a clearly visible USB cable on a warm wooden desk, immediately communicating getting ready to develop an AR app.
+Scene/backdrop: quiet home workspace, subtle books and small green plant in soft focus, natural window light.
+Subject: open silver MacBook showing a plausible Xcode project editor with sidebar, code area and toolbar (small screen text need not be legible); beside it an upright or gently angled iPhone showing a simple iOS camera permission dialog over a neutral app screen. Cable visibly connects laptop port to phone bottom, physically plausible.
+Style/medium: polished natural editorial photography, realistic materials, warm muted wood and green tones matching a calm tutorial aesthetic.
+Composition/framing: landscape 3:2, both laptop and phone comfortably inside central area with ample margins so thumbnail cropping keeps both devices visible, eye-level three-quarter desk view. Devices are the main focus.
+Constraints: no overlaid titles, no callout labels, no feature point dots, no virtual AR objects, no people, no watermark. Screen UI is supporting context, not an instructional screenshot.
+```
+
 ## feature-points-illustration.png
 
 프롬프트:
