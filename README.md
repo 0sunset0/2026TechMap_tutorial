@@ -6,7 +6,6 @@
 
 ![도미노가 한 줄로 연쇄적으로 쓰러지는 완성 모습](ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif)
 
-*완성된 앱의 연쇄 반응을 실기기 녹화를 참고해 Blender로 재현한 장면입니다.*
 
 <br>
 
