@@ -1,74 +1,78 @@
-# AR 도미노 체인리액션 튜토리얼
+# AR Domino Chain Reaction Tutorial
 
-[Read this README in English](README.en.md)
-
-<br>
-
-![도미노가 한 줄로 연쇄적으로 쓰러지는 완성 모습](ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif)
+[한국어로 README 읽기](README.ko.md)
 
 
 <br>
 
-공간에 도미노를 여러 개 세워 배치하고, 하나를 밀면 물리 시뮬레이션으로 옆 도미노가 연쇄적으로 쓰러지는 ARKit + RealityKit 기반 AR 도미노 체인리액션 앱을 만드는 튜토리얼 저장소입니다.
+![A row of dominoes falling in a chain reaction](ARDominoChainReaction/ARDominoChainReaction.docc/Resources/domino-blender-demo.gif)
+
+*This scene recreates the finished app's chain reaction in Blender, using a recording from a physical device as a reference.*
 
 <br>
 
-**👉 [튜토리얼 바로 보기](https://0sunset0.github.io/2026TechMap_tutorial/)**
+This repository teaches you how to build an AR domino chain reaction app with ARKit and RealityKit. Place dominoes in your space and push one to make its neighbors fall through physics simulation.
 
 <br>
 
-## 전체 목차
+**👉 [Start the tutorial](https://0sunset0.github.io/2026TechMap_tutorial/en/tutorials/ardominochainreactiontutorials/)**
 
-| **장** | **제목** | **핵심 개념 한 줄** |
+<br>
+
+## Chapters
+
+| Chapter | Title | Key concepts |
 | --- | --- | --- |
-| 1 | 프로젝트 준비 | AR 앱은 왜 카메라 권한과 실기기가 필요한가 |
-| 2 | 기본 AR 씬 띄우기 | ARSession과 평면 감지, UIKit↔SwiftUI 통합 |
-| 3 | 도미노 한 개 만들기 | RealityKit의 Entity-Component-System |
-| 4 | 탭으로 하나씩 배치하기 | Raycasting과 보이지 않는 물리 바닥 |
-| 5 | 드래그로 밀어 넘어뜨리기 | 좌표계 변환과 Impulse |
-| 6 | USDZ 모델로 다듬기 | 절차적 mesh에서 USDZ 에셋으로 |
+| 1 | Set Up Your Project | Why AR apps need camera permission and a physical device |
+| 2 | Display Your First AR Scene | ARSession, plane detection, and UIKit–SwiftUI integration |
+| 3 | Build a Single Domino | RealityKit's Entity-Component-System architecture |
+| 4 | Place Dominoes with Taps | Raycasting and an invisible physics floor |
+| 5 | Push Dominoes with a Drag | Coordinate conversion and impulses |
+| 6 | Polish with a USDZ Model | Replacing a procedural mesh with a USDZ asset |
 
 <br>
 
-## 요구 사항
+## Requirements
 
-- Xcode 15 이상
-- iOS 17.0 이상 실기기 (A12 칩 이상, iPhone XS/XR 이후). ARKit 월드 트래킹과 People Occlusion을 모두 지원합니다
-- 카메라가 없는 시뮬레이터에서는 AR 세션을 실행할 수 없어 실기기가 필요합니다
+- Xcode 15 or later
+- A physical device running iOS 17.0 or later with an A12 chip or newer (iPhone XS/XR or later), supporting both ARKit world tracking and People Occlusion
+- A physical device is required because the simulator has no camera and cannot run the AR session
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)
 
 <br>
 
-## 빌드하기
+## Build
 
-이 프로젝트는 `.xcodeproj`를 커밋하지 않고 `project.yml`로부터 생성합니다.
+The `.xcodeproj` is generated from `project.yml` and is not committed to this repository.
 
 ```bash
-brew install xcodegen   # 최초 1회
+brew install xcodegen   # One-time setup
 cd ARDominoChainReaction
 xcodegen generate
 open ARDominoChainReaction.xcodeproj
 ```
 
-Xcode 상단에서 `ARDominoChainReaction`(한국어) 또는 `ARDominoChainReaction-English`(영어) scheme을 선택합니다.
+In Xcode, select the `ARDominoChainReaction` scheme for Korean or `ARDominoChainReaction-English` for English.
 
 <br>
 
-## 저장소 구조
+## Repository Structure
 
-```
+```text
 ARDominoChainReaction/
-├── project.yml                     # 한국어·영어 타겟을 연결하는 XcodeGen 정의
-├── app-project.yml                 # 공통 앱 프로젝트 정의
-├── Sources/ARDominoChainReaction/  # 6장까지 완성된 앱 코드와 domino.usdz
-├── ARDominoChainReaction.docc/     # DocC 튜토리얼 (Chapters/, Resources/)
-├── English/                       # 영어 본문, 번역표, 영어용 이미지
-└── Docs/                           # 설계 문서와 작업 기록
+├── project.yml                    # XcodeGen definition connecting the Korean and English targets
+├── app-project.yml                # Shared app project definition
+├── Sources/ARDominoChainReaction/  # Completed app code through Chapter 6 and domino.usdz
+├── ARDominoChainReaction.docc/     # Korean DocC tutorials (Chapters/, Resources/)
+├── English/                       # English tutorials, translation mappings, and images
+└── Docs/                          # Design documents and development notes
 ```
 
 <br>
 
-## 참고 문서
+## Reference Documents
 
-- [결정 기록](ARDominoChainReaction/Docs/Decision-Log.md): 앱과 튜토리얼을 만들면서 내린 결정과 그 이유
-- [SPEC](ARDominoChainReaction/Docs/SPEC.md): 앱의 목표, 범위, 마일스톤
+These documents are written in Korean.
+
+- [Decision Log](ARDominoChainReaction/Docs/Decision-Log.md): Decisions made while building the app and tutorials, and their reasoning
+- [SPEC](ARDominoChainReaction/Docs/SPEC.md): App goals, scope, and milestones
