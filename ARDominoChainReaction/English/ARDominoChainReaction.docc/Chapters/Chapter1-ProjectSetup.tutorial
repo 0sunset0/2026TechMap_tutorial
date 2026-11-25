@@ -3,6 +3,8 @@
         The camera is essential to an AR app, so getting started involves a few extra steps.
         In this chapter, you'll create a project and learn why camera permission and a physical device are both required.
 
+        This tutorial was built with macOS 27.0.1, Xcode 27.0, and Blender 5.1.2.
+
         @Image(source: project-setup-hero.png, alt: "A Mac running Xcode and a connected iPhone showing a camera permission request")
     }
 

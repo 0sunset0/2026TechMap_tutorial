@@ -48,11 +48,4 @@
         @Image(source: mesh-usdz-actual-comparison.png, alt: "A procedural red box beside a wooden USDZ model")
         @TutorialReference(tutorial: "doc:Chapter6-USDZPolish")
     }
-    @Resources {
-        Download the completed project and run it on your device.
-
-        @Downloads(destination: "https://0sunset0.github.io/2026TechMap_tutorial/ARDominoChainReaction-Final-EN.zip") {
-            This Xcode project includes all six chapters. Unzip it, open `ARDominoChainReaction.xcodeproj`, choose your Team in Signing & Capabilities, and run it on a physical device.
-        }
-    }
 }

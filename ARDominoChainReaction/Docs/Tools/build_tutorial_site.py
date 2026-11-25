@@ -135,11 +135,15 @@ def build_catalog(catalog, output, base, language):
         "--warnings-as-errors",
     ], check=True)
     script_path = "/" + base.strip("/") + "/language-switch.js"
+    extra_scripts = ["author-credit.js"]
     canonical_base = "/" + base.strip("/")
     for path in output.rglob("*.html"):
         text = path.read_text()
         text = re.sub(r'<html\b[^>]*>', f'<html lang="{language}">', text, count=1)
         text = text.replace("</head>", f'<script defer src="{html.escape(script_path)}"></script></head>')
+        for name in extra_scripts:
+            extra_path = "/" + base.strip("/") + "/" + name
+            text = text.replace("</head>", f'<script defer src="{html.escape(extra_path)}"></script></head>')
         route = "/" + path.parent.relative_to(output).as_posix()
         if route == "/.":
             route = "/tutorials/ardominochainreactiontutorials"
@@ -148,6 +152,8 @@ def build_catalog(catalog, output, base, language):
             text = text.replace("</head>", f'<link rel="alternate" hreflang="{lang}" href="{alternate_base}/{lang}{route}/"></head>')
         path.write_text(text)
     shutil.copy2(SITE / "language-switch.js", output / "language-switch.js")
+    for name in extra_scripts:
+        shutil.copy2(SITE / name, output / name)
     # Recent DocC renderers request this optional file even with the default theme.
     (output / "theme-settings.json").write_text("{}\n")
 
