@@ -202,9 +202,10 @@
             }
 
             @Step {
-                왼쪽은 가림 처리가 없어 도미노가 손 위로 그려지는 모습, 오른쪽은 손 뒤로 가려지는 모습입니다.
+                앱을 실행하고 도미노 앞뒤로 손을 움직여 보세요. 손이 도미노 뒤에 있으면 도미노가 손 앞에 그려지고,
+                손이 도미노 앞에 있으면 손이 도미노를 가립니다.
 
-                @Image(source: people-occlusion-proportions.png, alt: "왼쪽은 도미노가 손 위로 그려지고 오른쪽은 손 뒤로 가려지는 People Occlusion 비교 개념도")
+                @Image(source: people-occlusion-proportions.png, alt: "People Occlusion을 켠 실기기 화면 두 장: 왼쪽은 손이 도미노 뒤에 있어 빨간 도미노가 손 앞에 보이고, 오른쪽은 손이 도미노 앞에 있어 손등이 도미노 아랫부분을 가리는 모습")
             }
         }
     }

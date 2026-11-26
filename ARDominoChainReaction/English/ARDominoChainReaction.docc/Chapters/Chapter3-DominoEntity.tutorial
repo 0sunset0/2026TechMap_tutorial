@@ -143,9 +143,9 @@
                 @Code(name: "ARViewContainer.swift", file: "2-5-ARViewContainer-excerpt.swift", previousFile: "2-5-ARViewContainer-before.swift")
             }
             @Step {
-                On the left, the domino renders over the hand without occlusion. On the right, it disappears behind the hand.
+                Run the app and move your hand in front of and behind the domino. When your hand is behind the domino, the domino is drawn in front of your hand. When your hand is in front of the domino, your hand covers it.
 
-                @Image(source: people-occlusion-proportions.png, alt: "People Occlusion comparison: a domino renders over a hand on the left and behind it on the right")
+                @Image(source: people-occlusion-proportions.png, alt: "Two device screenshots with People Occlusion on: on the left the hand is behind the red domino, so the domino appears in front of it; on the right the hand is in front, so the back of the hand covers the lower part of the domino")
             }
         }
     }
